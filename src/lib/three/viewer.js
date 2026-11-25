@@ -12,6 +12,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { buildModel } from "./models.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const REDUCED_MOTION =
   typeof window !== "undefined" &&
@@ -172,7 +173,7 @@ export class StageViewer {
     const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
     this.envMap = envRT.texture;
     this.scene.environment = this.envMap;
-    this.scene.environmentIntensity = preset.environmentIntensity;
+    this.scene.environmentIntensity = preset.environmentIntensity * (this._isGlb ? 0.22 : 1);
     pmrem.dispose();
 
     this._setupLights(preset);
@@ -404,10 +405,93 @@ export class StageViewer {
    * @param {string} kind 机型类型（见 models.js 的 MODEL_BUILDERS）
    * @param {object} params 传给构建器的参数
    */
-  show(kind, params = {}) {
+  async show(kind, params = {}) {
+    const token = (this._showToken = (this._showToken || 0) + 1);
     this.clear();
 
-    const model = buildModel(kind, params);
+    let model;
+    if (params.glb) {
+      try {
+        model = await this._loadGLB(params.glb);
+        if (token !== this._showToken) {
+          this._disposeObject(model);
+          return;
+        }
+      } catch (error) {
+        console.warn("[lightbox] GLB 加载失败，回退到图元模型", error);
+        model = buildModel(kind, params);
+      }
+    } else {
+      model = buildModel(kind, params);
+    }
+    if (token !== this._showToken) {
+      this._disposeObject(model);
+      return;
+    }
+    this._install(model, params);
+  }
+
+  _loadGLB(url) {
+    if (!this._gltfLoader) this._gltfLoader = new GLTFLoader();
+    const loader = this._gltfLoader;
+    return new Promise((resolve, reject) => {
+      loader.load(
+        url,
+        (gltf) => {
+          const scene = gltf.scene || (gltf.scenes && gltf.scenes[0]);
+          if (!scene) {
+            reject(new Error("GLB 中没有场景"));
+            return;
+          }
+          scene.traverse((child) => {
+            if (!child.isMesh) return;
+            child.castShadow = true;
+            child.receiveShadow = true;
+            const mats = Array.isArray(child.material) ? child.material : [child.material];
+            mats.forEach((mat) => {
+              if (!mat) return;
+              if ("envMapIntensity" in mat) mat.envMapIntensity = 0.35;
+              /* GLB 多为真实 PBR 材质：把金属的粗糙度抬一点，避免镜面高光整片过曝 */
+              if (typeof mat.metalness === "number" && mat.metalness > 0.5) {
+                mat.roughness = Math.max(mat.roughness, 0.52);
+              }
+              mat.needsUpdate = true;
+            });
+          });
+          resolve(scene);
+        },
+        undefined,
+        (error) => reject(error)
+      );
+    });
+  }
+
+  _disposeObject(object) {
+    if (!object) return;
+    object.traverse((child) => {
+      if (child.isMesh || child.isInstancedMesh) {
+        if (child.geometry) child.geometry.dispose();
+        const mats = Array.isArray(child.material) ? child.material : [child.material];
+        mats.forEach((mat) => {
+          if (!mat) return;
+          if (mat.map) mat.map.dispose();
+          mat.dispose();
+        });
+      }
+    });
+  }
+
+  _install(model, params = {}) {
+    /* GLB 的真实 PBR 材质对强光更敏感，单独用一套灯光强度 */
+    const isGlb = Boolean(params.glb);
+    this._isGlb = isGlb;
+    if (this.key) this.key.intensity = isGlb ? 0.6 : 2.15;
+    if (this.rimLight) this.rimLight.intensity = isGlb ? 0.5 : 1.5;
+    if (this.fillLight) this.fillLight.intensity = isGlb ? 0.3 : 0.4;
+    if (this.scene) {
+      const baseEnv = (this._current && this._current.environmentIntensity) || 1;
+      this.scene.environmentIntensity = baseEnv * (isGlb ? 0.22 : 1);
+    }
 
     /* 把模型摆平：底部落在 y=0，水平方向居中 */
     const box = new THREE.Box3().setFromObject(model);
@@ -431,7 +515,8 @@ export class StageViewer {
     this.model = model;
 
     /* 取景：按包围球自动退到合适的距离 */
-    const radius = Math.max(size.length() * 0.5, 0.6);
+    /* 不再假设模型是「1 单位」量级：GLB 可能是 55mm 的真实尺寸 */
+    const radius = Math.max(size.length() * 0.5, 1e-5);
     const fov = THREE.MathUtils.degToRad(this.camera.fov);
     const fitH = radius / Math.sin(fov / 2);
     const fitW = radius / Math.sin(Math.atan(Math.tan(fov / 2) * this.camera.aspect));
@@ -447,15 +532,31 @@ export class StageViewer {
     this.home = {
       target: new THREE.Vector3(0, targetY, 0),
       position: new THREE.Vector3(offset.x, targetY + offset.y, offset.z),
-      ringRadius: Math.max(size.x, size.z) * 1.35 + 0.4,
+      ringRadius: Math.max(size.x, size.z) * 1.35 + Math.max(radius * 0.25, 1e-4),
     };
+
+    /* 自适应近远裁面：GLB 可能是真实尺寸（毫米级），不能写死 0.1 */
+    this.camera.near = Math.max(dist / 200, 0.0005);
+    this.camera.far = Math.max(dist * 60, 10);
+    this.camera.updateProjectionMatrix();
 
     this.controls.minDistance = radius * 0.9;
     this.controls.maxDistance = dist * 3.2;
+
+    /* 阴影视锥跟着模型尺寸走，否则小模型只有几个像素的阴影 */
+    if (this.key) {
+      const sc = this.key.shadow.camera;
+      const half = radius * 3.2;
+      sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half;
+      sc.near = Math.max(radius * 0.2, 1e-4);
+      sc.far = radius * 40;
+      sc.updateProjectionMatrix();
+      this.key.position.set(radius * 4.2, radius * 6.4, radius * 4.6);
+    }
     this.ground.position.y = 0;
     this.ring.scale.setScalar(this.home.ringRadius / 2.56);
     if (this.pool) {
-      this.pool.scale.setScalar(Math.max(size.x, size.z) * 0.82 + 0.3);
+      this.pool.scale.setScalar(Math.max(size.x, size.z) * 0.82 + Math.max(radius * 0.3, 1e-4));
     }
 
     this.reset(true);
@@ -466,6 +567,23 @@ export class StageViewer {
       canvas.classList.add("is-ready");
       if (typeof this.onReady === "function") this.onReady();
     });
+  }
+
+  debugSnapshot() {
+    if (!this.model) return { model: false };
+    const box = new THREE.Box3().setFromObject(this.model);
+    return {
+      model: true,
+      children: this.model.children.length,
+      boxMin: box.min.toArray().map((n) => +n.toFixed(4)),
+      boxMax: box.max.toArray().map((n) => +n.toFixed(4)),
+      camera: this.camera.position.toArray().map((n) => +n.toFixed(4)),
+      target: this.controls.target.toArray().map((n) => +n.toFixed(4)),
+      near: this.camera.near,
+      far: this.camera.far,
+      home: this.home ? this.home.position.toArray().map((n) => +n.toFixed(4)) : null,
+      visible: this.model.visible,
+    };
   }
 
   reset(immediate = false) {

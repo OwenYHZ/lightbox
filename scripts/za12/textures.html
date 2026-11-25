@@ -1,0 +1,180 @@
+<!doctype html>
+<html><head><meta charset="utf-8" /><style>
+  body { margin:0; background:#000; }
+  canvas { display:block; }
+</style></head>
+<body>
+<canvas id="top" width="2048" height="1820"></canvas>
+<canvas id="bottom" width="2048" height="1536"></canvas>
+<script>
+const PLATE_W = 49.5, PLATE_D = 44.0;
+const BODY_W = 55.6, BODY_D = 46.5;
+
+function makeTop() {
+  const c = document.getElementById("top");
+  const g = c.getContext("2d");
+  const k = c.width / PLATE_W;                 // px per mm
+  const cx = c.width / 2, cy = c.height / 2;
+  const X = (x) => cx + x * k;
+  const Y = (y) => cy - y * k;                 // +y = back = up
+
+  g.fillStyle = "#131416"; g.fillRect(0, 0, c.width, c.height);
+
+  // 细微磨砂噪点
+  const img = g.getImageData(0, 0, c.width, c.height);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const n = (Math.random() - 0.5) * 7;
+    img.data[i] += n; img.data[i + 1] += n; img.data[i + 2] += n;
+  }
+  g.putImageData(img, 0, 0);
+
+  const silver = "#c9cbcd";
+  const dim = "rgba(201,203,205,0.72)";
+
+  // ZENIKO 字标
+  g.save();
+  g.fillStyle = silver;
+  g.font = "700 " + (5.1 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  g.textAlign = "center"; g.textBaseline = "middle";
+  const logoY = Y(-7.2);
+  const text = "ZENIKO";
+  const spacing = 1.05 * k;
+  let total = 0;
+  for (const ch of text) total += g.measureText(ch).width + spacing;
+  total -= spacing;
+  let xx = cx - total / 2;
+  g.textAlign = "left";
+  for (const ch of text) {
+    g.fillText(ch, xx, logoY);
+    xx += g.measureText(ch).width + spacing;
+  }
+  // 字母下面的细线（照片里 ZENIKO 下方有一道短线）
+  g.strokeStyle = "rgba(201,203,205,0.55)";
+  g.lineWidth = 0.28 * k;
+  g.beginPath(); g.moveTo(cx - 1.6 * k, logoY + 3.6 * k); g.lineTo(cx + 1.6 * k, logoY + 3.6 * k); g.stroke();
+  g.restore();
+
+  // 白色小窗（两盘之间）
+  g.fillStyle = "#e9e7e1";
+  const pw = 5.4 * k, ph = 1.9 * k;
+  g.beginPath();
+  g.roundRect(X(0) - pw / 2, Y(5.2) - ph / 2, pw, ph, ph / 2);
+  g.fill();
+
+  const DIAL_X = 12.7, DIAL_Y = 13.75, DIAL_R = 8.0;
+  function polar(cx0, cy0, r, ang) {
+    return [cx0 + Math.cos(ang) * r * k, cy0 - Math.sin(ang) * r * k];
+  }
+
+  // 左盘：f/stop 2 2.8 4 5.6 8 11（沿环水平排布，不旋转）
+  const fNums = ["2", "2.8", "4", "5.6", "8", "11"];
+  g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillStyle = silver;
+  g.font = "600 " + (1.6 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  fNums.forEach((n, i) => {
+    const ang = 3.36 + 1.55 * (i / (fNums.length - 1));
+    const [px, py] = polar(X(-DIAL_X), Y(DIAL_Y), 10.4, ang);
+    g.fillText(n, px, py);
+  });
+
+  // 左盘下方 f/stop
+  g.font = "500 " + (2.0 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  g.fillStyle = dim;
+  g.fillText("f/stop", X(-DIAL_X), Y(DIAL_Y - 14.2));
+
+  // 右盘外圈：快门 -1/64 … FULL（上半圈）
+  const shNums = ["FULL", "-1/2", "-1/8", "-1/32", "-1/64"];
+  g.font = "600 " + (1.5 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  g.fillStyle = silver;
+  shNums.forEach((n, i) => {
+    const ang = -1.30 + 2.2 * (i / (shNums.length - 1));
+    const [px, py] = polar(X(DIAL_X), Y(DIAL_Y), 10.9, ang);
+    g.fillText(n, px, py);
+  });
+
+  // 右盘内圈：ISO 50…1600（下半圈）
+  const isoNums = ["100", "400", "800", "1600"];
+  g.font = "600 " + (1.55 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  isoNums.forEach((n, i) => {
+    const ang = 3.40 + 1.05 * (i / (isoNums.length - 1));
+    const [px, py] = polar(X(DIAL_X), Y(DIAL_Y), 9.4, ang);
+    g.fillText(n, px, py);
+  });
+
+  // ISO 标注
+  g.fillStyle = dim;
+  g.font = "500 " + (2.0 * k).toFixed(1) + "px Arial, Helvetica, sans-serif";
+  g.fillText("ISO", X(DIAL_X) - 1.6 * k, Y(DIAL_Y) - 8.4 * k);
+}
+
+function makeBottom() {
+  const c = document.getElementById("bottom");
+  const g = c.getContext("2d");
+  const k = c.width / BODY_W;                  // px per mm
+  const X = (x) => c.width / 2 + x * k;
+  const Y = (y) => c.height / 2 - y * k;
+
+  g.fillStyle = "#0b0c0d"; g.fillRect(0, 0, c.width, c.height);
+
+  const white = "rgba(238,236,230,0.92)";
+  g.fillStyle = white;
+
+  // 左上：两行英文/中文
+  g.textAlign = "left"; g.textBaseline = "top";
+  g.font = "500 " + (1.35 * k).toFixed(1) + "px Arial, 'Microsoft YaHei', sans-serif";
+  g.fillText("双线轮机顶闪光灯 / Dual-Dial Camera Flash", X(-30.5), Y(22.6));
+  g.font = "400 " + (1.15 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("Li-ion Battery: DC7.4V, 300mAh, 2.22Wh", X(-30.5), Y(20.4));
+  g.fillText("Input: 5V⎓0.5A    CAN ICES-003 (B) / NMB-003 (B)", X(-30.5), Y(18.4));
+
+  // 左侧认证图标行
+  const rowY = Y(15.2);
+  g.font = "700 " + (4.6 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("CE", X(-30.0), rowY);
+  g.font = "600 " + (2.2 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("UK", X(-24.2), rowY + 0.2 * k);
+  g.fillText("CA", X(-24.2), rowY + 2.6 * k);
+  g.font = "700 " + (3.6 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("FC", X(-19.2), rowY + 0.4 * k);
+  g.font = "500 " + (3.2 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("Ⅲ", X(-13.4), rowY + 0.4 * k);
+  g.strokeStyle = white; g.lineWidth = 0.35 * k;
+  g.strokeRect(X(-9.4), rowY + 0.2 * k, 3.0 * k, 4.4 * k);
+  g.beginPath(); g.arc(X(-5.0), rowY + 2.4 * k, 2.2 * k, 0, Math.PI * 2); g.stroke();
+
+  // 中右：KC / R-R / 地址
+  g.fillStyle = white;
+  g.font = "700 " + (2.6 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("KC", X(6.0), Y(14.4));
+  g.font = "400 " + (1.25 * k).toFixed(1) + "px Arial, sans-serif";
+  g.fillText("R-R-znk-008", X(6.0), Y(11.4));
+  g.fillText("Zeniko Technology Co., LTD", X(6.0), Y(8.2));
+  g.fillText("Add.: 1208 Room, Jinshan", X(6.0), Y(6.2));
+  g.fillText("Building, No.5033, Shennan", X(6.0), Y(4.6));
+  g.fillText("East Road, Xinwei Community,", X(6.0), Y(3.0));
+  g.fillText("Guiyuan Street, Luohu District,", X(6.0), Y(1.4));
+  g.fillText("Shenzhen City.", X(6.0), Y(-0.2));
+  g.fillText("Made in China", X(6.0), Y(-2.6));
+
+  // 右上：二维码（占位图样）
+  const qx = X(20.0), qy = Y(22.8), qs = 4.4 * k;
+  g.fillStyle = white;
+  for (let i = 0; i < 21; i++) {
+    for (let j = 0; j < 21; j++) {
+      if (Math.random() > 0.52) g.fillRect(qx + i * qs / 21, qy + j * qs / 21, qs / 21, qs / 21);
+    }
+  }
+  // 三个定位角
+  g.fillStyle = "#0b0c0d";
+  g.fillRect(qx + qs * 0.04, qy + qs * 0.04, qs * 0.26, qs * 0.26);
+  g.fillStyle = white;
+  g.fillRect(qx + qs * 0.08, qy + qs * 0.08, qs * 0.18, qs * 0.18);
+  g.fillStyle = "#0b0c0d";
+  g.fillRect(qx + qs * 0.12, qy + qs * 0.12, qs * 0.1, qs * 0.1);
+}
+
+makeTop();
+makeBottom();
+document.title = "textures-ready";
+</script>
+</body></html>

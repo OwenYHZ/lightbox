@@ -135,6 +135,7 @@ const el = {
   detailSpecs: $("#detailSpecs"),
   detailTags: $("#detailTags"),
   detailMeta: $("#detailMeta"),
+  stageCredit: $("#stageCredit"),
   app: $("#app"),
 };
 
@@ -589,6 +590,9 @@ function fillDetail(item) {
   if (item.mountTo) metaBits.push(optionLabel("mount", item.mount) + " → " + optionLabel("mount", item.mountTo));
   metaBits.push(String(item.kind).toUpperCase() + " MODEL");
   el.detailMeta.textContent = metaBits.join(" · ");
+  if (el.stageCredit) {
+    el.stageCredit.textContent = item.glb ? "BLENDER · GLB MODEL" : "THREE.JS · PRIMITIVE MODEL";
+  }
   el.stageFallback.innerHTML = "";
 }
 
@@ -663,6 +667,7 @@ async function openDetail(item, { push = true } = {}) {
       item.kind,
       Object.assign({}, item.model, {
         accent: item.accent || swatchColor(getAccent(state.accent), 66),
+        glb: item.glb,
       })
     );
     viewer.setAutoRotate(state.autoRotate);
@@ -948,5 +953,6 @@ window.Lightbox = {
   dimensions: DIMENSIONS,
   open: (id) => openDetail(GEAR.find((g) => g.id === id)),
   setTheme: (mode) => applyTheme(mode),
+  getStage: () => stage,
   state,
 };

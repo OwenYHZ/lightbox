@@ -1,0 +1,17 @@
+import { chromium } from "playwright-core";
+import fs from "node:fs";
+import path from "node:path";
+const root = "E:\\code\\dshCode\\Lightbox";
+const out = path.join(root, "scripts", "za12", "tex");
+fs.mkdirSync(out, { recursive: true });
+const browser = await chromium.launch({ channel: "chrome", headless: true });
+const page = await browser.newPage({ viewport: { width: 2100, height: 1600 }, deviceScaleFactor: 1 });
+await page.goto("file:///" + path.join(root, "scripts", "za12", "textures.html").replace(/\\/g, "/").replace(/ /g, "%20"));
+await page.waitForTimeout(600);
+const top = await page.$("#top");
+const bottom = await page.$("#bottom");
+await top.screenshot({ path: path.join(out, "top.jpg"), type: "jpeg", quality: 92 });
+await bottom.screenshot({ path: path.join(out, "bottom.jpg"), type: "jpeg", quality: 92 });
+await browser.close();
+console.log("TEX_DONE");
+process.exit(0);
