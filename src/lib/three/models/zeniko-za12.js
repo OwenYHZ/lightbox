@@ -177,48 +177,52 @@ export function buildZenikoZA12({ materials, helpers }) {
 
   /* 窗内偏暗：黑腔 + 暗灰灯管 + 中灰棱 */
   const tubeMat = m.frosted.clone();
-  tubeMat.color.setHex(0x6a6a66);
-  tubeMat.roughness = 0.9;
-  tubeMat.envMapIntensity = 0.2;
+  tubeMat.color.setHex(0x5c5d57);
+  tubeMat.roughness = 0.95;
+  tubeMat.envMapIntensity = 0.12;
   tubeMat.transparent = true;
   tubeMat.opacity = 0.85;
 
   /* 窗内腔体（哑光近黑，避免金属腔把环境反射成灰面） */
   const cavity = box(WIN_W + 0.01, WIN_H + 0.01, 0.02, 0.03, m.rubber);
-  cavity.position.set(WIN_X, WIN_Y, winZ - 0.022);
+  cavity.position.set(WIN_X, WIN_Y, winZ + 0.005);
   group.add(cavity);
 
   /* 外框：四条窄边围出真的开口，不是一块实心贴片 */
   const frameT = box(WIN_W + 0.05, 0.025, 0.03, 0.008, m.dark);
-  frameT.position.set(WIN_X, WIN_Y + WIN_H / 2 + 0.0125, winZ);
+  frameT.position.set(WIN_X, WIN_Y + WIN_H / 2 + 0.0125, winZ + 0.015);
   const frameB = box(WIN_W + 0.05, 0.025, 0.03, 0.008, m.dark);
-  frameB.position.set(WIN_X, WIN_Y - WIN_H / 2 - 0.0125, winZ);
+  frameB.position.set(WIN_X, WIN_Y - WIN_H / 2 - 0.0125, winZ + 0.015);
   const frameL = box(0.025, WIN_H, 0.03, 0.008, m.dark);
-  frameL.position.set(WIN_X - WIN_W / 2 - 0.0125, WIN_Y, winZ);
+  frameL.position.set(WIN_X - WIN_W / 2 - 0.0125, WIN_Y, winZ + 0.015);
   const frameR = box(0.025, WIN_H, 0.03, 0.008, m.dark);
-  frameR.position.set(WIN_X + WIN_W / 2 + 0.0125, WIN_Y, winZ);
+  frameR.position.set(WIN_X + WIN_W / 2 + 0.0125, WIN_Y, winZ + 0.015);
   group.add(frameT, frameB, frameL, frameR);
 
   /* 灯管（哑光浅灰）+ 7 条棱（哑光中灰），都在玻璃后面 */
   const ribMat = m.frosted.clone();
-  ribMat.color.setHex(0x64696d);
-  ribMat.roughness = 0.9;
-  ribMat.envMapIntensity = 0.2;
+  ribMat.color.setHex(0x4a4e52);
+  ribMat.roughness = 0.95;
+  ribMat.envMapIntensity = 0.15;
 
   group.add(
-    part(new THREE.CylinderGeometry(0.02, 0.02, 0.6, 24), tubeMat, [WIN_X, WIN_Y, winZ + 0.002], [0, 0, Math.PI / 2])
+    part(new THREE.CylinderGeometry(0.014, 0.014, 0.6, 24), tubeMat, [WIN_X, WIN_Y, winZ + 0.014], [0, 0, Math.PI / 2])
   );
   for (let i = 0; i < 7; i += 1) {
     const rib = box(0.006, WIN_H * 0.88, 0.01, 0.003, ribMat);
-    rib.position.set(WIN_X - WIN_W / 2 + 0.062 + i * ((WIN_W - 0.124) / 6), WIN_Y, winZ + 0.012);
+    rib.position.set(WIN_X - WIN_W / 2 + 0.062 + i * ((WIN_W - 0.124) / 6), WIN_Y, winZ + 0.023);
     group.add(rib);
   }
 
   /* 玻璃：真半透明（opacity 0.32） */
   const glassMat = m.glassClear.clone();
-  glassMat.opacity = 0.25;
+  glassMat.color.setHex(0x8d979c);
+  glassMat.envMapIntensity = 0.35;
+  glassMat.clearcoat = 0.35;
+  glassMat.roughness = 0.12;
+  glassMat.opacity = 0.22;
   const glass = box(WIN_W, WIN_H, 0.016, 0.02, glassMat);
-  glass.position.set(WIN_X, WIN_Y, winZ + 0.032);
+  glass.position.set(WIN_X, WIN_Y, winZ + 0.041);
   group.add(glass);
 
   /* 测光孔（Ø 0.085 W） */
