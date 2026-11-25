@@ -1,29 +1,10 @@
 /* ==========================================================================
    Lightbox · 设计变量
-   改这里就能整体换气质：色板、字体、圆角、缓动、留白。
+   两套主题（dark / light）+ 共享的字体、圆角、缓动、留白。
+   改 --accent 一处，卡片光斑、3D 金圈、按钮态、选中态会一起变。
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
-
-  /* ---- 色板：近黑底 + 暖白字 + 香槟金点缀 ---- */
-  --ink-0: #07070a;
-  --ink-1: #0b0c0f;
-  --ink-2: #111318;
-  --ink-3: #171a20;
-  --paper: #f3f1ec;
-  --paper-dim: rgba(243, 241, 236, 0.64);
-  --paper-faint: rgba(243, 241, 236, 0.38);
-  --hair: rgba(243, 241, 236, 0.09);
-  --hair-2: rgba(243, 241, 236, 0.17);
-  --accent: #e4cfa8;
-  --accent-dim: rgba(228, 207, 168, 0.55);
-  --accent-soft: rgba(228, 207, 168, 0.1);
-
-  /* ---- 玻璃 ---- */
-  --glass: rgba(255, 255, 255, 0.035);
-  --glass-2: rgba(255, 255, 255, 0.065);
-
   /* ---- 字体 ---- */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
@@ -38,14 +19,6 @@
   --r-md: 14px;
   --r-sm: 10px;
 
-  /* ---- 阴影 ---- */
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 26px 50px -34px rgba(0, 0, 0, 0.9);
-  --shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
-    0 40px 70px -40px rgba(0, 0, 0, 0.95);
-  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
-    0 50px 130px -40px rgba(0, 0, 0, 0.98);
-
   /* ---- 缓动 ---- */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.2, 1.2, 0.3, 1);
@@ -54,4 +27,183 @@
   --pad: clamp(20px, 4.4vw, 64px);
   --maxw: 1440px;
   --topbar-h: 64px;
+}
+
+/* ==========================================================================
+   深色（默认）
+   ========================================================================== */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ink-0: #07070a;
+  --ink-1: #0b0c0f;
+  --ink-2: #111318;
+  --paper: #f3f1ec;
+  --paper-dim: rgba(243, 241, 236, 0.64);
+  --paper-faint: rgba(243, 241, 236, 0.38);
+  --hair: rgba(243, 241, 236, 0.09);
+  --hair-2: rgba(243, 241, 236, 0.17);
+
+  --accent: #e4cfa8;
+  --accent-ink: #0a0a0c;
+  --accent-dim: rgba(228, 207, 168, 0.55);
+  --accent-soft: rgba(228, 207, 168, 0.1);
+
+  --glass: rgba(255, 255, 255, 0.035);
+  --glass-2: rgba(255, 255, 255, 0.065);
+  --glass-solid: rgba(13, 14, 18, 0.96);
+
+  /* 顶栏 / 工具栏的浮层底色 */
+  --veil-a: rgba(7, 7, 10, 0.72);
+  --veil-b: rgba(7, 7, 10, 0.28);
+  --veil-a-strong: rgba(7, 7, 10, 0.92);
+  --veil-b-strong: rgba(7, 7, 10, 0.66);
+
+  /* 卡片与面板 */
+  --card-a: rgba(255, 255, 255, 0.055);
+  --card-b: rgba(255, 255, 255, 0.018);
+  --card-c: rgba(255, 255, 255, 0.008);
+  --card-hover-border: rgba(228, 207, 168, 0.24);
+  --sheen: rgba(255, 255, 255, 0.045);
+  --panel-a: rgba(24, 26, 31, 0.93);
+  --panel-b: rgba(10, 11, 14, 0.96);
+  --scrim: rgba(4, 4, 6, 0.6);
+
+  /* 画面区 */
+  --media-bg: radial-gradient(130% 96% at 50% -6%, #171b21 0%, #0c0d11 58%, #08090b 100%);
+  --media-scrim: rgba(8, 9, 11, 0.72);
+
+  /* 三维舞台 */
+  --stage-bg: radial-gradient(72% 62% at 50% 32%, rgba(255, 255, 255, 0.055), transparent 70%),
+    radial-gradient(90% 80% at 50% 112%, rgba(228, 207, 168, 0.075), transparent 62%),
+    linear-gradient(180deg, #0d0e12, #08090b);
+  --stage-grid: rgba(255, 255, 255, 0.035);
+  --stage-chip: rgba(10, 11, 14, 0.45);
+  --stage-chip-text: rgba(243, 241, 236, 0.42);
+  --stage-credit: rgba(243, 241, 236, 0.24);
+
+  /* 阴影 */
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 26px 50px -34px rgba(0, 0, 0, 0.9);
+  --shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 40px 70px -40px rgba(0, 0, 0, 0.95);
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 50px 130px -40px rgba(0, 0, 0, 0.98);
+  --shadow-pop: 0 30px 70px -30px rgba(0, 0, 0, 0.95);
+
+  /* 状态色 */
+  --st-active: #86d3a0;
+  --st-retired: #e3c07a;
+  --st-sold: #93a0b4;
+  --st-broken: #e0917f;
+
+  /* 封面线稿 */
+  --art-line: rgba(243, 241, 236, 0.62);
+  --art-accent: #e4cfa8;
+  --art-text: rgba(243, 241, 236, 0.42);
+  --art-grid: rgba(243, 241, 236, 0.06);
+
+  /* 质感层 */
+  --grain-opacity: 0.05;
+  --grain-blend: soft-light;
+  --aurora-warm: rgba(228, 207, 168, 0.11);
+  --aurora-cool: rgba(116, 142, 210, 0.12);
+
+  /* Hero 强调字渐变 */
+  --hero-grad-a: #fbf4e6;
+  --hero-grad-b: #e4cfa8;
+  --hero-grad-c: #b3956a;
+
+  --chip-active-bg: #f3f1ec;
+  --chip-active-ink: #0a0a0c;
+  --chip-active-shadow: 0 10px 26px -16px rgba(243, 241, 236, 0.9);
+}
+
+/* ==========================================================================
+   浅色
+   ========================================================================== */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --ink-0: #f1ece2;
+  --ink-1: #e9e3d7;
+  --ink-2: #ffffff;
+  --paper: #17181d;
+  --paper-dim: rgba(23, 24, 29, 0.62);
+  --paper-faint: rgba(23, 24, 29, 0.4);
+  --hair: rgba(23, 24, 29, 0.12);
+  --hair-2: rgba(23, 24, 29, 0.22);
+
+  --accent: #a07336;
+  --accent-ink: #fffdf8;
+  --accent-dim: rgba(160, 115, 54, 0.72);
+  --accent-soft: rgba(160, 115, 54, 0.1);
+
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-2: rgba(255, 255, 255, 0.9);
+  --glass-solid: rgba(250, 247, 240, 0.97);
+
+  --veil-a: rgba(245, 242, 234, 0.78);
+  --veil-b: rgba(245, 242, 234, 0.38);
+  --veil-a-strong: rgba(247, 244, 237, 0.94);
+  --veil-b-strong: rgba(247, 244, 237, 0.78);
+
+  --card-a: #ffffff;
+  --card-b: #fdfbf6;
+  --card-c: #faf6ef;
+  --card-hover-border: rgba(160, 115, 54, 0.34);
+  --sheen: rgba(255, 255, 255, 0.55);
+  --panel-a: rgba(253, 251, 246, 0.97);
+  --panel-b: rgba(243, 239, 231, 0.99);
+  --scrim: rgba(238, 233, 223, 0.62);
+
+  --media-bg: radial-gradient(130% 96% at 50% -6%, #f8f3e9 0%, #eee7da 58%, #e5ddcd 100%);
+  --media-scrim: rgba(238, 232, 220, 0.7);
+
+  --stage-bg: radial-gradient(72% 62% at 50% 30%, rgba(255, 255, 255, 0.9), transparent 72%),
+    radial-gradient(90% 80% at 50% 112%, rgba(160, 115, 54, 0.09), transparent 62%),
+    linear-gradient(180deg, #f7f3ea, #ece6da);
+  --stage-grid: rgba(23, 24, 29, 0.05);
+  --stage-chip: rgba(255, 253, 248, 0.72);
+  --stage-chip-text: rgba(23, 24, 29, 0.52);
+  --stage-credit: rgba(23, 24, 29, 0.28);
+
+  --shadow-card: 0 1px 0 #ffffff inset, 0 16px 34px -26px rgba(70, 56, 34, 0.42);
+  --shadow-lift: 0 1px 0 #ffffff inset, 0 30px 56px -30px rgba(70, 56, 34, 0.46);
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 1) inset, 0 50px 110px -40px rgba(60, 48, 30, 0.45);
+  --shadow-pop: 0 26px 60px -28px rgba(60, 48, 30, 0.4);
+
+  --st-active: #2f8a55;
+  --st-retired: #9a6f1c;
+  --st-sold: #5d6a7d;
+  --st-broken: #b0482f;
+
+  --art-line: rgba(23, 24, 29, 0.62);
+  --art-accent: #a07336;
+  --art-text: rgba(23, 24, 29, 0.46);
+  --art-grid: rgba(23, 24, 29, 0.07);
+
+  --grain-opacity: 0.028;
+  --grain-blend: multiply;
+  --aurora-warm: rgba(214, 178, 120, 0.28);
+  --aurora-cool: rgba(150, 172, 214, 0.2);
+
+  --hero-grad-a: #3a2c19;
+  --hero-grad-b: #a07336;
+  --hero-grad-c: #7a5423;
+
+  --chip-active-bg: #17181d;
+  --chip-active-ink: #f6f3ec;
+  --chip-active-shadow: 0 10px 24px -16px rgba(23, 24, 29, 0.8);
+}
+
+/* 主题切换时的短暂过渡（避免全局 transition 拖慢滚动） */
+html.is-theme-switching,
+html.is-theme-switching *,
+html.is-theme-switching *::before,
+html.is-theme-switching *::after {
+  transition: background-color 0.35s var(--ease), background-image 0.35s var(--ease),
+    border-color 0.35s var(--ease), color 0.35s var(--ease), fill 0.35s var(--ease),
+    stroke 0.35s var(--ease), box-shadow 0.35s var(--ease) !important;
 }

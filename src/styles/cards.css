@@ -2,6 +2,27 @@
    Lightbox · 器材卡片
    ========================================================================== */
 
+/* 封面线稿颜色（跟随主题） */
+.cover .line {
+  stroke: var(--art-line);
+}
+
+.cover .accent {
+  stroke: var(--art-accent);
+}
+
+.cover .accent-fill {
+  fill: var(--art-accent);
+}
+
+.cover .text {
+  fill: var(--art-text);
+}
+
+.cover .grid {
+  stroke: var(--art-grid);
+}
+
 .card {
   position: relative;
   border-radius: var(--r-lg);
@@ -13,8 +34,8 @@
 .card.is-in {
   opacity: 1;
   transform: none;
-  transition: opacity 0.75s var(--ease) calc(var(--i, 0) * 48ms),
-    transform 0.75s var(--ease) calc(var(--i, 0) * 48ms);
+  transition: opacity 0.75s var(--ease) calc(var(--i, 0) * 44ms),
+    transform 0.75s var(--ease) calc(var(--i, 0) * 44ms);
 }
 
 .card__surface {
@@ -23,12 +44,7 @@
   height: 100%;
   border: 1px solid var(--hair);
   border-radius: var(--r-lg);
-  background: linear-gradient(
-    158deg,
-    rgba(255, 255, 255, 0.055),
-    rgba(255, 255, 255, 0.018) 42%,
-    rgba(255, 255, 255, 0.008)
-  );
+  background: linear-gradient(158deg, var(--card-a), var(--card-b) 42%, var(--card-c));
   box-shadow: var(--shadow-card);
   transition: transform 0.6s var(--ease), border-color 0.5s var(--ease),
     box-shadow 0.6s var(--ease);
@@ -43,18 +59,14 @@
   border-radius: inherit;
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(
-    360px circle at var(--mx, 50%) var(--my, 30%),
-    rgba(228, 207, 168, 0.1),
-    transparent 62%
-  );
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 30%), var(--accent-soft), transparent 62%);
   transition: opacity 0.55s var(--ease);
 }
 
 .card:hover .card__surface {
   transform: translateY(-5px);
-  border-color: rgba(228, 207, 168, 0.24);
-  box-shadow: var(--shadow-lift), 0 0 0 1px rgba(228, 207, 168, 0.05);
+  border-color: var(--card-hover-border);
+  box-shadow: var(--shadow-lift);
 }
 
 .card:hover .card__surface::before {
@@ -62,8 +74,8 @@
 }
 
 .card:has(.card__hit:focus-visible) .card__surface {
-  border-color: rgba(228, 207, 168, 0.55);
-  box-shadow: var(--shadow-lift), 0 0 0 3px rgba(228, 207, 168, 0.14);
+  border-color: var(--accent-dim);
+  box-shadow: var(--shadow-lift), 0 0 0 3px var(--accent-soft);
 }
 
 /* 覆盖整卡的点击热区（保证语义正确 + 键盘可达） */
@@ -88,7 +100,7 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-bottom: 1px solid var(--hair);
-  background: radial-gradient(130% 96% at 50% -6%, #171b21 0%, #0c0d11 58%, #08090b 100%);
+  background: var(--media-bg);
 }
 
 .card__art {
@@ -112,7 +124,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(8, 9, 11, 0.72) 0%, rgba(8, 9, 11, 0) 46%);
+  background: linear-gradient(to top, var(--media-scrim) 0%, transparent 46%);
 }
 
 /* 斜向玻璃反光 */
@@ -124,8 +136,8 @@
   background: linear-gradient(
     104deg,
     transparent 38%,
-    rgba(255, 255, 255, 0.045) 47%,
-    rgba(255, 255, 255, 0.012) 51%,
+    var(--sheen) 47%,
+    transparent 51%,
     transparent 58%
   );
   opacity: 0;
@@ -145,7 +157,7 @@
   z-index: 3;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: rgba(243, 241, 236, 0.4);
+  color: var(--paper-faint);
 }
 
 .card__badge {
@@ -158,15 +170,15 @@
   gap: 6px;
   height: 23px;
   padding: 0 9px;
-  border: 1px solid rgba(228, 207, 168, 0.24);
+  border: 1px solid var(--accent-dim);
   border-radius: 999px;
-  background: rgba(228, 207, 168, 0.08);
+  background: var(--accent-soft);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono);
   font-size: 8.5px;
   letter-spacing: 0.16em;
-  color: rgba(228, 207, 168, 0.92);
+  color: var(--accent);
   transition: background 0.45s var(--ease), border-color 0.45s var(--ease);
 }
 
@@ -176,8 +188,63 @@
 }
 
 .card:hover .card__badge {
-  background: rgba(228, 207, 168, 0.15);
-  border-color: rgba(228, 207, 168, 0.4);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* ---- 状态 ---- */
+.card__status {
+  position: absolute;
+  top: 33px;
+  left: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 8px;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  background: var(--stage-chip);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--paper-dim);
+}
+
+.card__status i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dot, var(--paper-faint));
+  box-shadow: 0 0 7px 1px var(--dot, transparent);
+}
+
+[data-status="active"] {
+  --dot: var(--st-active);
+}
+[data-status="retired"] {
+  --dot: var(--st-retired);
+}
+[data-status="sold"] {
+  --dot: var(--st-sold);
+}
+[data-status="broken"] {
+  --dot: var(--st-broken);
+}
+
+/* 已出售 / 故障：封面降一点饱和，像被归档的物件 */
+.card[data-status="sold"] .card__art {
+  filter: grayscale(0.6) contrast(0.96);
+}
+
+.card[data-status="broken"] .card__art {
+  filter: grayscale(0.32) brightness(0.94);
+}
+
+.card[data-status="sold"] .card__title {
+  color: var(--paper-dim);
 }
 
 /* ---- 文字区 ---- */
@@ -235,12 +302,12 @@
 
 .tag {
   padding: 2px 7px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--hair);
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass);
   font-size: 10px;
   letter-spacing: 0.02em;
-  color: rgba(243, 241, 236, 0.5);
+  color: var(--paper-dim);
   white-space: nowrap;
 }
 
@@ -252,7 +319,7 @@
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: rgba(243, 241, 236, 0.32);
+  color: var(--paper-faint);
   transition: color 0.4s var(--ease), transform 0.4s var(--ease);
 }
 

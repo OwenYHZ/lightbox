@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stage Preview · Lightbox</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2309090b'/%3E%3Ccircle cx='12' cy='12' r='5.4' fill='none' stroke='%23e4cfa8' stroke-width='1.2'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bar-bg: #14161b;
+        --bar-fg: #f3f1ec;
+        --bar-dim: rgba(243, 241, 236, 0.5);
+        --bar-hair: rgba(243, 241, 236, 0.14);
+        --bar-active: #e4cfa8;
+        --font-mono: "SF Mono", "Cascadia Mono", ui-monospace, Consolas, monospace;
+      }
+      :root[data-page-theme="light"] {
+        --bar-bg: #e9e3d8;
+        --bar-fg: #24211c;
+        --bar-dim: rgba(36, 33, 28, 0.55);
+        --bar-hair: rgba(36, 33, 28, 0.16);
+        --bar-active: #8a5f2a;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--bar-bg);
+        color: var(--bar-fg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      .bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px 22px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--bar-hair);
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-right: auto;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        font-family: var(--font-mono);
+      }
+
+      .brand span {
+        font-family: inherit;
+        letter-spacing: 0.04em;
+        color: var(--bar-dim);
+      }
+
+      .group {
+        display: flex;
+        gap: 6px;
+      }
+
+      .group button {
+        padding: 6px 13px;
+        border: 1px solid var(--bar-hair);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--bar-dim);
+        font: inherit;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        transition: color 0.2s, border-color 0.2s, background 0.2s;
+      }
+
+      .group button:hover { color: var(--bar-fg); }
+
+      .group button.is-active {
+        color: var(--bar-active);
+        border-color: currentColor;
+        background: rgba(228, 207, 168, 0.08);
+      }
+
+      .status {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        color: var(--bar-dim);
+      }
+
+      #stages {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #stages[data-mode="single"] {
+        grid-template-columns: 1fr;
+      }
+
+      .pane {
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+      }
+
+      .pane--dark {
+        background:
+          radial-gradient(72% 62% at 50% 32%, rgba(255, 255, 255, 0.055), transparent 70%),
+          radial-gradient(90% 80% at 50% 112%, rgba(228, 207, 168, 0.075), transparent 62%),
+          linear-gradient(180deg, #0d0e12, #08090b);
+      }
+
+      .pane--light {
+        background:
+          radial-gradient(72% 62% at 50% 30%, rgba(255, 255, 255, 0.9), transparent 72%),
+          radial-gradient(90% 80% at 50% 112%, rgba(168, 128, 68, 0.12), transparent 62%),
+          linear-gradient(180deg, #f5f2eb, #e5dfd3);
+      }
+
+      .pane::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+        background-position: center;
+        -webkit-mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 76%);
+        mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 76%);
+        opacity: 0.55;
+      }
+
+      .pane--light::before {
+        background-image: linear-gradient(rgba(90, 76, 54, 0.07) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(90, 76, 54, 0.07) 1px, transparent 1px);
+        opacity: 0.7;
+      }
+
+      .mount {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+
+      .mount canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .mount canvas.is-ready { opacity: 1; }
+
+      .tag {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 2;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.22em;
+        pointer-events: none;
+        color: rgba(243, 241, 236, 0.34);
+      }
+
+      .pane--light .tag { color: rgba(52, 44, 32, 0.42); }
+
+      .pane + .pane { border-left: 1px solid rgba(128, 128, 128, 0.18); }
+
+      @media (max-width: 720px) {
+        #stages { grid-template-columns: 1fr; }
+        .pane + .pane { border-left: 0; border-top: 1px solid rgba(128, 128, 128, 0.18); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="brand">STAGE PREVIEW <span>双主题三维舞台自检</span></div>
+      <div class="group" id="modelBtns" role="group" aria-label="模型">
+        <button type="button" data-model="camera">camera</button>
+        <button type="button" data-model="lens">lens</button>
+        <button type="button" data-model="filter">filter</button>
+      </div>
+      <div class="group" id="themeBtns" role="group" aria-label="主题">
+        <button type="button" data-theme="dark">dark</button>
+        <button type="button" data-theme="light">light</button>
+      </div>
+      <div class="status" id="status">—</div>
+    </header>
+    <main id="stages"></main>
+    <script type="module" src="/src/tools/stage-preview.js"></script>
+  </body>
+</html>

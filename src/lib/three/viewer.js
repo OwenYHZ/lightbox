@@ -3,6 +3,9 @@
  *
  * 全站只有一个 WebGL 上下文：每次打开详情只替换场景里的模型，
  * 关闭浮层时暂停渲染循环，不会持续占用 GPU。
+ *
+ * 舞台有两套主题（dark / light）：曝光、灯光、地面投影、刻度环都各调一份。
+ * 切换主题只改参数（300ms 数值过渡），不重建 renderer，也不碰相机与交互。
  */
 
 import * as THREE from "three";
@@ -15,14 +18,131 @@ const REDUCED_MOTION =
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* --------------------------------------------------------------- 主题参数 */
+
+const THEME_TRANSITION_MS = 300;
+
+/* 这些字段是颜色，其余按数字插值 */
+const COLOR_KEYS = new Set([
+  "hemiSky",
+  "hemiGround",
+  "keyColor",
+  "rimColor",
+  "fillColor",
+  "accentColor",
+  "bounceColor",
+  "shadowColor",
+  "poolColor",
+  "ringColor",
+]);
+
+/**
+ * 两套舞台。
+ * dark  = 原来的深色舞台（曝光 / 灯光 / 地面投影与之前一致，刻度环呼吸上限对齐到 0.16）；
+ * light = 浅色主题：曝光压一点、环境光提亮、key 光收力，地面投影改成
+ *         中性灰低透明度，再补一层柔和的接触阴影，刻度环换成更深的金棕。
+ */
+const THEME_PRESETS = {
+  dark: {
+    exposure: 1.12,
+    environmentIntensity: 1.0,
+    hemiSky: 0xdfe6f2,
+    hemiGround: 0x0a0a0c,
+    hemiIntensity: 0.55,
+    keyColor: 0xfff3e0,
+    keyIntensity: 2.15,
+    rimColor: 0x9fb4d8,
+    rimIntensity: 1.5,
+    fillColor: 0xffffff,
+    fillIntensity: 0.4,
+    accentColor: 0xe4cfa8,
+    accentIntensity: 6,
+    bounceColor: 0xfff3e2,
+    bounceIntensity: 0,
+    shadowColor: 0x000000,
+    shadowOpacity: 0.42,
+    poolColor: 0x000000,
+    poolOpacity: 0,
+    ringColor: 0xe4cfa8,
+    ringBase: 0.115,
+    ringAmp: 0.045,
+  },
+  light: {
+    exposure: 0.99,
+    environmentIntensity: 1.2,
+    hemiSky: 0xfffbf4,
+    hemiGround: 0xe6dfd2,
+    hemiIntensity: 0.72,
+    keyColor: 0xfff6ea,
+    keyIntensity: 1.66,
+    rimColor: 0xc9d4e6,
+    rimIntensity: 1.05,
+    fillColor: 0xffffff,
+    fillIntensity: 0.45,
+    accentColor: 0xd8b98a,
+    accentIntensity: 3.2,
+    bounceColor: 0xfff0dc,
+    bounceIntensity: 0.5,
+    shadowColor: 0x59606b,
+    shadowOpacity: 0.17,
+    poolColor: 0x4a505a,
+    poolOpacity: 0.13,
+    ringColor: 0xa8793c,
+    ringBase: 0.245,
+    ringAmp: 0.035,
+  },
+};
+
+function normalizeTheme(theme) {
+  return theme === "light" ? "light" : "dark";
+}
+
+function themeState(preset) {
+  const state = {};
+  for (const key of Object.keys(preset)) {
+    state[key] = COLOR_KEYS.has(key) ? new THREE.Color(preset[key]) : preset[key];
+  }
+  return state;
+}
+
+function cloneThemeState(state) {
+  const copy = {};
+  for (const key of Object.keys(state)) {
+    copy[key] = state[key] instanceof THREE.Color ? state[key].clone() : state[key];
+  }
+  return copy;
+}
+
+function lerpThemeState(from, to, t) {
+  const state = {};
+  for (const key of Object.keys(to)) {
+    const a = from[key];
+    const b = to[key];
+    state[key] =
+      b instanceof THREE.Color ? (a instanceof THREE.Color ? a.clone().lerp(b, t) : b.clone()) : a + (b - a) * t;
+  }
+  return state;
+}
+
+/* --------------------------------------------------------------- 查看器 */
+
 export class StageViewer {
-  constructor(container, { onReady } = {}) {
+  constructor(container, { onReady, theme } = {}) {
     this.container = container;
     this.onReady = onReady;
     this.running = false;
     this.frame = 0;
     this.model = null;
     this.clock = new THREE.Clock();
+
+    this.theme = normalizeTheme(theme);
+    const preset = THEME_PRESETS[this.theme];
+    this._current = themeState(preset);
+    this._themeFrom = null;
+    this._themeTarget = null;
+    this._themeElapsed = 0;
+    this._ringBase = preset.ringBase;
+    this._ringAmp = preset.ringAmp;
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -32,7 +152,7 @@ export class StageViewer {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.12;
+    renderer.toneMappingExposure = preset.exposure;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.setAttribute("aria-hidden", "true");
@@ -52,11 +172,11 @@ export class StageViewer {
     const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
     this.envMap = envRT.texture;
     this.scene.environment = this.envMap;
-    this.scene.environmentIntensity = 1.0;
+    this.scene.environmentIntensity = preset.environmentIntensity;
     pmrem.dispose();
 
-    this._setupLights();
-    this._setupStage();
+    this._setupLights(preset);
+    this._setupStage(preset);
 
     this.controls = new OrbitControls(this.camera, canvas);
     this.controls.enableDamping = true;
@@ -81,11 +201,12 @@ export class StageViewer {
     this.resize();
   }
 
-  _setupLights() {
-    const hemi = new THREE.HemisphereLight(0xdfe6f2, 0x0a0a0c, 0.55);
+  _setupLights(preset) {
+    const hemi = new THREE.HemisphereLight(preset.hemiSky, preset.hemiGround, preset.hemiIntensity);
     this.scene.add(hemi);
+    this.hemi = hemi;
 
-    const key = new THREE.DirectionalLight(0xfff3e0, 2.15);
+    const key = new THREE.DirectionalLight(preset.keyColor, preset.keyIntensity);
     key.position.set(4.2, 6.4, 4.6);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
@@ -101,43 +222,181 @@ export class StageViewer {
     this.scene.add(key);
     this.key = key;
 
-    const rim = new THREE.DirectionalLight(0x9fb4d8, 1.5);
+    const rim = new THREE.DirectionalLight(preset.rimColor, preset.rimIntensity);
     rim.position.set(-5.6, 3.4, -4.2);
     this.scene.add(rim);
+    this.rim = rim;
 
-    const fill = new THREE.DirectionalLight(0xffffff, 0.4);
+    const fill = new THREE.DirectionalLight(preset.fillColor, preset.fillIntensity);
     fill.position.set(-2.4, 1.2, 5.4);
     this.scene.add(fill);
+    this.fill = fill;
 
-    const accent = new THREE.PointLight(0xe4cfa8, 6, 14, 2);
+    const accent = new THREE.PointLight(preset.accentColor, preset.accentIntensity, 14, 2);
     accent.position.set(1.6, 0.6, 3.4);
     this.scene.add(accent);
+    this.accent = accent;
+
+    /* 浅色主题的补光：从正面偏下打一点暖光，托住金属机身的暗部，避免发灰 */
+    const bounce = new THREE.DirectionalLight(preset.bounceColor, preset.bounceIntensity);
+    bounce.position.set(-2.6, 1.1, 5.2);
+    this.scene.add(bounce);
+    this.bounce = bounce;
   }
 
-  _setupStage() {
+  _setupStage(preset) {
     /* 接影地面 */
     const ground = new THREE.Mesh(
       new THREE.CircleGeometry(9, 72),
-      new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.42 })
+      new THREE.ShadowMaterial({ color: preset.shadowColor, opacity: preset.shadowOpacity })
     );
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     this.scene.add(ground);
     this.ground = ground;
 
+    /* 柔和的接触阴影（浅色主题才可见），让投影边缘不至于硬得像剪纸 */
+    const poolMat = new THREE.MeshBasicMaterial({
+      map: StageViewer._contactShadowTexture(),
+      color: preset.poolColor,
+      transparent: true,
+      opacity: preset.poolOpacity,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const pool = new THREE.Mesh(new THREE.CircleGeometry(1, 64), poolMat);
+    pool.rotation.x = -Math.PI / 2;
+    pool.position.y = 0.0015;
+    pool.renderOrder = 1;
+    this.scene.add(pool);
+    this.pool = pool;
+
     /* 微弱的环形刻度盘，给舞台一点秩序感 */
     const ringGeom = new THREE.RingGeometry(2.55, 2.57, 128);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: 0xe4cfa8,
+      color: preset.ringColor,
       transparent: true,
-      opacity: 0.16,
+      opacity: preset.ringBase,
       side: THREE.DoubleSide,
     });
     const ring = new THREE.Mesh(ringGeom, ringMat);
     ring.rotation.x = -Math.PI / 2;
-    ring.position.y = 0.001;
+    ring.position.y = 0.002;
+    ring.renderOrder = 2;
     this.scene.add(ring);
     this.ring = ring;
+  }
+
+  /* 一张径向渐隐的白图，只当 alpha 蒙版用 */
+  static _contactShadowTexture() {
+    const size = 256;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    const half = size / 2;
+    const gradient = ctx.createRadialGradient(half, half, 0, half, half, half);
+    gradient.addColorStop(0, "rgba(255,255,255,1)");
+    gradient.addColorStop(0.42, "rgba(255,255,255,0.62)");
+    gradient.addColorStop(0.72, "rgba(255,255,255,0.2)");
+    gradient.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, size, size);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return texture;
+  }
+
+  /**
+   * 把一份主题状态写进 renderer / 灯光 / 地面 / 刻度环。
+   * 过渡过程中每帧调用，所以这里只做赋值，不重建任何东西。
+   */
+  _applyThemeState(state) {
+    if (!this.renderer) return;
+    this.renderer.toneMappingExposure = state.exposure;
+    this.scene.environmentIntensity = state.environmentIntensity;
+
+    if (this.hemi) {
+      this.hemi.color.copy(state.hemiSky);
+      this.hemi.groundColor.copy(state.hemiGround);
+      this.hemi.intensity = state.hemiIntensity;
+    }
+    if (this.key) {
+      this.key.color.copy(state.keyColor);
+      this.key.intensity = state.keyIntensity;
+    }
+    if (this.rim) {
+      this.rim.color.copy(state.rimColor);
+      this.rim.intensity = state.rimIntensity;
+    }
+    if (this.fill) {
+      this.fill.color.copy(state.fillColor);
+      this.fill.intensity = state.fillIntensity;
+    }
+    if (this.accent) {
+      this.accent.color.copy(state.accentColor);
+      this.accent.intensity = state.accentIntensity;
+    }
+    if (this.bounce) {
+      this.bounce.color.copy(state.bounceColor);
+      this.bounce.intensity = state.bounceIntensity;
+    }
+    if (this.ground) {
+      this.ground.material.color.copy(state.shadowColor);
+      this.ground.material.opacity = state.shadowOpacity;
+    }
+    if (this.pool) {
+      this.pool.material.color.copy(state.poolColor);
+      this.pool.material.opacity = state.poolOpacity;
+      this.pool.visible = state.poolOpacity > 0.001;
+    }
+    if (this.ring) {
+      this.ring.material.color.copy(state.ringColor);
+      this.ring.material.opacity = state.ringBase;
+    }
+
+    this._ringBase = state.ringBase;
+    this._ringAmp = state.ringAmp;
+  }
+
+  /**
+   * 切换主题。运行中做 300ms 渐变；暂停时直接落位（关掉浮层再切主题也不会漏）。
+   * @param {"dark"|"light"} theme
+   */
+  setTheme(theme) {
+    const name = normalizeTheme(theme);
+    if (name === this.theme && !this._themeTarget) return this;
+    this.theme = name;
+
+    const target = themeState(THEME_PRESETS[name]);
+    if (!this.renderer || !this.running || REDUCED_MOTION) {
+      this._current = target;
+      this._themeFrom = null;
+      this._themeTarget = null;
+      this._applyThemeState(target);
+      return this;
+    }
+
+    this._themeFrom = cloneThemeState(this._current);
+    this._themeTarget = target;
+    this._themeElapsed = 0;
+    return this;
+  }
+
+  _advanceTheme(dt) {
+    if (!this._themeTarget) return;
+    const duration = THEME_TRANSITION_MS / 1000;
+    this._themeElapsed = Math.min(duration, this._themeElapsed + dt);
+    const k = this._themeElapsed / duration;
+    const eased = k * k * (3 - 2 * k);
+    const state = lerpThemeState(this._themeFrom, this._themeTarget, eased);
+    this._applyThemeState(state);
+    this._current = state;
+    if (k >= 1) {
+      this._current = this._themeTarget;
+      this._themeFrom = null;
+      this._themeTarget = null;
+    }
   }
 
   /**
@@ -188,6 +447,9 @@ export class StageViewer {
     this.controls.maxDistance = dist * 3.2;
     this.ground.position.y = 0;
     this.ring.scale.setScalar(this.home.ringRadius / 2.56);
+    if (this.pool) {
+      this.pool.scale.setScalar(Math.max(size.x, size.z) * 0.82 + 0.3);
+    }
 
     this.reset(true);
     this.start();
@@ -255,7 +517,10 @@ export class StageViewer {
   _tick = () => {
     if (!this.running) return;
     this.frame = requestAnimationFrame(this._tick);
-    const t = this.clock.getElapsedTime();
+    const dt = Math.min(this.clock.getDelta(), 0.1);
+    const t = this.clock.elapsedTime;
+
+    this._advanceTheme(dt);
 
     /* 极轻微的呼吸感：模型自己几乎察觉不到地转一点点 */
     if (this.model && !this.controls.autoRotate) {
@@ -265,7 +530,7 @@ export class StageViewer {
     }
 
     if (this.ring) {
-      this.ring.material.opacity = 0.1 + Math.sin(t * 0.6) * 0.045;
+      this.ring.material.opacity = this._ringBase + Math.sin(t * 0.6) * this._ringAmp;
     }
 
     this.controls.update();
@@ -277,6 +542,12 @@ export class StageViewer {
     this._ro?.disconnect();
     this.renderer.domElement.removeEventListener("dblclick", this._onDoubleClick);
     this.clear();
+    if (this.pool) {
+      this.pool.geometry.dispose();
+      this.pool.material.map?.dispose();
+      this.pool.material.dispose();
+      this.pool = null;
+    }
     this.controls.dispose();
     this.scene.environment = null;
     this.envMap?.dispose();
