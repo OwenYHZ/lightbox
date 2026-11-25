@@ -4,3 +4,5 @@ dist
 shots
 .DS_Store
 *.local
+%SystemDrive%
+%SystemRoot%
