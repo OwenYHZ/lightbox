@@ -432,6 +432,46 @@ function buildBag(params = {}) {
   return group;
 }
 
+/* --------------------------------------------------------------- 转接环 */
+
+function buildAdapter(params = {}) {
+  const m = makeMaterials(params.tone || "graphite", params.accent);
+  const group = new THREE.Group();
+  const R = 0.48;
+
+  /* 机身端法兰（略小，和镜头端形成台阶） */
+  const rear = part(new THREE.CylinderGeometry(R * 0.8, R * 0.8, 0.08, 64), m.plate, [0, 0, -0.15], [Math.PI / 2, 0, 0]);
+  /* 中间主体 + 滚花 */
+  const body = part(new THREE.CylinderGeometry(R, R, 0.22, 64), m.body, [0, 0, 0], [Math.PI / 2, 0, 0]);
+  const knurl = knurlRing(R * 1.004, 80, [0.014, 0.014, 0.17], m.rubber, 0);
+  /* 镜头端法兰 */
+  const front = part(new THREE.CylinderGeometry(R * 0.98, R * 0.98, 0.09, 64), m.plate, [0, 0, 0.13], [Math.PI / 2, 0, 0]);
+  /* 通光孔：两端都比法兰面短，避免共面闪烁 */
+  const bore = part(new THREE.CylinderGeometry(R * 0.62, R * 0.62, 0.26, 64), m.dark, [0, 0, -0.01], [Math.PI / 2, 0, 0]);
+  group.add(rear, body, knurl, front, bore);
+
+  /* 香槟金细环 */
+  group.add(part(new THREE.TorusGeometry(R * 0.985, 0.01, 10, 80), m.accent, [0, 0, 0.177]));
+
+  /* 卡口爪（金属，不是金色） */
+  for (let i = 0; i < 3; i += 1) {
+    const a = (i / 3) * Math.PI * 2 + 0.4;
+    const tab = box(0.11, 0.042, 0.05, 0.012, m.plate);
+    tab.position.set(Math.cos(a) * R * 0.8, Math.sin(a) * R * 0.8, 0.181);
+    tab.rotation.z = a;
+    group.add(tab);
+  }
+
+  /* 释放按钮 + 锁销 */
+  const button = box(0.13, 0.085, 0.05, 0.014, m.rubber);
+  button.position.set(0.14, R * 0.99, 0.02);
+  const pin = part(new THREE.CylinderGeometry(0.026, 0.026, 0.12, 20), m.accent, [R * 1.02, -0.18, 0], [0, 0, Math.PI / 2]);
+  group.add(button, pin);
+
+  group.userData.label = "adapter";
+  return group;
+}
+
 /* --------------------------------------------------------------- 通用小物 */
 
 function buildObject(params = {}) {
@@ -464,6 +504,7 @@ function buildObject(params = {}) {
 
 export const MODEL_BUILDERS = {
   camera: buildCamera,
+  adapter: buildAdapter,
   lens: buildLens,
   tripod: buildTripod,
   flash: buildFlash,

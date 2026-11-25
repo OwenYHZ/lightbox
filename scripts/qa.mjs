@@ -31,6 +31,15 @@ page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + 
 async function count() {
   return page.evaluate(() => document.querySelectorAll(".card").length);
 }
+async function pickMode(mode) {
+  if (!(await page.locator("#themeMenu").isVisible())) {
+    await page.click("#themeBtn");
+    await page.waitForTimeout(220);
+  }
+  await page.click('.theme__mode[data-mode="' + mode + '"]');
+  await page.waitForTimeout(650);
+}
+
 async function clearAll() {
   await closeFilters();
   const btn = page.locator("#clearFilters");
@@ -95,9 +104,7 @@ await clearAll();
 await closeFilters();
 
 // 6) 主题：浅色
-await page.click("#themeBtn");
-await page.waitForTimeout(200);
-await page.click('.theme__opt[data-mode="light"]');
+await pickMode("light");
 await page.waitForTimeout(700);
 results.themeLight = await page.evaluate(() => ({
   theme: document.documentElement.dataset.theme,
@@ -117,23 +124,19 @@ await page.keyboard.press("Escape");
 await page.waitForTimeout(700);
 
 // 7) 深色 + 跟随系统
-await page.click("#themeBtn");
-await page.waitForTimeout(200);
-await page.click('.theme__opt[data-mode="dark"]');
-await page.waitForTimeout(600);
+await pickMode("dark");
 results.themeDark = await page.evaluate(() => document.documentElement.dataset.theme);
 await page.screenshot({ path: path.join(shots, "dark-home.jpg"), type: "jpeg", quality: 78 });
 
-await page.click("#themeBtn");
-await page.waitForTimeout(200);
-await page.click('.theme__opt[data-mode="system"]');
-await page.waitForTimeout(400);
+await pickMode("system");
+await page.keyboard.press("Escape");
+await page.waitForTimeout(300);
 results.themeSystem = await page.evaluate(() => ({ mode: document.documentElement.dataset.themeMode, theme: document.documentElement.dataset.theme }));
 
 // 8) 筛选面板全景（浅色，便于检查对比度）
 await page.click("#themeBtn");
 await page.waitForTimeout(150);
-await page.click('.theme__opt[data-mode="light"]');
+await page.click('.theme__mode[data-mode="light"]');
 await page.waitForTimeout(400);
 await openFilters();
 await page.screenshot({ path: path.join(shots, "light-filters.jpg"), type: "jpeg", quality: 78 });

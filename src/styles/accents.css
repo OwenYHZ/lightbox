@@ -1,0 +1,62 @@
+/* ==========================================================================
+   主题色：只存色相与饱和度，明度由各主题的 token 推导
+   ========================================================================== */
+[data-accent="amber"] {
+  --accent-h: 38;
+  --accent-s: 46%;
+}
+
+[data-accent="copper"] {
+  --accent-h: 22;
+  --accent-s: 52%;
+}
+
+[data-accent="wine"] {
+  --accent-h: 352;
+  --accent-s: 44%;
+}
+
+[data-accent="rose"] {
+  --accent-h: 340;
+  --accent-s: 40%;
+}
+
+[data-accent="plum"] {
+  --accent-h: 300;
+  --accent-s: 34%;
+}
+
+[data-accent="indigo"] {
+  --accent-h: 252;
+  --accent-s: 40%;
+}
+
+[data-accent="slate"] {
+  --accent-h: 210;
+  --accent-s: 26%;
+}
+
+[data-accent="celadon"] {
+  --accent-h: 178;
+  --accent-s: 30%;
+}
+
+[data-accent="pine"] {
+  --accent-h: 154;
+  --accent-s: 34%;
+}
+
+[data-accent="moss"] {
+  --accent-h: 100;
+  --accent-s: 26%;
+}
+
+[data-accent="ochre"] {
+  --accent-h: 55;
+  --accent-s: 50%;
+}
+
+[data-accent="graphite"] {
+  --accent-h: 220;
+  --accent-s: 10%;
+}

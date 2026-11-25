@@ -5,6 +5,8 @@
    ========================================================================== */
 
 import { GEAR } from "../data/gear.js";
+import "../styles/accents.css";
+import { ACCENTS, applyAccent, bootAccent, getAccent, swatchColor } from "../data/accents.js";
 
 /* ------------------------------------------------------------------ 常量 */
 
@@ -30,11 +32,17 @@ const ENUMS = {
     ["rode", "RØDE"],
     ["billingham", "白金汉"],
     ["peakdesign", "Peak Design"],
+    ["techart", "Techart"],
+    ["megadap", "Megadap"],
   ],
   cat: [
     ["body", "机身"],
     ["lens", "镜头"],
     ["accessory", "配件"],
+  ],
+  medium: [
+    ["digital", "数码"],
+    ["film", "胶片"],
   ],
   form: [
     ["mirrorless", "微单"],
@@ -42,6 +50,7 @@ const ENUMS = {
     ["rangefinder", "旁轴"],
     ["compact", "便携一体"],
     ["lens", "镜头"],
+    ["adapter", "转接环"],
     ["tripod", "支撑"],
     ["flash", "灯光"],
     ["filter", "滤镜"],
@@ -72,6 +81,7 @@ const ENUMS = {
   kind: [
     ["camera", "机身"],
     ["lens", "镜头"],
+    ["adapter", "转接环"],
     ["tripod", "三脚架"],
     ["flash", "闪光灯"],
     ["filter", "滤镜"],
@@ -81,6 +91,9 @@ const ENUMS = {
   ],
 };
 
+// 转接环的机身端卡口沿用 mount 枚举
+ENUMS.mountTo = ENUMS.mount;
+
 const COLUMNS = [
   { key: "id", en: "ID", zh: "标识", type: "text", w: 152, mono: true, req: true },
   { key: "name", en: "NAME", zh: "名称", type: "text", w: 190, req: true },
@@ -88,6 +101,8 @@ const COLUMNS = [
   { key: "cat", en: "CAT", zh: "类别", type: "enum", w: 100, req: true },
   { key: "form", en: "FORM", zh: "形态", type: "enum", w: 124, req: true },
   { key: "mount", en: "MOUNT", zh: "卡口", type: "enum", w: 132, req: true },
+  { key: "medium", en: "MEDIUM", zh: "介质", type: "enum", w: 112, tip: "仅机身：数码 / 胶片" },
+  { key: "mountTo", en: "MOUNT TO", zh: "机身端卡口", type: "enum", w: 142, tip: "仅转接环：机身端卡口，可空" },
   { key: "lens", en: "LENS", zh: "镜头", type: "enum", w: 124 },
   { key: "status", en: "STATUS", zh: "状态", type: "enum", w: 106, req: true },
   { key: "year", en: "YEAR", zh: "年份", type: "number", w: 86 },
@@ -104,19 +119,21 @@ const COL_BY_KEY = new Map(COLUMNS.map((column) => [column.key, column]));
 const JS_ORDER = [
   "id",
   "name",
-  "maker",
   "brand",
-  "year",
   "cat",
   "kind",
-  "mount",
   "form",
+  "mount",
+  "medium",
+  "mountTo",
   "lens",
   "status",
+  "year",
+  "maker",
   "summary",
   "note",
-  "specs",
   "tags",
+  "specs",
   "accent",
   "model",
 ];
@@ -130,7 +147,7 @@ const REQUIRED = {
   status: "状态",
 };
 
-const ENUM_FIELDS = ["brand", "cat", "form", "mount", "lens", "status"];
+const ENUM_FIELDS = ["brand", "cat", "form", "mount", "medium", "mountTo", "lens", "status"];
 
 const MAKER_TO_BRAND = {
   sony: "sony",
@@ -156,6 +173,7 @@ const MAKER_TO_BRAND = {
 const FORM_BY_KIND = {
   camera: "mirrorless",
   lens: "lens",
+  adapter: "adapter",
   tripod: "tripod",
   flash: "flash",
   filter: "filter",
@@ -171,6 +189,8 @@ const HEADER_ALIASES = {
   cat: ["cat", "category", "类别", "分类"],
   form: ["form", "形态", "形式"],
   mount: ["mount", "卡口", "系统"],
+  medium: ["medium", "介质"],
+  mountTo: ["mountto", "机身端卡口", "机身端", "mount to"],
   lens: ["lens", "镜头", "镜头类型"],
   status: ["status", "状态"],
   year: ["year", "年份", "入手年份", "年代"],
@@ -307,6 +327,8 @@ function normalizeData(raw) {
   const kindRaw = toStr(src.kind).trim();
   if (kindRaw) data.kind = coerceEnum("kind", kindRaw);
   data.mount = coerceEnum("mount", src.mount);
+  data.medium = coerceEnum("medium", src.medium);
+  data.mountTo = coerceEnum("mountTo", src.mountTo);
   data.form = coerceEnum("form", src.form);
   data.lens = coerceEnum("lens", src.lens);
   data.status = coerceEnum("status", src.status);
@@ -330,6 +352,7 @@ function blankRow() {
     year: new Date().getFullYear(),
     cat: "body",
     mount: "sony-e",
+    medium: "digital",
     form: "mirrorless",
     lens: "interchangeable",
     status: "active",
@@ -381,6 +404,7 @@ function inferSiteData(raw) {
     const fixedLens = /一体镜头|固定镜头|X100|GR ?III|GR3/i.test(tagText);
     fill("mount", fixedLens ? "fixed" : mountFromText(tagText, makerKey));
     fill("lens", fixedLens ? "fixed" : "interchangeable");
+    fill("medium", "digital");
     fill(
       "form",
       /旁轴/.test(tagText)
@@ -411,6 +435,7 @@ function inferKind(data) {
   if (data.kind) return data.kind;
   if (data.cat === "lens") return "lens";
   if (data.cat === "body") return "camera";
+  if (data.form === "adapter") return "adapter";
   if (["tripod", "flash", "filter", "audio", "bag"].includes(data.form)) return data.form;
   return "object";
 }
@@ -426,6 +451,8 @@ function exportObject(data) {
   out.cat = data.cat || "";
   out.kind = inferKind(data);
   out.mount = data.mount || "";
+  out.medium = data.cat === "body" ? data.medium || "" : "";
+  out.mountTo = data.form === "adapter" ? data.mountTo || "" : "";
   out.form = data.form || "";
   out.lens = data.cat === "body" ? data.lens || "" : "";
   out.status = data.status || "";
@@ -439,7 +466,7 @@ function exportObject(data) {
 }
 
 function pruneForOutput(object) {
-  const optional = ["note", "lens", "accent", "model"];
+  const optional = ["note", "lens", "medium", "mountTo", "accent", "model"];
   const out = {};
   JS_ORDER.forEach((key) => {
     if (!Object.prototype.hasOwnProperty.call(object, key)) return;
@@ -581,6 +608,7 @@ const state = {
   history: [],
   savedAt: 0,
   errorCount: 0,
+  warningCount: 0,
   saveFailed: false,
 };
 
@@ -612,6 +640,8 @@ const dom = {
   gridHead: $("#gridHead"),
   gridBody: $("#gridBody"),
   saved: $("#edSaved"),
+  accentBtn: $("#btnAccent"),
+  accentPop: $("#accentPop"),
   pasteModal: $("#pasteModal"),
   pasteText: $("#pasteText"),
   pasteMode: $("#pasteMode"),
@@ -651,7 +681,8 @@ function buildGrid() {
     const th = node("th");
     th.appendChild(node("span", "th-en", column.en));
     th.appendChild(node("span", "th-zh", column.zh + (column.req ? " *" : "")));
-    th.title = column.zh + " · " + column.key + (column.req ? "（必填）" : "");
+    th.title =
+      column.zh + " · " + column.key + (column.tip ? " · " + column.tip : "") + (column.req ? "（必填）" : "");
     dom.gridHead.appendChild(th);
   });
 
@@ -774,6 +805,7 @@ function renderRows() {
 
 function validateRows() {
   const errors = [];
+  const warnings = [];
   const byRow = new Map();
   const add = (index, field, message) => {
     errors.push({ index, field, message });
@@ -807,9 +839,13 @@ function validateRows() {
     if (year && !/^\d{4}$/.test(year)) add(index, "year", "年份应为 4 位数字");
     const id = toStr(data.id).trim();
     if (id && (idSeen.get(id.toLowerCase()) || []).length > 1) add(index, "id", "id 重复：" + id);
+    if (data.cat === "body" && !toStr(data.medium).trim()) add(index, "medium", "介质（机身必填）");
+    if (data.form === "adapter" && !toStr(data.mountTo).trim()) {
+      warnings.push({ index, field: "mountTo", message: "转接环建议填机身端卡口" });
+    }
   });
 
-  return { errors, byRow };
+  return { errors, warnings, byRow };
 }
 
 function paintRows(byRow) {
@@ -825,38 +861,44 @@ function paintRows(byRow) {
   });
 }
 
-function paintErrors(errors) {
+function paintErrors(errors, warnings) {
   dom.errorList.textContent = "";
   const count = errors.length;
+  const notes = (warnings || []).length;
   dom.errors.classList.toggle("is-bad", count > 0);
   dom.errors.classList.toggle("is-ok", count === 0);
 
-  if (!count) {
+  if (count) {
+    dom.errorCount.textContent = count + " 项待修";
+    dom.errorHint.textContent = "点击条目跳到对应单元格";
+  } else {
     dom.errorCount.textContent = "校验通过";
-    dom.errorHint.textContent = "无错误 · 可安全导出 · 共 " + state.rows.length + " 行";
-    return;
+    dom.errorHint.textContent =
+      "无错误 · 可安全导出 · 共 " + state.rows.length + " 行" +
+      (notes ? " · " + notes + " 条建议" : "");
   }
 
-  dom.errorCount.textContent = count + " 项待修";
-  dom.errorHint.textContent = "点击条目跳到对应单元格";
-
-  errors.slice(0, ERROR_LIMIT).forEach((error) => {
-    const item = node("li");
-    const button = node("button", "err-item");
-    button.type = "button";
-    button.dataset.index = String(error.index);
-    button.dataset.field = error.field;
-    const row = state.rows[error.index];
-    const label = row && toStr(row.data.id).trim() ? toStr(row.data.id).trim() : "第 " + (error.index + 1) + " 行";
-    button.appendChild(node("span", "err-item__row mono", "#" + (error.index + 1) + " " + label));
-    button.appendChild(node("span", "err-item__msg", error.message));
-    item.appendChild(button);
-    dom.errorList.appendChild(item);
-  });
+  errors.slice(0, ERROR_LIMIT).forEach((error) => appendIssue(error, "err-item"));
 
   if (count > ERROR_LIMIT) {
     dom.errorList.appendChild(node("li", "err-more", "还有 " + (count - ERROR_LIMIT) + " 项…"));
   }
+
+  (warnings || []).slice(0, ERROR_LIMIT).forEach((warning) => appendIssue(warning, "err-item err-item--warn"));
+}
+
+function appendIssue(issue, className) {
+  const item = node("li");
+  const button = node("button", className);
+  button.type = "button";
+  button.dataset.index = String(issue.index);
+  button.dataset.field = issue.field;
+  const row = state.rows[issue.index];
+  const label = row && toStr(row.data.id).trim() ? toStr(row.data.id).trim() : "第 " + (issue.index + 1) + " 行";
+  button.appendChild(node("span", "err-item__row mono", "#" + (issue.index + 1) + " " + label));
+  button.appendChild(node("span", "err-item__msg", issue.message));
+  item.appendChild(button);
+  dom.errorList.appendChild(item);
 }
 
 function paintStats() {
@@ -896,8 +938,9 @@ function paintStats() {
 function validateAndPaint() {
   const result = validateRows();
   state.errorCount = result.errors.length;
+  state.warningCount = result.warnings.length;
   paintRows(result.byRow);
-  paintErrors(result.errors);
+  paintErrors(result.errors, result.warnings);
   paintStats();
   return result;
 }
@@ -1316,6 +1359,49 @@ function showToast(message, tone) {
   }, 3400);
 }
 
+/* ---------------------------------------------------------------- 主题色 */
+
+function renderAccentPicker() {
+  if (!dom.accentPop) return;
+  const current = document.documentElement.getAttribute("data-accent") || "";
+  dom.accentPop.textContent = "";
+  dom.accentPop.appendChild(node("span", "accent-pop__label mono", "THEME / 主题色"));
+  ACCENTS.forEach((accent) => {
+    const dot = node("button", "accent-dot");
+    dot.type = "button";
+    dot.dataset.accent = accent.id;
+    dot.title = accent.label + " · " + accent.id;
+    dot.setAttribute("aria-label", "主题色 " + accent.label);
+    dot.setAttribute("aria-pressed", accent.id === current ? "true" : "false");
+    dot.style.setProperty("--dot", swatchColor(accent, 62));
+    dot.style.setProperty("--dot-ring", swatchColor(accent, 72));
+    dom.accentPop.appendChild(dot);
+  });
+  if (dom.accentBtn) {
+    const active = getAccent(current);
+    dom.accentBtn.title = "主题色 · " + active.label;
+    dom.accentBtn.setAttribute("aria-label", "主题色：" + active.label);
+  }
+}
+
+function openAccentPop() {
+  if (!dom.accentPop) return;
+  dom.accentPop.hidden = false;
+  dom.accentBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeAccentPop() {
+  if (!dom.accentPop) return;
+  dom.accentPop.hidden = true;
+  dom.accentBtn.setAttribute("aria-expanded", "false");
+}
+
+function toggleAccentPop() {
+  if (!dom.accentPop) return;
+  if (dom.accentPop.hidden) openAccentPop();
+  else closeAccentPop();
+}
+
 /* ------------------------------------------------------------------ 事件 */
 
 const onCellInput = (event) => {
@@ -1390,6 +1476,23 @@ function bindEvents() {
   dom.undo.addEventListener("click", undo);
   dom.clearDraft.addEventListener("click", clearDraft);
 
+  dom.accentBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleAccentPop();
+  });
+  dom.accentPop.addEventListener("click", (event) => {
+    const dot = event.target.closest("[data-accent]");
+    if (!dot) return;
+    const next = applyAccent(dot.dataset.accent);
+    renderAccentPicker();
+    showToast("主题色 · " + getAccent(next).label, "ok");
+  });
+  document.addEventListener("click", (event) => {
+    if (!dom.accentPop || dom.accentPop.hidden) return;
+    if (event.target.closest(".accent-wrap")) return;
+    closeAccentPop();
+  });
+
   dom.paste.addEventListener("click", () => openPasteModal(""));
   dom.pasteText.addEventListener("input", debounce(updatePasteInfo, 120));
   dom.pasteMode.addEventListener("change", updatePasteInfo);
@@ -1452,6 +1555,10 @@ function bindEvents() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      if (dom.accentPop && !dom.accentPop.hidden) {
+        closeAccentPop();
+        return;
+      }
       $$(".modal").forEach((modal) => {
         if (!modal.hidden) closeModal(modal);
       });
@@ -1482,6 +1589,8 @@ function bindEvents() {
 
 function boot() {
   buildGrid();
+  bootAccent();
+  renderAccentPicker();
   bindEvents();
 
   const draft = readDraft();
@@ -1507,6 +1616,8 @@ window.__gearEditor = {
   snapshot: () => ({
     rows: state.rows.length,
     errors: validateRows().errors.length,
+    warnings: validateRows().warnings.length,
+    accent: document.documentElement.getAttribute("data-accent"),
     history: state.history.length,
     rowsData: state.rows.map((row) => row.data),
   }),

@@ -14,7 +14,9 @@
 | `cat` | ✓ | `body` 机身 / `lens` 镜头 / `accessory` 配件 |
 | `kind` | ✓ | 决定封面与三维模型：`camera` `lens` `tripod` `flash` `filter` `audio` `bag` `object` |
 | `mount` | ✓ | 卡口 / 系统 id（见枚举），配件用 `none` |
-| `form` | ✓ | 形态 id（见枚举）；镜头固定为 `lens` |
+| `mountTo` |  | 仅转接环：机身端卡口。筛选任一卡口都能命中该转接环 |
+| `form` | ✓ | 形态 id（见枚举）；镜头固定为 `lens`，转接环固定为 `adapter` |
+| `medium` |  | 仅机身：`digital` 数码 / `film` 胶片 |
 | `lens` |  | 仅机身：`interchangeable` 可换镜头 / `fixed` 固定镜头 |
 | `status` | ✓ | `active` 现役 / `retired` 退役 / `sold` 已出售 / `broken` 故障 |
 | `summary` | ✓ | 卡片上的一行摘要 |
@@ -30,9 +32,11 @@
 
 `mount`：`sony-e` 索尼 E · `nikon-z` 尼康 Z · `nikon-f` 尼康 F · `fuji-x` 富士 X · `leica-m` 徕卡 M · `m43` M43 · `fixed` 固定镜头 · `none` 通用 / 无卡口
 
-`form`：`mirrorless` 微单 · `dslr` 单反 · `rangefinder` 旁轴 · `compact` 便携一体 · `lens` 镜头 · `tripod` 支撑 · `flash` 灯光 · `filter` 滤镜 · `audio` 录音 · `bag` 包袋 · `accessory` 配件
+`form`：`mirrorless` 微单 · `dslr` 单反 · `rangefinder` 旁轴 · `compact` 便携一体 · `lens` 镜头 · `adapter` 转接环 · `tripod` 支撑 · `flash` 灯光 · `filter` 滤镜 · `audio` 录音 · `bag` 包袋 · `accessory` 配件
 
 `status`：`active` 现役 · `retired` 退役 · `sold` 已出售 · `broken` 故障
+
+`medium`：`digital` 数码 · `film` 胶片（仅机身）
 
 ## 筛选语义
 
@@ -49,6 +53,8 @@
 | 所有 M43 器材 | 卡口=M43 |
 | 尼康 Z 系统的机身和镜头 | 品牌=尼康 + 卡口=尼康 Z |
 | 固定镜头旁轴 | 形态=旁轴 + 镜头=固定镜头 |
+| 胶片机身 | 类别=机身 + 介质=胶片 |
+| 索尼 E 系统（含转接环） | 卡口=索尼 E → 同时出现 E 口机身/镜头和 E→Z 转接环 |
 
 ## 表格（Excel / 编辑器）列顺序
 

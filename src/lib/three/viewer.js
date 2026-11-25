@@ -437,9 +437,16 @@ export class StageViewer {
     const fitW = radius / Math.sin(Math.atan(Math.tan(fov / 2) * this.camera.aspect));
     const dist = Math.max(fitH, fitW) * 0.92;
 
+    /* 薄片类模型（转接环）可以要求更斜的默认视角，避免正对镜头像一张饼 */
+    const azimuth = Number.isFinite(params.azimuth) ? params.azimuth : 0.52;
+    const targetY = size.y * 0.46;
+    const offset = new THREE.Vector3(dist * azimuth, radius * 0.62, dist * 0.82)
+      .normalize()
+      .multiplyScalar(dist);
+
     this.home = {
-      target: new THREE.Vector3(0, size.y * 0.46, 0),
-      position: new THREE.Vector3(dist * 0.52, size.y * 0.46 + radius * 0.62, dist * 0.82),
+      target: new THREE.Vector3(0, targetY, 0),
+      position: new THREE.Vector3(offset.x, targetY + offset.y, offset.z),
       ringRadius: Math.max(size.x, size.z) * 1.35 + 0.4,
     };
 

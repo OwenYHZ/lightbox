@@ -4,12 +4,14 @@
    ========================================================================== */
 
 import "./styles/tokens.css";
+import "./styles/accents.css";
 import "./styles/base.css";
 import "./styles/cards.css";
 import "./styles/detail.css";
 
 import { GEAR, CATEGORIES, CATEGORY_LABEL, DIMENSIONS, STATUS_META } from "./data/gear.js";
 import { coverArt } from "./lib/art.js";
+import { ACCENTS, applyAccent, bootAccent, getAccent, swatchColor } from "./data/accents.js";
 
 /* ------------------------------------------------------------------ 工具 */
 
@@ -81,6 +83,7 @@ const state = {
   openId: null,
   autoRotate: !prefersReduced,
   themeMode: document.documentElement.getAttribute("data-theme-mode") || "system",
+  accent: document.documentElement.getAttribute("data-accent") || "amber",
   theme: document.documentElement.getAttribute("data-theme") || "dark",
   filtersOpen: false,
 };
@@ -114,6 +117,8 @@ const el = {
   clearFilters: $("#clearFilters"),
   themeBtn: $("#themeBtn"),
   themeMenu: $("#themeMenu"),
+  accentName: $("#accentName"),
+  swatches: $("#swatches"),
   themeColor: $("#themeColor"),
   detail: $("#detail"),
   panel: $("#detailPanel"),
@@ -147,7 +152,7 @@ function resolveTheme(mode) {
 }
 
 function syncThemeMenu() {
-  $$(".theme__opt", el.themeMenu).forEach((btn) => {
+  $$(".theme__mode", el.themeMenu).forEach((btn) => {
     btn.setAttribute("aria-checked", String(btn.dataset.mode === state.themeMode));
   });
 }
@@ -178,12 +183,40 @@ function applyTheme(mode, { persist = true, animate = true } = {}) {
   if (stage && typeof stage.setTheme === "function") stage.setTheme(theme);
 }
 
+function renderSwatches() {
+  el.swatches.innerHTML = ACCENTS.map(
+    (accent) =>
+      '<button class="swatch" type="button" role="radio" aria-checked="false" data-accent-id="' +
+      accent.id +
+      '" title="' +
+      accent.label +
+      '" aria-label="主题色：' +
+      accent.label +
+      '"><span class="swatch__dot" style="background:' +
+      swatchColor(accent) +
+      '"></span></button>'
+  ).join("");
+}
+
+function syncAccentUI() {
+  const accent = getAccent(state.accent);
+  if (el.accentName) el.accentName.textContent = accent.label;
+  $$(".swatch", el.swatches).forEach((btn) => {
+    btn.setAttribute("aria-checked", String(btn.dataset.accentId === state.accent));
+  });
+}
+
+function setAccent(id) {
+  state.accent = applyAccent(id);
+  syncAccentUI();
+}
+
 function toggleThemeMenu(open) {
   const next = typeof open === "boolean" ? open : el.themeMenu.hidden;
   el.themeMenu.hidden = !next;
   el.themeBtn.setAttribute("aria-expanded", String(next));
   if (next) {
-    const current = $('.theme__opt[aria-checked="true"]', el.themeMenu);
+    const current = $('.theme__mode[aria-checked="true"]', el.themeMenu);
     if (current) current.focus();
   }
 }
@@ -191,8 +224,27 @@ function toggleThemeMenu(open) {
 /* ------------------------------------------------------------------ 筛选 */
 
 /** 某维度某选项在当前其他条件下会命中多少件 */
+function mountsOf(item) {
+  const list = [item.mount];
+  if (item.mountTo && item.mountTo !== item.mount) list.push(item.mountTo);
+  return list.filter(Boolean);
+}
+
+/** 某个维度某个选项是否命中（转接环的卡口要两端都算） */
+function optionMatches(item, dimId, optId) {
+  if (dimId === "mount") return mountsOf(item).includes(optId);
+  return dimIdSafe(item, dimId) === optId;
+}
+
 function countFor(dimId, optId) {
-  return GEAR.filter((item) => matchItem(item, dimId) && item[dimId] === optId).length;
+  return GEAR.filter((item) => matchItem(item, dimId) && optionMatches(item, dimId, optId)).length;
+}
+
+/** 维度取值的显示名 */
+function optionLabel(dimId, value) {
+  const dim = DIMENSIONS.find((d) => d.id === dimId);
+  const opt = dim && dim.options.find((o) => o.id === value);
+  return (opt && opt.label) || value || "";
 }
 
 /**
@@ -215,7 +267,13 @@ function matchItem(item, exceptDim = null) {
   for (const dim of DIMENSIONS) {
     if (dim.id === exceptDim) continue;
     const selected = state.facets[dim.id];
-    if (selected.size && !selected.has(dimIdSafe(item, dim.id))) return false;
+    if (!selected.size) continue;
+    /* 转接环同时属于两个卡口，任一端被选中都算命中 */
+    if (dim.id === "mount") {
+      if (!mountsOf(item).some((mount) => selected.has(mount))) return false;
+      continue;
+    }
+    if (!selected.has(dimIdSafe(item, dim.id))) return false;
   }
   return true;
 }
@@ -237,6 +295,7 @@ function buildFiltersPanel() {
       '">' +
       '<p class="facet__label">' +
       dim.label +
+      (dim.hint ? '<span class="facet__hint">' + dim.hint + "</span>" : "") +
       '<br /><span style="opacity:.55">' +
       dim.en +
       "</span></p>" +
@@ -525,8 +584,11 @@ function fillDetail(item) {
   el.detailTags.innerHTML = (item.tags || [])
     .map((tag) => '<span class="tag">' + escapeHtml(tag) + "</span>")
     .join("");
-  el.detailMeta.textContent =
-    item.maker + " · " + item.year + " · " + String(item.kind).toUpperCase() + " MODEL";
+  const metaBits = [item.maker, item.year];
+  if (item.cat === "body" && item.medium) metaBits.push(item.medium === "film" ? "FILM" : "DIGITAL");
+  if (item.mountTo) metaBits.push(optionLabel("mount", item.mount) + " → " + optionLabel("mount", item.mountTo));
+  metaBits.push(String(item.kind).toUpperCase() + " MODEL");
+  el.detailMeta.textContent = metaBits.join(" · ");
   el.stageFallback.innerHTML = "";
 }
 
@@ -578,6 +640,7 @@ async function openDetail(item, { push = true } = {}) {
   if (!item) return;
   if (state.openId === item.id) return;
   closeFilters({ restoreFocus: false });
+  toggleThemeMenu(false);
 
   state.openId = item.id;
   lastFocused = document.activeElement;
@@ -596,7 +659,12 @@ async function openDetail(item, { push = true } = {}) {
   if (viewer && state.openId === item.id) {
     await nextFrame();
     if (typeof viewer.setTheme === "function") viewer.setTheme(state.theme);
-    viewer.show(item.kind, Object.assign({}, item.model, { accent: item.accent }));
+    viewer.show(
+      item.kind,
+      Object.assign({}, item.model, {
+        accent: item.accent || swatchColor(getAccent(state.accent), 66),
+      })
+    );
     viewer.setAutoRotate(state.autoRotate);
     syncRotateButton();
   }
@@ -776,11 +844,14 @@ function bindEvents() {
     toggleThemeMenu();
   });
   el.themeMenu.addEventListener("click", (event) => {
-    const opt = event.target.closest(".theme__opt");
+    const opt = event.target.closest(".theme__mode");
     if (!opt) return;
     applyTheme(opt.dataset.mode);
-    toggleThemeMenu(false);
-    el.themeBtn.focus({ preventScroll: true });
+  });
+  el.swatches.addEventListener("click", (event) => {
+    const swatch = event.target.closest(".swatch");
+    if (!swatch) return;
+    setAccent(swatch.dataset.accentId);
   });
   document.addEventListener("click", (event) => {
     if (!el.themeMenu.hidden && !event.target.closest(".theme")) toggleThemeMenu(false);
@@ -863,6 +934,9 @@ function boot() {
   renderSelChips();
   syncFilterButton();
   syncThemeMenu();
+  state.accent = bootAccent();
+  renderSwatches();
+  syncAccentUI();
   bindEvents();
   route();
 }

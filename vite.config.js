@@ -19,5 +19,6 @@ export default defineConfig({
     assetsInlineLimit: 2048,
     rollupOptions: { input },
   },
-  server: { port: 5173, open: true },
+  // 绝不自动拉起浏览器窗口：验证一律走后台服务 + 无头浏览器
+  server: { port: 5173, host: "127.0.0.1", open: false },
 });

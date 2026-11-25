@@ -45,10 +45,10 @@
   --hair: rgba(243, 241, 236, 0.09);
   --hair-2: rgba(243, 241, 236, 0.17);
 
-  --accent: #e4cfa8;
+  --accent: hsl(var(--accent-h) var(--accent-s) 78%);
   --accent-ink: #0a0a0c;
-  --accent-dim: rgba(228, 207, 168, 0.55);
-  --accent-soft: rgba(228, 207, 168, 0.1);
+  --accent-dim: hsl(var(--accent-h) var(--accent-s) 72% / 0.58);
+  --accent-soft: hsl(var(--accent-h) var(--accent-s) 72% / 0.11);
 
   --glass: rgba(255, 255, 255, 0.035);
   --glass-2: rgba(255, 255, 255, 0.065);
@@ -100,20 +100,20 @@
 
   /* 封面线稿 */
   --art-line: rgba(243, 241, 236, 0.62);
-  --art-accent: #e4cfa8;
+  --art-accent: hsl(var(--accent-h) var(--accent-s) 78%);
   --art-text: rgba(243, 241, 236, 0.42);
   --art-grid: rgba(243, 241, 236, 0.06);
 
   /* 质感层 */
   --grain-opacity: 0.05;
   --grain-blend: soft-light;
-  --aurora-warm: rgba(228, 207, 168, 0.11);
+  --aurora-warm: hsl(var(--accent-h) var(--accent-s) 62% / 0.13);
   --aurora-cool: rgba(116, 142, 210, 0.12);
 
   /* Hero 强调字渐变 */
-  --hero-grad-a: #fbf4e6;
-  --hero-grad-b: #e4cfa8;
-  --hero-grad-c: #b3956a;
+  --hero-grad-a: hsl(var(--accent-h) calc(var(--accent-s) + 6%) 93%);
+  --hero-grad-b: hsl(var(--accent-h) var(--accent-s) 78%);
+  --hero-grad-c: hsl(var(--accent-h) calc(var(--accent-s) * 0.82) 64%);
 
   --chip-active-bg: #f3f1ec;
   --chip-active-ink: #0a0a0c;
@@ -135,10 +135,10 @@
   --hair: rgba(23, 24, 29, 0.12);
   --hair-2: rgba(23, 24, 29, 0.22);
 
-  --accent: #a07336;
+  --accent: hsl(var(--accent-h) var(--accent-s) 34%);
   --accent-ink: #fffdf8;
-  --accent-dim: rgba(160, 115, 54, 0.72);
-  --accent-soft: rgba(160, 115, 54, 0.1);
+  --accent-dim: hsl(var(--accent-h) var(--accent-s) 34% / 0.74);
+  --accent-soft: hsl(var(--accent-h) var(--accent-s) 40% / 0.12);
 
   --glass: rgba(255, 255, 255, 0.62);
   --glass-2: rgba(255, 255, 255, 0.9);
@@ -180,18 +180,18 @@
   --st-broken: #b0482f;
 
   --art-line: rgba(23, 24, 29, 0.62);
-  --art-accent: #a07336;
+  --art-accent: hsl(var(--accent-h) var(--accent-s) 34%);
   --art-text: rgba(23, 24, 29, 0.46);
   --art-grid: rgba(23, 24, 29, 0.07);
 
   --grain-opacity: 0.028;
   --grain-blend: multiply;
-  --aurora-warm: rgba(214, 178, 120, 0.28);
+  --aurora-warm: hsl(var(--accent-h) var(--accent-s) 56% / 0.26);
   --aurora-cool: rgba(150, 172, 214, 0.2);
 
-  --hero-grad-a: #3a2c19;
-  --hero-grad-b: #a07336;
-  --hero-grad-c: #7a5423;
+  --hero-grad-a: hsl(var(--accent-h) calc(var(--accent-s) * 0.9) 20%);
+  --hero-grad-b: hsl(var(--accent-h) var(--accent-s) 34%);
+  --hero-grad-c: hsl(var(--accent-h) var(--accent-s) 27%);
 
   --chip-active-bg: #17181d;
   --chip-active-ink: #f6f3ec;

@@ -209,6 +209,27 @@ function glyphBag() {
   );
 }
 
+function glyphAdapter() {
+  /* 两端口径不同的一截镜筒，3/4 视角 */
+  return (
+    '<g class="line" fill="none" stroke-linecap="round" stroke-linejoin="round">' +
+    '<ellipse cx="180" cy="180" rx="30" ry="70" stroke-opacity="0.6" stroke-width="1.5"/>' +
+    '<ellipse cx="300" cy="180" rx="24" ry="58" stroke-opacity="0.45"/>' +
+    '<path d="M180 110 300 122M180 250 300 238" stroke-opacity="0.5" stroke-width="1.4"/>' +
+    '<ellipse cx="180" cy="180" rx="20" ry="52" stroke-opacity="0.35"/>' +
+    '<ellipse cx="180" cy="180" rx="12" ry="34" stroke-opacity="0.2"/>' +
+    '<ellipse cx="300" cy="180" rx="15" ry="38" stroke-opacity="0.22" stroke-dasharray="4 6"/>' +
+    '<path d="M206 128v-12h16v12M206 232v12h16v-12" stroke-opacity="0.3"/>' +
+    '<rect x="244" y="106" width="16" height="12" rx="3" stroke-opacity="0.4"/>' +
+    '<path d="M222 254h20" stroke-opacity="0.3"/>' +
+    "</g>" +
+    '<ellipse class="accent" cx="240" cy="180" rx="9" ry="64" fill="none" stroke-opacity="0.45"/>' +
+    '<circle class="accent" cx="180" cy="180" r="76" fill="none" stroke-opacity="0.2" stroke-dasharray="2 8"/>' +
+    '<path class="accent" d="M336 158v44" fill="none" stroke-opacity="0.35" stroke-width="1.2"/>' +
+    '<path class="accent" d="M332 162l4-6 4 6M332 198l4 6 4-6" fill="none" stroke-opacity="0.35"/>'
+  );
+}
+
 function glyphObject() {
   return (
     '<g class="line" fill="none" stroke-linecap="round" stroke-linejoin="round">' +
@@ -231,6 +252,7 @@ const GLYPHS = {
   filter: glyphFilter,
   audio: glyphAudio,
   bag: glyphBag,
+  adapter: glyphAdapter,
   object: glyphObject,
 };
 
