@@ -12,7 +12,7 @@
 | `brand` | ✓ | 品牌 id，用于筛选（见枚举） |
 | `year` | ✓ | 年份，显示在卡片右上 |
 | `cat` | ✓ | `body` 机身 / `lens` 镜头 / `accessory` 配件 |
-| `kind` | ✓ | 决定封面与三维模型：`camera` `lens` `tripod` `flash` `filter` `audio` `bag` `object` |
+| `kind` | ✓ | 决定封面与三维模型：`camera` `lens` `tripod` `flash` `filter` `audio` `bag` `object`，以及按实拍照片定制的 `konica-bm21` `olympus-45` `zeniko-za12` |
 | `mount` | ✓ | 卡口 / 系统 id（见枚举），配件用 `none` |
 | `mountTo` |  | 仅转接环：机身端卡口。筛选任一卡口都能命中该转接环 |
 | `form` | ✓ | 形态 id（见枚举）；镜头固定为 `lens`，转接环固定为 `adapter` |

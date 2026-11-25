@@ -5,6 +5,10 @@
  * 所以深色、浅色主题切换时封面会自动换色，不需要重新生成。
  */
 
+import { glyphKonicaBM21 } from "./art/devices/konica-bm21.js";
+import { glyphOlympus45 } from "./art/devices/olympus-45.js";
+import { glyphZenikoZA12 } from "./art/devices/zeniko-za12.js";
+
 const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
 let uid = 0;
@@ -254,6 +258,9 @@ const GLYPHS = {
   bag: glyphBag,
   adapter: glyphAdapter,
   object: glyphObject,
+  "konica-bm21": glyphKonicaBM21,
+  "olympus-45": glyphOlympus45,
+  "zeniko-za12": glyphZenikoZA12,
 };
 
 /* ------------------------------------------------------------------ 对外接口 */

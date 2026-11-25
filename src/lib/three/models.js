@@ -9,6 +9,9 @@
 
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { buildKonicaBM21 } from "./models/konica-bm21.js";
+import { buildOlympus45 } from "./models/olympus-45.js";
+import { buildZenikoZA12 } from "./models/zeniko-za12.js";
 
 const TONES = {
   graphite: { body: 0x262a31, plate: 0x363b44, metalness: 0.66, roughness: 0.36 },
@@ -76,6 +79,14 @@ function makeMaterials(tone, accent) {
       iridescenceIOR: 1.32,
       iridescenceThicknessRange: [180, 620],
       envMapIntensity: 1.3,
+    }),
+    frosted: new THREE.MeshPhysicalMaterial({
+      color: 0xe8e5dc,
+      metalness: 0.06,
+      roughness: 0.62,
+      clearcoat: 0.25,
+      clearcoatRoughness: 0.5,
+      envMapIntensity: 0.7,
     }),
     canvas: new THREE.MeshStandardMaterial({
       color: 0x2b332e,
@@ -514,9 +525,23 @@ export const MODEL_BUILDERS = {
   object: buildObject,
 };
 
+/** 按真实照片定制的设备模型（各自的文件，互不干扰） */
+const DEVICE_BUILDERS = {
+  "konica-bm21": buildKonicaBM21,
+  "olympus-45": buildOlympus45,
+  "zeniko-za12": buildZenikoZA12,
+};
+
 export function buildModel(kind, params = {}) {
-  const builder = MODEL_BUILDERS[kind] || buildObject;
-  const group = builder(params);
+  const device = DEVICE_BUILDERS[kind];
+  let group;
+  if (device) {
+    const materials = makeMaterials(params.tone, params.accent);
+    group = device({ materials, helpers: { part, box, knurlRing }, params, THREE });
+  } else {
+    const builder = MODEL_BUILDERS[kind] || buildObject;
+    group = builder(params);
+  }
   group.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = false;

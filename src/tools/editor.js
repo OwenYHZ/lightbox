@@ -34,6 +34,9 @@ const ENUMS = {
     ["peakdesign", "Peak Design"],
     ["techart", "Techart"],
     ["megadap", "Megadap"],
+    ["konica", "柯尼卡"],
+    ["olympus", "奥林巴斯"],
+    ["zeniko", "ZENIKO"],
   ],
   cat: [
     ["body", "机身"],
@@ -80,6 +83,9 @@ const ENUMS = {
   ],
   kind: [
     ["camera", "机身"],
+    ["konica-bm21", "Konica BM-21"],
+    ["olympus-45", "Olympus 45mm"],
+    ["zeniko-za12", "Zeniko ZA12"],
     ["lens", "镜头"],
     ["adapter", "转接环"],
     ["tripod", "三脚架"],

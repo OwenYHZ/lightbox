@@ -13,6 +13,7 @@
 - **转接环双卡口**：转接环同时属于镜头端和机身端两个系统，选中任一端都会出现
 - **器材状态**：现役可用 · 退役可用 · 已出售 · 故障，卡片与详情都有标记
 - **主题**：浅色 / 深色 / 跟随系统 + **12 种主题色**，选择记在本地，切换时 SVG 封面、UI、WebGL 舞台一起变
+- **三件真实设备按实拍重建**：Konica Big Mini BM-21、M.Zuiko 45mm f/1.8、ZENIKO ZA12 —— 各自的矢量封面与 three.js 模型都是独立文件（`src/lib/art/devices/`、`src/lib/three/models/`），按 `docs/device-style-guide.md` 的统一画风制作
 - **三维详情**：拖拽旋转 / 滚轮与双指缩放 / 双击复位 / 自动旋转
 - **可分享链接**（`#/sony-a7m4`），浏览器返回键可关闭浮层
 - 键盘可用、`prefers-reduced-motion`、无 WebGL 时优雅降级
@@ -59,6 +60,17 @@
 3. 「下载 gear.json」或「复制 GEAR 代码」→ 发给我，或自己替换 `src/data/gear.js` 里的 `GEAR` 数组
 4. 提交推送，Pages 自动更新
 
+### 想让某件设备有「定制」矢量图与三维模型
+
+按实拍照片重做一件设备，只需要两个文件 + 一个 kind：
+
+1. `src/lib/art/devices/<id>.js` → `export function glyphXxx()`，只返回 SVG 片段，只用 `line / accent / accent-fill / text` 四个 class；
+2. `src/lib/three/models/<id>.js` → `export function buildXxx({ materials, helpers, params })`，只用提供的材质，正面朝 +Z；
+3. 在 `models.js` 的 `DEVICE_BUILDERS` 与 `art.js` 的 `GLYPHS` 里各加一行（现有三件已接好）；
+4. 数据里把该器材的 `kind` 设成同一个 id。
+
+口径与尺寸见 [`docs/device-style-guide.md`](docs/device-style-guide.md)，做的时候可以打开 `/tools/device-preview.html` 和已有三件并排比对。
+
 ### 如果你想用真实图片 / 真实模型
 
 那才会产生体积：
@@ -98,8 +110,10 @@ src/
   data/gear.js              ★ 器材数据 + 维度枚举 + 状态定义
   data/accents.js           12 种主题色（主站与编辑器共用）
   lib/art.js                SVG 封面生成器（颜色走 CSS 变量）
+  lib/art/devices/*.js      三件真实设备的矢量封面（konica-bm21 / olympus-45 / zeniko-za12）
   lib/three/viewer.js       WebGL 舞台：主题预设、灯光、取景、转接环视角
-  lib/three/models.js       三维模型构建器（含 adapter）
+  lib/three/models.js       三维模型构建器（含 adapter + 设备注册表）
+  lib/three/models/*.js     三件真实设备的三维模型（与 art/devices 一一对应）
   styles/tokens.css         ★ 两套明暗主题的设计变量
   styles/accents.css        主题色的色相/饱和度
   styles/base.css           重置、质感、顶栏、外观面板、筛选对话框
@@ -107,8 +121,10 @@ src/
   styles/detail.css         详情浮层 + 三维舞台
   tools/editor.js|css       器材编辑器
 tools/gear-editor.html      器材编辑器页面
+tools/device-preview.html   三件真实设备并排预览（深浅主题 + SVG/3D 对照）
 excel/器材清单模板.xlsx      Excel 模板
 docs/gear-schema.md         数据契约
+docs/device-style-guide.md  矢量封面与三维模型的统一风格契约
 scripts/qa.mjs             筛选/主题回归测试
 scripts/qa-v3.mjs          介质/转接环/主题色回归测试
 scripts/verify.mjs         截图自检
