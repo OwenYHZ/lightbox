@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#07070a" />
+    <title>Lightbox · 器材档案</title>
+    <meta
+      name="description"
+      content="个人器材档案：机身、镜头与附件。所有图像与三维模型均由代码实时生成——没有照片，也没有模型文件。"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2309090b'/%3E%3Ccircle cx='12' cy='12' r='5.4' fill='none' stroke='%23e4cfa8' stroke-width='1.2'/%3E%3Ccircle cx='12' cy='12' r='1.6' fill='%23e4cfa8'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- 全局质感层：极细噪点 + 极低对比的暖光 -->
+    <div class="grain" aria-hidden="true"></div>
+    <div class="aurora" aria-hidden="true">
+      <span class="aurora__a"></span>
+      <span class="aurora__b"></span>
+    </div>
+
+    <header class="topbar" id="topbar">
+      <a class="brand" href="#/" aria-label="Lightbox 器材档案，返回顶部">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9.3" opacity="0.5" />
+            <path d="M21.3 12 16.65 20.05 7.35 20.05 2.7 12 7.35 3.95 16.65 3.95Z" opacity="0.9" />
+            <path d="M21.3 12 15.12 13.8M16.65 20.05 12 15.6M7.35 20.05 8.88 13.8M2.7 12 8.88 10.2M7.35 3.95 12 8.4M16.65 3.95 15.12 10.2" opacity="0.45" />
+          </g>
+        </svg>
+        <span class="brand__name">LIGHTBOX</span>
+        <span class="brand__rule" aria-hidden="true"></span>
+        <span class="brand__sub">器材档案</span>
+      </a>
+      <div class="topbar__meta mono" id="topbarMeta">—</div>
+    </header>
+
+    <main id="app">
+      <section class="hero" aria-labelledby="heroTitle">
+        <p class="eyebrow">
+          <span class="eyebrow__dot" aria-hidden="true"></span>
+          PERSONAL GEAR ARCHIVE
+          <span class="eyebrow__rule" aria-hidden="true"></span>
+          EST. 2026
+        </p>
+        <h1 class="hero__title" id="heroTitle">
+          器材，在这里<br />
+          <em>成为静物</em><span class="hero__period">。</span>
+        </h1>
+        <p class="hero__latin" aria-hidden="true">still life, drawn by code</p>
+        <p class="hero__lede">
+          机身、镜头与附件的一处私藏。每一张「照片」与每一个三维形体都由代码实时生成——
+          没有图片素材，也没有模型文件。点击卡片，可以在三维空间里把它转过来看。
+        </p>
+        <ul class="hero__stats" id="stats"></ul>
+      </section>
+
+      <section class="toolbar" id="toolbar" aria-label="筛选与搜索">
+        <div class="chips" id="chips" role="group" aria-label="按类别筛选"></div>
+        <div class="toolbar__end">
+          <span class="toolbar__count mono" id="count" aria-live="polite"></span>
+          <div class="search" id="search">
+            <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <path d="m16 16 4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            </svg>
+            <input
+              class="search__input"
+              id="searchInput"
+              type="search"
+              placeholder="搜索器材 / 焦段 / 卡口"
+              autocomplete="off"
+              aria-label="搜索器材"
+            />
+            <button class="search__clear" id="searchClear" type="button" aria-label="清空搜索" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+            </button>
+            <button class="search__toggle" id="searchToggle" type="button" aria-label="搜索" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.4" />
+                <path d="m16 16 4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="collection" aria-label="器材列表">
+        <div class="grid" id="grid"></div>
+        <div class="empty" id="empty" hidden>
+          <p class="empty__title">这一类里还没有东西</p>
+          <p class="empty__text">换一个类别，或者清空搜索词再试一次。</p>
+          <button class="ghost-btn" type="button" id="emptyReset">显示全部器材</button>
+        </div>
+      </section>
+
+      <footer class="sitefoot">
+        <div class="sitefoot__line" aria-hidden="true"></div>
+        <p class="sitefoot__text">
+          本页没有任何图片素材或模型文件 · 封面为 SVG 图元，三维为 WebGL 图元
+        </p>
+        <p class="sitefoot__meta mono">
+          <span id="footStat">—</span>
+          <span class="sitefoot__dot" aria-hidden="true">·</span>
+          <span>LIGHTBOX / 2026</span>
+        </p>
+      </footer>
+    </main>
+
+    <div class="detail" id="detail" hidden>
+      <div class="detail__scrim" data-close="1"></div>
+      <div
+        class="detail__panel"
+        id="detailPanel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detailTitle"
+        aria-describedby="detailNote"
+      >
+        <button class="detail__close" id="detailClose" type="button" aria-label="关闭详情">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <div class="stage" id="stage">
+          <div class="stage__mount" id="stageMount"></div>
+          <div class="stage__loader" id="stageLoader" role="status">
+            <span class="stage__spinner" aria-hidden="true"></span>
+            <span class="mono" id="stageLoaderText">正在搭建三维场景…</span>
+          </div>
+          <div class="stage__fallback" id="stageFallback" hidden></div>
+          <p class="stage__hint mono">拖拽旋转 · 滚轮 / 双指缩放 · 双击复位</p>
+          <div class="stage__tools">
+            <button class="ghost-btn ghost-btn--icon" id="btnRotate" type="button" aria-pressed="true" aria-label="自动旋转" title="自动旋转">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 12a8 8 0 1 1-2.6-5.9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                <path d="M20 3.6V7h-3.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button class="ghost-btn ghost-btn--icon" id="btnReset" type="button" aria-label="复位视角" title="复位视角">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.4" />
+                <path d="M12 3.2v2.6M12 18.2v2.6M3.2 12h2.6M18.2 12h2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+          <p class="stage__credit mono">THREE.JS · PRIMITIVE MODEL</p>
+        </div>
+
+        <div class="detail__info" id="detailInfo">
+          <p class="eyebrow" id="detailEyebrow"></p>
+          <h2 class="detail__title" id="detailTitle"></h2>
+          <p class="detail__note" id="detailNote"></p>
+          <dl class="specs" id="detailSpecs"></dl>
+          <div class="detail__tags" id="detailTags"></div>
+          <p class="detail__meta mono" id="detailMeta"></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

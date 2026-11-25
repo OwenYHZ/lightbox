@@ -1,0 +1,20 @@
+{
+  "name": "lightbox",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Lightbox — 个人器材档案，纯代码构建的展示页",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.65.1",
+    "vite": "^7.1.12"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  }
+}

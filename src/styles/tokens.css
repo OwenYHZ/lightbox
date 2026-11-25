@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Lightbox · 设计变量
+   改这里就能整体换气质：色板、字体、圆角、缓动、留白。
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- 色板：近黑底 + 暖白字 + 香槟金点缀 ---- */
+  --ink-0: #07070a;
+  --ink-1: #0b0c0f;
+  --ink-2: #111318;
+  --ink-3: #171a20;
+  --paper: #f3f1ec;
+  --paper-dim: rgba(243, 241, 236, 0.64);
+  --paper-faint: rgba(243, 241, 236, 0.38);
+  --hair: rgba(243, 241, 236, 0.09);
+  --hair-2: rgba(243, 241, 236, 0.17);
+  --accent: #e4cfa8;
+  --accent-dim: rgba(228, 207, 168, 0.55);
+  --accent-soft: rgba(228, 207, 168, 0.1);
+
+  /* ---- 玻璃 ---- */
+  --glass: rgba(255, 255, 255, 0.035);
+  --glass-2: rgba(255, 255, 255, 0.065);
+
+  /* ---- 字体 ---- */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman",
+    Georgia, serif;
+  --font-mono: "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, "Roboto Mono",
+    Consolas, monospace;
+
+  /* ---- 圆角 ---- */
+  --r-xl: 28px;
+  --r-lg: 20px;
+  --r-md: 14px;
+  --r-sm: 10px;
+
+  /* ---- 阴影 ---- */
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 26px 50px -34px rgba(0, 0, 0, 0.9);
+  --shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 40px 70px -40px rgba(0, 0, 0, 0.95);
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 50px 130px -40px rgba(0, 0, 0, 0.98);
+
+  /* ---- 缓动 ---- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.2, 1.2, 0.3, 1);
+
+  /* ---- 布局 ---- */
+  --pad: clamp(20px, 4.4vw, 64px);
+  --maxw: 1440px;
+  --topbar-h: 64px;
+}
