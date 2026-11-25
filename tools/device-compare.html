@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-theme-mode="dark" data-accent="amber">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>设备对比 · Lightbox</title>
+    <link rel="stylesheet" href="/src/tools/device-compare.css" />
+  </head>
+  <body>
+    <header class="cmp-top">
+      <a class="cmp-back mono" href="../index.html">← 返回</a>
+      <nav class="cmp-tabs" id="tabs"></nav>
+      <div class="cmp-actions">
+        <button class="cmp-btn" id="themeBtn" type="button">切换明暗</button>
+        <a class="cmp-btn" id="detailLink" href="#">打开详情页</a>
+      </div>
+    </header>
+    <main class="cmp-grid">
+      <section class="cmp-left">
+        <div class="cmp-block">
+          <p class="cmp-label mono">SVG 封面</p>
+          <div class="cmp-svg" id="svgHost"></div>
+        </div>
+        <div class="cmp-block">
+          <p class="cmp-label mono">3D 模型</p>
+          <div class="cmp-stage" id="stageHost"></div>
+        </div>
+      </section>
+      <section class="cmp-right">
+        <div class="cmp-photo" id="photoHost"></div>
+        <div class="cmp-rail" id="rail"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/tools/device-compare.js"></script>
+  </body>
+</html>

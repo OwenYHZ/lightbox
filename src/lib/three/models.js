@@ -47,10 +47,10 @@ function makeMaterials(tone, accent) {
     }),
     plate: new THREE.MeshPhysicalMaterial({
       color: t.plate,
-      metalness: Math.min(0.96, t.metalness + 0.2),
-      roughness: Math.max(0.18, t.roughness - 0.12),
-      clearcoat: 0.4,
-      envMapIntensity: 1.25,
+      metalness: Math.min(0.94, t.metalness + 0.16),
+      roughness: Math.max(0.26, t.roughness - 0.06),
+      clearcoat: 0.28,
+      envMapIntensity: 0.85,
     }),
     rubber: new THREE.MeshStandardMaterial({
       color: 0x0e0f12,
@@ -79,6 +79,30 @@ function makeMaterials(tone, accent) {
       iridescenceIOR: 1.32,
       iridescenceThicknessRange: [180, 620],
       envMapIntensity: 1.3,
+    }),
+    /* 透明镜片：给前玉/灯罩用，靠清漆与环境反射出通透感 */
+    glassClear: new THREE.MeshPhysicalMaterial({
+      color: 0xe6f0f6,
+      metalness: 0.06,
+      roughness: 0.045,
+      clearcoat: 1,
+      clearcoatRoughness: 0.02,
+      transparent: true,
+      opacity: 0.34,
+      depthWrite: false,
+      envMapIntensity: 2.4,
+      iridescence: 0.55,
+      iridescenceIOR: 1.35,
+      iridescenceThicknessRange: [100, 380],
+    }),
+    /* 中性亮银：双色机身（黑身 + 银饰板）用，避免被 tone 拉成蓝灰 */
+    silver: new THREE.MeshPhysicalMaterial({
+      color: 0xc3c6cb,
+      metalness: 0.88,
+      roughness: 0.42,
+      clearcoat: 0.2,
+      clearcoatRoughness: 0.4,
+      envMapIntensity: 0.8,
     }),
     frosted: new THREE.MeshPhysicalMaterial({
       color: 0xe8e5dc,
@@ -109,6 +133,65 @@ function lensCap(radius, apexZ, material) {
   const mesh = new THREE.Mesh(geo, material);
   mesh.rotation.x = Math.PI / 2;
   mesh.position.z = apexZ - R;
+  return mesh;
+}
+
+/**
+ * 3D 文字贴花：用 Canvas 画出文字 → CanvasTexture → 透明平面。
+ * 纯代码生成，不依赖字体文件或图片；调用方负责摆位。
+ * @param {string} text
+ * @param {{height?:number, color?:string, weight?:number, tracking?:number, opacity?:number, font?:string}} opts
+ */
+function label(text, opts = {}) {
+  const {
+    height = 0.06,
+    color = "#f3f1ec",
+    weight = 600,
+    tracking = 0,
+    opacity = 0.92,
+    font = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+  } = opts;
+
+  const fontSize = 96;
+  const pad = 24;
+  const probe = document.createElement("canvas").getContext("2d");
+  probe.font = weight + " " + fontSize + "px " + font;
+  const chars = String(text).split("");
+  const width =
+    chars.reduce((sum, ch) => sum + probe.measureText(ch).width, 0) + tracking * Math.max(0, chars.length - 1);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.ceil(width + pad * 2);
+  canvas.height = Math.ceil(fontSize * 1.35 + pad * 2);
+  const ctx = canvas.getContext("2d");
+  ctx.font = weight + " " + fontSize + "px " + font;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = color;
+  let x = pad;
+  const y = canvas.height / 2;
+  for (const ch of chars) {
+    ctx.fillText(ch, x, y);
+    x += ctx.measureText(ch).width + tracking;
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  texture.needsUpdate = true;
+
+  const aspect = canvas.width / canvas.height;
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(height * aspect, height),
+    new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      depthWrite: false,
+      opacity,
+      side: THREE.DoubleSide,
+    })
+  );
+  mesh.renderOrder = 2;
+  mesh.userData.isLabel = true;
   return mesh;
 }
 
@@ -537,7 +620,7 @@ export function buildModel(kind, params = {}) {
   let group;
   if (device) {
     const materials = makeMaterials(params.tone, params.accent);
-    group = device({ materials, helpers: { part, box, knurlRing }, params, THREE });
+    group = device({ materials, helpers: { part, box, knurlRing, label }, params, THREE });
   } else {
     const builder = MODEL_BUILDERS[kind] || buildObject;
     group = builder(params);

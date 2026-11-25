@@ -484,7 +484,11 @@ export class StageViewer {
         if (child.isMesh || child.isInstancedMesh) {
           if (child.geometry) child.geometry.dispose();
           const mats = Array.isArray(child.material) ? child.material : [child.material];
-          mats.forEach((mat) => mat && mat.dispose());
+          mats.forEach((mat) => {
+            if (!mat) return;
+            if (mat.map) mat.map.dispose();
+            mat.dispose();
+          });
         }
       });
       this.model = null;

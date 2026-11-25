@@ -824,11 +824,11 @@ export const GEAR = [
     lens: "fixed",
     medium: "film",
     status: "active",
-    summary: "135 胶片 · 30mm F3.5 · 自动对焦",
-    note: "银黑双色的口袋机，镜头盖一推就开机。30mm 广角适合随手记录，闪光灯就在取景器旁边。",
+    summary: "135 胶片 · 30mm F4.5 · 自动对焦",
+    note: "银黑双色的口袋机，镜头盖一推就开机。30mm 广角、F4.5 在日光下够用，闪光灯就在取景器旁边。",
     specs: [
       ["画幅", "135 胶片（24 × 36 mm）"],
-      ["镜头", "Konica 30mm F3.5（3 组 3 片）"],
+      ["镜头", "Konica 30mm F4.5（3 组 3 片）"],
       ["对焦", "自动对焦 · 最近 0.35 m"],
       ["快门", "1/60 – 1/500s"],
       ["重量", "约 250 g（不含电池）"],
@@ -882,6 +882,6 @@ export const GEAR = [
       ["重量", "约 110 g（不含电池）"],
     ],
     tags: ["闪光灯", "手动", "迷你"],
-    model: { seed: 12, tone: "graphite" },
+    model: { seed: 12, tone: "silver" },
   },
 ];
