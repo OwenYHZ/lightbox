@@ -33,7 +33,7 @@ scene.world = world
 world.use_nodes = True
 bg = world.node_tree.nodes["Background"]
 bg.inputs[0].default_value = (0.93, 0.93, 0.94, 1.0)
-bg.inputs[1].default_value = 0.72
+bg.inputs[1].default_value = 0.95
 
 for o in list(scene.objects):
     if o.type == 'LIGHT':
@@ -49,11 +49,11 @@ def area(name, loc, size, power, target=(0, 0, 31.5)):
     return o
 
 
-area("Key", (-320, -420, 420), 420, 200)
-area("Fill", (380, -300, 120), 360, 66)
-area("Top", (60, -120, 520), 380, 84)
-area("Rim", (40, 480, 300), 320, 150)
-area("Bottom", (0, 0, -420), 400, 55, (0, 0, 0))
+area("Key", (-320, -420, 420), 420, 300)
+area("Fill", (380, -300, 120), 360, 110)
+area("Top", (60, -120, 520), 380, 130)
+area("Rim", (40, 480, 300), 320, 170)
+area("Bottom", (0, 0, -420), 400, 70, (0, 0, 0))
 
 R = math.radians
 

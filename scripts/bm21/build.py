@@ -131,11 +131,11 @@ def textured_opaque(name, image, metallic, roughness):
 M_CHAMP = mat("BM21_champagne", srgb("#d7d0c3"), 0.68, 0.55, bump="grain_normal.png")
 M_CHAMP_BRIGHT = mat("BM21_champagne_edge", srgb("#e6e0d3"), 0.70, 0.42, bump="grain_normal.png")
 M_BLACK = mat("BM21_black_matte", srgb("#1b1b1d"), 0.05, 0.66, bump="grain_normal.png")
-M_BLACK_SOFT = mat("BM21_black_soft", srgb("#2f3136"), 0.0, 0.78, bump="grain_normal.png")
-M_CHARCOAL = mat("BM21_charcoal", srgb("#2a2a2d"), 0.12, 0.60, bump="grain_normal.png")
+M_BLACK_SOFT = mat("BM21_black_soft", srgb("#3d3f45"), 0.0, 0.78, bump="grain_normal.png")
+M_CHARCOAL = mat("BM21_charcoal", srgb("#34353a"), 0.10, 0.62, bump="grain_normal.png")
 M_RING = mat("BM21_lens_ring", srgb("#383942"), 0.12, 0.35)
 M_RING_MATTE = mat("BM21_lens_ring_matte", srgb("#131315"), 0.05, 0.52)
-M_BARRIER = mat("BM21_barrier", srgb("#3d3d44"), 0.32, 0.22)
+M_BARRIER = mat("BM21_barrier", srgb("#1c1c20"), 0.12, 0.28)
 M_LENSGLASS = mat("BM21_lensglass", srgb("#2b2b30"), 0.0, 0.16, transmission=0.12, ior=1.6)
 M_GLASS = mat("BM21_glass", srgb("#9a9da0"), 0.0, 0.05, transmission=1.0, ior=1.5)
 M_LCD = mat("BM21_lcd", srgb("#b9c2c6"), 0.0, 0.14, transmission=0.0, ior=1.5)
@@ -559,13 +559,13 @@ _BARREL_LEN = abs(LENS_FRONT_Y - FRONT_Y) - 1.1
 cyl("LensBarrel", LENS_RING_R, _BARREL_LEN, (LENS_CX, FRONT_Y - 1.1 - _BARREL_LEN / 2, LENS_CZ), M_RING, 128, 0.0, 'Y')
 bevel(bpy.data.objects["LensBarrel"], 0.55, 4)
 cyl("LensWell", 7.65, 1.4, (LENS_CX, LENS_FRONT_Y + 1.35, LENS_CZ), M_RING_MATTE, 96, 0.0, 'Y')
-ring_decal("LensRingText", LENS_CX, LENS_CZ, LENS_INNER_R + 0.08, LENS_RING_R - 0.22,
+ring_decal("LensRingText", LENS_CX, LENS_CZ, 7.05, LENS_RING_R - 0.22,
            LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0)
 prism_y("LensBarrier",
         rounded_local(LENS_CX - BARRIER_W / 2, LENS_CX + BARRIER_W / 2,
                       LENS_CZ - BARRIER_H / 2, LENS_CZ + BARRIER_H / 2, BARRIER_R),
         LENS_FRONT_Y + 0.38, LENS_FRONT_Y + 1.20, M_BARRIER, 0.9, 4)
-slit = rbox("BarrierSlit", 15.0, 0.26, 0.95, (LENS_CX, LENS_FRONT_Y + 0.46, LENS_CZ + 0.1),
+slit = rbox("BarrierSlit", 14.0, 0.30, 0.9, (LENS_CX, LENS_FRONT_Y + 0.44, LENS_CZ + 0.1),
             0.0, M_BLACK, 2, rot=(0, -math.radians(31), 0))
 
 # ============================================================ 顶面（z=62）

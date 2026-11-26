@@ -12,7 +12,7 @@ import "./styles/detail.css";
 import { GEAR, CATEGORIES, CATEGORY_LABEL, DIMENSIONS, STATUS_META } from "./data/gear.js";
 import { coverArt } from "./lib/art.js";
 import { ACCENTS, applyAccent, bootAccent, getAccent, swatchColor } from "./data/accents.js";
-import { StageViewer } from "./lib/three/viewer.js";
+
 
 /* ------------------------------------------------------------------ 工具 */
 
@@ -766,6 +766,14 @@ function webglAvailable() {
 }
 
 
+/* 三维 chunk 约 1MB：首屏空闲后先把它拉下来，点开时基本命中缓存 */
+let stageWarmed = false;
+function warmStageChunk() {
+  if (stageWarmed) return;
+  stageWarmed = true;
+  import("./lib/three/viewer.js").catch(() => {});
+}
+
 async function ensureStage() {
   if (stage) return stage;
   if (!webglAvailable()) {
@@ -773,8 +781,8 @@ async function ensureStage() {
     return null;
   }
   if (!stagePromise) {
-    stagePromise = Promise.resolve()
-      .then(() => {
+    stagePromise = import("./lib/three/viewer.js")
+      .then(({ StageViewer }) => {
         stage = new StageViewer(el.stageMount, {
           theme: state.theme,
           onReady: () => markStageLoaderReady(),
@@ -1103,6 +1111,9 @@ function boot() {
   syncAccentUI();
   bindEvents();
   route();
+if ("requestIdleCallback" in window) requestIdleCallback(warmStageChunk, { timeout: 2500 });
+else window.setTimeout(warmStageChunk, 900);
+
 
 
 }

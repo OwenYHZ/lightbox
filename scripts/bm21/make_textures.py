@@ -89,8 +89,8 @@ def lens_face():
                  (13.9, (23, 23, 26)), (13.6, (12, 12, 14))):
         rr = r * ppm
         d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=c + (255,))
-    arc_text(im, cx, cy, 12.45 * ppm, "KONICA LENS", int(2.15 * ppm), (238, 238, 232), top=True)
-    arc_text(im, cx, cy, 12.30 * ppm, "AUTO FOCUS 30mm F4.5", int(2.05 * ppm), (238, 238, 232), top=False)
+    arc_text(im, cx, cy, 12.55 * ppm, "KONICA LENS", int(1.85 * ppm), (238, 238, 232), top=True)
+    arc_text(im, cx, cy, 12.40 * ppm, "AUTO FOCUS 30mm F4.5", int(1.80 * ppm), (238, 238, 232), top=False)
     r_in = 10.2 * ppm
     d.ellipse([cx - r_in, cy - r_in, cx + r_in, cy + r_in], fill=(20, 20, 22, 255))
     d.ellipse([cx - r_in, cy - r_in, cx + r_in, cy + r_in], outline=(48, 48, 52, 255), width=4)

@@ -90,6 +90,10 @@ export function glyphKonicaBM21() {
     [18.1, 50], [18.9, 54], [19.9, 58], [20.9, 63],
   ].map((p) => [px(p[0]), pz(p[1])]));
 
+  /* 握把块：缝 + 底 + 左缘 + 顶（只用它铺一层排线，黑窗带保持素线） */
+  const grip =
+    seam + "H96V" + T + "H" + px(23.4) + "Z";
+
   /* 黑窗带：矩形 + 左端圆形凸缘 */
   const lobe = { x: px(35.5), y: pz(8.2), r: n(5.95 * U) };
   const pX0 = px(29.5 + 5.95);
@@ -113,7 +117,7 @@ export function glyphKonicaBM21() {
     const cx = px(80.1) + n((i - 3) * 2.3 * U);
     ribs +=
       '<path d="M' + n(cx) + " " + n(fl.y + n(0.9 * V)) + "V" + n(fl.y + fl.h - n(0.9 * V)) +
-      '" stroke-opacity="0.3" stroke-width="0.9"/>';
+      '" stroke-opacity="0.3" stroke-width="1"/>';
   }
 
   /* 镜筒 */
@@ -129,17 +133,23 @@ export function glyphKonicaBM21() {
   [48.1, 53.2].forEach((z) => {
     [79.1, 83.9, 88.5].forEach((x) => {
       dots += '<circle cx="' + px(x) + '" cy="' + pz(z) + '" r="' + n(0.9 * U) +
-        '" stroke-opacity="0.42" stroke-width="0.9" fill="none"/>';
+        '" stroke-opacity="0.46" stroke-width="1" fill="none"/>';
     });
   });
 
   return (
     "<defs>" +
+    /* 唯一的一层排线：只给橡胶握把，间距与 ZA12 顶板那层同档 */
+    '<pattern id="' + id + '-h" width="3.7" height="3.7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+    '<path class="line" d="M0 0V3.7" stroke-opacity="0.11" stroke-width="1"/>' +
+    "</pattern>" +
+    '<clipPath id="' + id + '-c"><path d="' + body + '"/></clipPath>' +
     '<path id="' + id + '-ta" d="' + arc(kx, ky, n(10.4 * U), 208, 332, 1) + '"/>' +
     '<path id="' + id + '-ba" d="' + arc(kx, ky, n(12.4 * U), 156, 24, 0) + '"/>' +
     "</defs>" +
 
-    /* ---------- 机身 + 握把 ---------- */
+    /* ---------- 机身 + 握把（握把铺一层最淡排线 = 橡胶） ---------- */
+    '<g clip-path="url(#' + id + '-c)"><path d="' + grip + '" fill="url(#' + id + '-h)" stroke="none"/></g>' +
     '<g class="line" fill="none" stroke-linecap="round" stroke-linejoin="round">' +
     '<path d="' + body + '" stroke-opacity="0.6" stroke-width="1.5"/>' +
     '<path d="' + seam + '" stroke-opacity="0.6" stroke-width="1.4"/>' +
@@ -155,7 +165,7 @@ export function glyphKonicaBM21() {
     '" stroke-opacity="0.3" stroke-width="1"/>' +
     /* 右圆窗 */
     '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + rf.r + '" stroke-opacity="0.5" stroke-width="1.2"/>' +
-    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + n(2.2 * U) + '" stroke-opacity="0.24" stroke-width="0.9"/>' +
+    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + n(2.2 * U) + '" stroke-opacity="0.24" stroke-width="1"/>' +
     /* 闪光窗 + 棱条 */
     '<path d="' + rrect(fl.x, fl.y, fl.w, fl.h, n(1.6 * U)) + '" stroke-opacity="0.55" stroke-width="1.2"/>' +
     ribs +
@@ -164,14 +174,14 @@ export function glyphKonicaBM21() {
     '<path d="M' + px(96.4) + " " + pz(6) + "V" + pz(57) +
     "M" + px(96.4) + " " + pz(6) + "C" + px(96.4) + " " + pz(2.4) + " " + px(97.4) + " " + pz(1.5) + " " + px(99) + " " + pz(1.5) +
     "M" + px(96.4) + " " + pz(57) + "C" + px(96.4) + " " + pz(60.6) + " " + px(97.4) + " " + pz(61.5) + " " + px(99) + " " + pz(61.5) +
-    '" stroke-opacity="0.28" stroke-width="1"/>' +
+    '" stroke-opacity="0.55" stroke-width="1"/>' +
 
     /* ---------- 镜筒：银环 + 黑圈 + 前窗 ---------- */
     '<circle cx="' + kx + '" cy="' + ky + '" r="' + kSilver + '" stroke-opacity="0.45" stroke-width="1"/>' +
     '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" stroke-opacity="0.6" stroke-width="1.5"/>' +
-    '<path d="' + rrect(kx - kCovW, ky - kCovH, kCovW * 2, kCovH * 2, n(3 * U)) + '" stroke-opacity="0.42" stroke-width="1.1"/>' +
+    '<path d="' + rrect(kx - kCovW, ky - kCovH, kCovW * 2, kCovH * 2, n(3 * U)) + '" stroke-opacity="0.42" stroke-width="1.2"/>' +
     '<path d="M' + n(kx - kCovW + n(2.4 * U)) + " " + n(ky + kCovH * 0.7) + "L" + n(kx + kCovW - n(2.4 * U)) + " " +
-    n(ky - kCovH * 0.6) + '" stroke-opacity="0.2" stroke-width="0.9"/>' +
+    n(ky - kCovH * 0.6) + '" stroke-opacity="0.2" stroke-width="1"/>' +
 
     /* ---------- 右下 2×3 圆点 ---------- */
     dots +
@@ -191,10 +201,10 @@ export function glyphKonicaBM21() {
     '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.56" font-family="' + SANS +
     '" font-size="15" font-weight="700">big mini</text>' +
     '<text class="text" x="' + px(81.8) + '" y="' + pz(43.7) + '" text-anchor="middle" textLength="' + n(16.5 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.4" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.3" font-family="' + SANS +
     '" font-size="7.4" font-weight="500" letter-spacing="0.1">RED EYE REDUCTION</text>' +
     '<text class="text" x="' + px(82) + '" y="' + pz(46.7) + '" text-anchor="middle" textLength="' + n(17 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.4" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.3" font-family="' + SANS +
     '" font-size="7.6" font-weight="500" letter-spacing="0.1">AUTO FOCUS <tspan font-style="italic" font-weight="700" font-size="8.2">BM-21</tspan></text>' +
 
     /* ---------- 唯一的强调色：镜圈上的对位点 ---------- */
