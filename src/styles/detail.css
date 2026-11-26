@@ -36,9 +36,10 @@
   grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
   width: min(1160px, 100%);
   height: min(86vh, 860px);
-  border: 1px solid var(--hair-2);
+  border: 1px solid var(--accent-line);
   border-radius: var(--r-xl);
-  background: linear-gradient(150deg, var(--panel-a), var(--panel-b));
+  background: radial-gradient(120% 90% at 4% -10%, var(--accent-wash), transparent 56%),
+    linear-gradient(150deg, var(--panel-a), var(--panel-b));
   box-shadow: var(--shadow-panel);
   overflow: hidden;
   opacity: 0;
@@ -60,7 +61,7 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border: 1px solid var(--hair-2);
+  border: 1px solid var(--accent-line);
   border-radius: 50%;
   background: var(--stage-chip);
   color: var(--paper-dim);
@@ -76,8 +77,8 @@
 }
 
 .detail__close:hover {
-  color: var(--paper);
-  background: var(--glass-2);
+  color: var(--accent);
+  background: var(--accent-wash);
   transform: rotate(90deg);
 }
 
@@ -123,6 +124,10 @@
   opacity: 1;
 }
 
+/* --------------------------------------------------------------------------
+   加载动画：用这台器材的封面矢量图「画」出来，而不是转个圈
+   —— 线条逐段描边 → 填充/注记淡入 → 扫描光带 → 淡出交给 canvas
+   -------------------------------------------------------------------------- */
 .stage__loader {
   position: absolute;
   inset: 0;
@@ -131,38 +136,208 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: clamp(14px, 2.2vw, 22px);
+  /* 永远不吃事件：不挡拖拽旋转 / 双击复位 */
+  pointer-events: none;
   font-size: 9.5px;
   letter-spacing: 0.22em;
   color: var(--paper-faint);
   text-transform: uppercase;
-  transition: opacity 0.6s var(--ease);
+  transition: opacity 0.7s var(--ease), transform 0.9s var(--ease);
 }
 
 .stage__loader.is-done {
   opacity: 0;
+  transform: scale(1.04);
   pointer-events: none;
 }
 
-.stage__spinner {
-  width: 26px;
-  height: 26px;
-  border: 1px solid var(--hair-2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 1.1s linear infinite;
+.stage__loader-art {
+  position: relative;
+  width: min(68%, 400px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.955);
+  animation: stageArtIn 0.8s var(--ease) 0.06s forwards;
+  /* 边缘融进舞台底色，不留一个硬边方块 */
+  -webkit-mask-image: radial-gradient(118% 118% at 50% 48%, #000 58%, transparent 93%);
+  mask-image: radial-gradient(118% 118% at 50% 48%, #000 58%, transparent 93%);
 }
 
-@keyframes spin {
+.stage__loader-art svg.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* 让青色/暖色的那几笔有极淡的辉光，像在暗房里投出来的线稿 */
+  filter: drop-shadow(0 0 12px var(--accent-wash));
+}
+
+@keyframes stageArtIn {
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: none;
   }
+}
+
+/* 线条描边：JS 给每条几何写上 --len（路径长度）与 --d（起始延迟） */
+.stage__loader-art .cover .line,
+.stage__loader-art .cover .line > *,
+.stage__loader-art .cover .accent,
+.stage__loader-art .cover .accent > * {
+  stroke-dasharray: var(--len, 1600);
+  stroke-dashoffset: var(--len, 1600);
+  animation: stageArtDraw 0.85s var(--ease) var(--d, 0ms) forwards;
+}
+
+@keyframes stageArtDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 面积元素 / 注记：晚一点淡入，像印上去的 */
+.stage__loader-art .cover .accent-fill,
+.stage__loader-art .cover .text {
+  opacity: 0;
+  animation: stageArtFade 0.72s var(--ease) 0.42s forwards;
+}
+
+@keyframes stageArtFade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 扫描光带：一遍遍从封面下方掠到上方 */
+.stage__loader-art::after {
+  content: "";
+  position: absolute;
+  inset: -18% -12%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 39%,
+    var(--accent-soft) 48%,
+    var(--accent-soft) 52%,
+    transparent 61%
+  );
+  /* 左右两侧也融掉，别出现一条硬边矩形 */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: stageArtScan 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.55s infinite;
+}
+
+@keyframes stageArtScan {
+  0% {
+    opacity: 0;
+    transform: translateY(-42%);
+  }
+  14% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(42%);
+  }
+}
+
+.stage__loader-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 不确定进度条：一根 accent 细光在发丝线上滑 */
+.stage__loader-bar {
+  position: relative;
+  width: 132px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--hair);
+}
+
+.stage__loader-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 44%;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: stageBarSlide 1.7s var(--ease) 0.5s infinite;
+}
+
+@keyframes stageBarSlide {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(320%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage__loader-art {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .stage__loader-art::after {
+    display: none;
+  }
+
+  .stage__loader-art .cover .line,
+  .stage__loader-art .cover .line > *,
+  .stage__loader-art .cover .accent,
+  .stage__loader-art .cover .accent > * {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .stage__loader-art .cover .accent-fill,
+  .stage__loader-art .cover .text {
+    opacity: 1;
+    animation: none;
+  }
+
+  .stage__loader-bar::after {
+    width: 100%;
+    opacity: 0.55;
+    animation: none;
+  }
+}
+
+[data-theme="light"] .stage__loader-art::after {
+  mix-blend-mode: multiply;
+  background: linear-gradient(
+    180deg,
+    transparent 39%,
+    var(--accent-soft) 48%,
+    var(--accent-soft) 52%,
+    transparent 61%
+  );
 }
 
 .stage__fallback {
   position: absolute;
   inset: 0;
   z-index: 3;
+  background: radial-gradient(80% 70% at 50% 40%, var(--accent-wash), transparent 70%);
   display: grid;
   place-items: center;
   padding: 30px;
@@ -181,7 +356,7 @@
   bottom: 18px;
   z-index: 4;
   padding: 6px 11px;
-  border: 1px solid var(--hair);
+  border: 1px solid var(--card-border);
   border-radius: 999px;
   background: var(--stage-chip);
   -webkit-backdrop-filter: blur(10px);
@@ -237,8 +412,9 @@
   padding-top: clamp(30px, 3.8vw, 48px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-left: 1px solid var(--hair);
-  background: linear-gradient(180deg, var(--glass), transparent 34%);
+  border-left: 1px solid var(--card-border);
+  background: radial-gradient(120% 70% at 100% -6%, var(--accent-wash), transparent 62%),
+    linear-gradient(180deg, var(--glass), transparent 34%);
 }
 
 .detail__info .eyebrow {
@@ -266,7 +442,7 @@
   gap: 8px;
   height: 28px;
   padding: 0 12px;
-  border: 1px solid var(--hair-2);
+  border: 1px solid var(--card-border);
   border-radius: 999px;
   background: var(--glass);
   font-size: 11.5px;
@@ -280,6 +456,13 @@
   border-radius: 50%;
   background: var(--dot, var(--paper-faint));
   box-shadow: 0 0 9px 1px var(--dot, transparent);
+}
+
+@supports (color: color-mix(in oklab, red, blue)) {
+  .status-badge i {
+    background: color-mix(in oklab, var(--dot, var(--paper-faint)) 72%, var(--accent));
+    box-shadow: 0 0 9px 1px color-mix(in oklab, var(--dot, transparent) 60%, transparent);
+  }
 }
 
 .detail__note {

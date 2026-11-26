@@ -56,6 +56,9 @@ function debounce(fn, wait) {
 
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => resolve()));
 
+/* 加载动画至少露多久：预览出得快时也让封面描边演完，而不是闪一下 */
+const STAGE_LOADER_MIN_MS = 820;
+
 const ICON_CUBE =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7Z"/><path d="M4 7l8 4.2L20 7M12 11.2V21"/></svg>';
 const ICON_ARROW =
@@ -125,6 +128,8 @@ const el = {
   close: $("#detailClose"),
   stageMount: $("#stageMount"),
   stageLoader: $("#stageLoader"),
+  stageLoaderArt: $("#stageLoaderArt"),
+  stageLoaderText: $("#stageLoaderText"),
   stageFallback: $("#stageFallback"),
   btnRotate: $("#btnRotate"),
   btnReset: $("#btnReset"),
@@ -142,6 +147,10 @@ const el = {
 let lastFocused = null;
 let stage = null;
 let stagePromise = null;
+let stageLoaderShownAt = 0;
+let stageLoaderTimer = 0;
+let stageLoaderRaf = 0;
+let stageLoaderCycle = 0;
 const baseTitle = document.title;
 
 /* ------------------------------------------------------------------ 主题 */
@@ -158,6 +167,38 @@ function syncThemeMenu() {
   });
 }
 
+/**
+ * 浏览器 UI 的 theme-color 跟着 accent 推导出来的底色走，
+ * 这样移动端状态栏也属于同一套配色（不再是固定的米黄 / 纯黑）。
+ */
+/** favicon 也跟着 accent 走（标签页里也是同一套色） */
+function syncFavicon() {
+  const link = document.querySelector('link[rel="icon"]');
+  if (!link) return;
+  const cs = getComputedStyle(document.documentElement);
+  const accent = cs.getPropertyValue("--accent").trim();
+  const bg = cs.getPropertyValue("--ink-1").trim();
+  if (!accent || !bg) return;
+  const svg =
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>" +
+    "<rect width='24' height='24' rx='6' fill='" + bg + "'/>" +
+    "<circle cx='12' cy='12' r='5.4' fill='none' stroke='" + accent + "' stroke-width='1.2'/>" +
+    "<circle cx='12' cy='12' r='1.6' fill='" + accent + "'/></svg>";
+  link.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(svg));
+}
+
+function syncThemeColor() {
+  if (!el.themeColor) return;
+  /* 用一个临时元素把 token 解析成真正的 rgb()，meta[theme-color] 才百分百认得 */
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:fixed;left:-9999px;top:0;width:8px;height:8px";
+  probe.style.backgroundColor = "var(--ink-1)";
+  document.body.appendChild(probe);
+  const ink = getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  if (ink && ink !== "rgba(0, 0, 0, 0)") el.themeColor.setAttribute("content", ink);
+}
+
 function applyTheme(mode, { persist = true, animate = true } = {}) {
   const theme = resolveTheme(mode);
   const rootEl = document.documentElement;
@@ -169,7 +210,8 @@ function applyTheme(mode, { persist = true, animate = true } = {}) {
 
   rootEl.setAttribute("data-theme", theme);
   rootEl.setAttribute("data-theme-mode", mode);
-  if (el.themeColor) el.themeColor.setAttribute("content", theme === "dark" ? "#07070a" : "#f5f2ea");
+  syncThemeColor();
+  syncFavicon();
 
   state.themeMode = mode;
   state.theme = theme;
@@ -210,6 +252,8 @@ function syncAccentUI() {
 function setAccent(id) {
   state.accent = applyAccent(id);
   syncAccentUI();
+  syncThemeColor();
+  syncFavicon();
 }
 
 function toggleThemeMenu(open) {
@@ -559,6 +603,91 @@ function renderGrid() {
 
 /* ------------------------------------------------------------------ 详情 */
 
+/**
+ * 三维舞台的加载动画：把该器材的封面 SVG 塞进 loader，
+ * 逐条量出路径长度交给 CSS 做 stroke-dashoffset 描边动画。
+ * 每次打开 / 切换器材都重新注入（等于天然重置动画）。
+ */
+function mountStageLoaderArt(item) {
+  const host = el.stageLoaderArt;
+  if (!host) return 0;
+
+  const cycle = (stageLoaderCycle += 1);
+  cancelStageLoaderWatch();
+
+  /* 换器材时"立刻"回到可见状态：直接杀掉过渡，不然会顺着 0.7s 的淡出倒着淡回来 */
+  if (el.stageLoader) {
+    el.stageLoader.style.setProperty("transition", "none", "important");
+    el.stageLoader.classList.remove("is-done");
+    void el.stageLoader.offsetWidth;
+    requestAnimationFrame(() => {
+      if (el.stageLoader) el.stageLoader.style.removeProperty("transition");
+    });
+  }
+
+  stageLoaderShownAt = performance.now();
+  host.innerHTML = coverArt(item);
+  if (prefersReduced) return cycle;
+
+  let shapes = [];
+  try {
+    shapes = Array.from(
+      host.querySelectorAll(".cover .line, .cover .line > *, .cover .accent, .cover .accent > *")
+    ).filter((node) => typeof node.getTotalLength === "function");
+  } catch (error) {
+    return cycle;
+  }
+  /* 元素多的时候把错开总时长压在 0.42s 内，避免密密麻麻的刻度把动画拖成两秒 */
+  const step = Math.min(18, 420 / Math.max(shapes.length, 1));
+  shapes.forEach((node, i) => {
+    let len = 0;
+    try {
+      len = node.getTotalLength();
+    } catch (error) {
+      len = 0;
+    }
+    if (!Number.isFinite(len) || len <= 0) return;
+    node.style.setProperty("--len", len.toFixed(1));
+    node.style.setProperty("--d", Math.round(i * step) + "ms");
+  });
+  return cycle;
+}
+
+/**
+ * 等这一轮的三维场景就绪再收尾。
+ * 用「每轮一个 cycle + 自己盯 canvas.is-ready」而不是复用 viewer 的 onReady 回调：
+ * 切换器材时上一轮的回调可能晚到，会把新一轮的加载动画立刻掐掉。
+ */
+function startStageLoaderWatch(cycle) {
+  const tick = () => {
+    stageLoaderRaf = 0;
+    if (cycle !== stageLoaderCycle || !state.openId) return;
+    if (el.stageFallback && !el.stageFallback.hidden) return;
+    if (!el.stageMount.querySelector("canvas.is-ready")) {
+      stageLoaderRaf = requestAnimationFrame(tick);
+      return;
+    }
+    const wait = prefersReduced
+      ? 0
+      : Math.max(0, STAGE_LOADER_MIN_MS - (performance.now() - stageLoaderShownAt));
+    if (wait <= 0) {
+      if (el.stageLoader) el.stageLoader.classList.add("is-done");
+      return;
+    }
+    stageLoaderTimer = window.setTimeout(() => {
+      if (cycle === stageLoaderCycle && el.stageLoader) el.stageLoader.classList.add("is-done");
+    }, wait);
+  };
+  stageLoaderRaf = requestAnimationFrame(tick);
+}
+
+function cancelStageLoaderWatch() {
+  if (stageLoaderRaf) cancelAnimationFrame(stageLoaderRaf);
+  stageLoaderRaf = 0;
+  window.clearTimeout(stageLoaderTimer);
+  stageLoaderTimer = 0;
+}
+
 function fillDetail(item) {
   const no = String(INDEX_BY_ID.get(item.id) + 1).padStart(2, "0");
   const status = STATUS_META[item.status] || { label: item.status || "" };
@@ -593,6 +722,9 @@ function fillDetail(item) {
   if (el.stageCredit) {
     el.stageCredit.textContent = item.glb ? "BLENDER · GLB MODEL" : "THREE.JS · PRIMITIVE MODEL";
   }
+  if (el.stageLoaderText) {
+    el.stageLoaderText.textContent = item.glb ? "正在载入几何模型…" : "正在搭建三维场景…";
+  }
   el.stageFallback.innerHTML = "";
 }
 
@@ -625,10 +757,7 @@ async function ensureStage() {
   if (!stagePromise) {
     stagePromise = import("./lib/three/viewer.js")
       .then(({ StageViewer }) => {
-        stage = new StageViewer(el.stageMount, {
-          theme: state.theme,
-          onReady: () => el.stageLoader.classList.add("is-done"),
-        });
+        stage = new StageViewer(el.stageMount, { theme: state.theme });
         return stage;
       })
       .catch((error) => {
@@ -659,6 +788,9 @@ async function openDetail(item, { push = true } = {}) {
   el.detail.classList.add("is-open");
   el.close.focus({ preventScroll: true });
 
+  /* 面板开始出现时同时启动封面描边动画，正好覆盖三维场景的构建时间 */
+  const loaderCycle = mountStageLoaderArt(item);
+
   const viewer = await ensureStage();
   if (viewer && state.openId === item.id) {
     await nextFrame();
@@ -672,6 +804,7 @@ async function openDetail(item, { push = true } = {}) {
     );
     viewer.setAutoRotate(state.autoRotate);
     syncRotateButton();
+    startStageLoaderWatch(loaderCycle);
   }
 
   if (push) pushHash(item.id);
@@ -689,6 +822,9 @@ function closeDetail({ fromRoute = false } = {}) {
   document.title = baseTitle;
 
   if (stage) stage.stop();
+
+  cancelStageLoaderWatch();
+  stageLoaderShownAt = 0;
 
   const hide = () => {
     if (!state.openId) {
@@ -940,6 +1076,8 @@ function boot() {
   syncFilterButton();
   syncThemeMenu();
   state.accent = bootAccent();
+  syncThemeColor();
+  syncFavicon();
   renderSwatches();
   syncAccentUI();
   bindEvents();
@@ -953,6 +1091,7 @@ window.Lightbox = {
   dimensions: DIMENSIONS,
   open: (id) => openDetail(GEAR.find((g) => g.id === id)),
   setTheme: (mode) => applyTheme(mode),
+  setAccent: (id) => setAccent(id),
   getStage: () => stage,
   state,
 };

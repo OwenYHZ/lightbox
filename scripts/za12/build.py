@@ -13,19 +13,19 @@ BODY_H = 23.6
 BASE_H = 4.0
 BASE_INSET = 0.20
 CORNER = 5.6
-FILLET = 1.4
+FILLET = 0.12                 # 侧面→顶面直角（仅 0.12 破边）
 
-PLATE_W, PLATE_D, PLATE_R = 49.5, 44.0, 3.0
+PLATE_W, PLATE_D, PLATE_R = 51.2, 43.2, 4.6   # 四边等宽 ≈1.9mm，圆角放大（p1）
 PLATE_SINK = 0.30             # 顶盖比外壳顶面低 0.30
 PLATE_GAP = 0.17
 
-DIAL_R = 10.6                 # 拨盘 Ø21.2（r4 重标定；外缘左右 25.0 / 后缘 22.3，微超顶盖）
-DIAL_X = 14.4                 # 中心距 28.8
-DIAL_Y = D / 2 - 11.8         # 盘心 Y = +11.7（距后缘 11.8）
+DIAL_R = 11.5                 # 拨盘 Ø23.0（外缘超顶盖 1.2，仍在银色机身内 0.8）
+DIAL_X = 15.2                 # 中心距 30.4
+DIAL_Y = D / 2 - 12.2         # 盘心 Y = +11.3（盘后缘 22.8 vs 顶盖后缘 21.6）
 DIAL_BACK_D = 9.5             # 盘心距机身后缘（p6 + 实拍 222313：拨盘靠后）
 DIAL_TOP = 24.7               # 盘面高（滚花露出 1.4）
 DIAL_BOT = BODY_H - PLATE_SINK - 0.0
-DIAL_TEETH, DIAL_TOOTH = 158, 0.22
+DIAL_TEETH, DIAL_TOOTH = 172, 0.22   # Ø23 下齿距 0.42
 
 WIN_CX, WIN_CZ = -2.2, 14.5
 WIN_W, WIN_H, WIN_R = 26.7, 7.6, 1.6
@@ -34,7 +34,7 @@ WIN_FRAME_D = 1.0
 WIN_DEPTH = 4.6
 SENSOR_X, SENSOR_Z, SENSOR_R = 17.7, 14.6, 2.5
 
-SLOT_W, SLOT_H, SLOT_Z = 6.0, 3.0, 11.8  # 槽心与盘心同深度（距后缘 11.8）
+SLOT_W, SLOT_H, SLOT_Z = 6.2, 2.0, 12.2  # 细长条；槽心与盘心同深度
 
 BTN_X, BTN_Z, BTN_R, BTN_OUT = -0.5, 13.8, 3.8, 0.7
 
@@ -314,6 +314,14 @@ def dial(name, cx, cy, mat_gear, mat_face):
     return o
 
 
+def panel_cut(name, w, h, r, y_front, y_back, material, seg=24):
+    """朝 -Y 的圆角矩形洞（用 rounded_points 保证角半径准确；rbox 的 bevel 会被薄边夹小）。"""
+    o = prism(name, w, h, -(y_back - y_front), 0.001, r, material, 0.0, seg=seg)
+    o.rotation_euler = (math.pi / 2, 0, 0)
+    o.location = (WIN_CX * S, y_front * S, WIN_CZ * S)
+    return o
+
+
 def boolean_cut(target, cutter, name="cut"):
     md = target.modifiers.new(name, 'BOOLEAN')
     md.operation = 'DIFFERENCE'
@@ -364,17 +372,17 @@ prism("BottomPanel", BOT_PANEL_W, BOT_PANEL_D, -0.15, 0.30, BOT_PANEL_R, M_BOTTO
       0.10, seg=16, flip_v=True)
 
 # ============================================================ 正面柔光窗
-cutA = rbox("WinFrameCut", WIN_FRAME_W, WIN_FRAME_D + 0.4, WIN_FRAME_H,
-            (WIN_CX, -D / 2 + WIN_FRAME_D / 2 - 0.2, WIN_CZ), WIN_FRAME_R, M_CAVITY, 6)
+cutA = panel_cut("WinFrameCut", WIN_FRAME_W, WIN_FRAME_H, WIN_FRAME_R,
+                 -D / 2 - 0.10, -D / 2 + WIN_FRAME_D, M_CAVITY, 24)
 boolean_cut(shell, cutA, "winframe")
-cutB = rbox("WinCut", WIN_W, WIN_DEPTH + WIN_FRAME_D, WIN_H,
-            (WIN_CX, -D / 2 + WIN_FRAME_D + WIN_DEPTH / 2, WIN_CZ), WIN_R, M_CAVITY, 6)
+cutB = panel_cut("WinCut", WIN_W, WIN_H, WIN_R,
+                 -D / 2 + WIN_FRAME_D, -D / 2 + WIN_FRAME_D + WIN_DEPTH, M_CAVITY, 24)
 boolean_cut(shell, cutB, "window")
 
 # 窗框内衬（哑光，压掉沉台壁全白晕光）
-frame_ring("WinFrameLiner", WIN_FRAME_W - 0.10, WIN_FRAME_H - 0.10, WIN_FRAME_R - 0.05,
-           WIN_W - 0.08, WIN_H - 0.08, WIN_R - 0.04,
-           -D / 2 - 0.002, -D / 2 + WIN_FRAME_D, M_FRAME, 16, 0.20)
+frame_ring("WinFrameLiner", WIN_FRAME_W + 0.50, WIN_FRAME_H + 0.50, WIN_FRAME_R + 0.25,
+           WIN_W - 0.40, WIN_H - 0.35, WIN_R - 0.15,
+           -D / 2 - 0.002, -D / 2 + WIN_FRAME_D, M_FRAME, 24, 0.16)
 
 # 玻璃（沉台内 0.6）
 rbox("WinGlass", WIN_FRAME_W - 1.5, 0.16, WIN_FRAME_H - 1.6,
@@ -386,10 +394,10 @@ rbox("WinCavity", WIN_W - 0.2, 0.7, WIN_H - 0.2,
 cyl("Tube", 1.5, 21.0, (WIN_CX, -D / 2 + 3.4, WIN_CZ), M_TUBE, 32, 0.0, 'X')
 
 # 菲涅尔：同心环棱
-FRE_W, FRE_H = 25.8, 7.2
+FRE_W, FRE_H = 26.8, 7.70   # 略大于窗洞，盖住洞壁避免露出暗缝
 PERIOD, AMP = 1.2, 0.22
 FRE_Y = -D / 2 + WIN_FRAME_D + 0.5
-NANG, DR, RC = 140, 0.18, 0.9
+NANG, DR, RC = 140, 0.18, 1.55
 RMAX = math.hypot(FRE_W / 2, FRE_H / 2)
 
 
@@ -409,6 +417,8 @@ while rr <= RMAX:
     ring = []
     frac = (rr / PERIOD) % 1.0
     tri = 1.0 - abs(frac * 2.0 - 1.0)
+    if rr < 1.50:                 # 中心 1.5mm 做平，去掉正中心的暗点
+        tri = 0.0
     yv = (FRE_Y - 0.05 - AMP * tri) * S
     for j in range(NANG):
         a = j / NANG * math.tau
@@ -417,6 +427,12 @@ while rr <= RMAX:
     rings.append((ring, rr))
     rr += DR
 bm.verts.ensure_lookup_table()
+# 中心封口：极坐标网格从 r=0.09 起，不封口会在正视里留一个黑点
+_r0 = rings[0][0]
+_tri0 = 0.0
+_ctr = bm.verts.new((WIN_CX * S, (FRE_Y - 0.05 - AMP * _tri0) * S, WIN_CZ * S))
+for j in range(NANG):
+    bm.faces.new((_ctr, _r0[j], _r0[(j + 1) % NANG]))
 for k in range(len(rings) - 1):
     r0, ra = rings[k]
     r1, rb = rings[k + 1]
@@ -429,6 +445,10 @@ for k in range(len(rings) - 1):
         if not _inside(hx, hz):
             continue
         bm.faces.new((r0[j], r0[j2], r1[j2], r1[j]))
+# 清掉矩形掩膜外的孤立顶点（否则包围盒/体积虚高）
+_loose = [v for v in bm.verts if not v.link_faces]
+if _loose:
+    bmesh.ops.delete(bm, geom=_loose, context='VERTS')
 bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
 me = bpy.data.meshes.new("Fresnel"); bm.to_mesh(me); bm.free()
 fre = bpy.data.objects.new("Fresnel", me); scene.collection.objects.link(fre)

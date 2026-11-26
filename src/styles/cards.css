@@ -42,9 +42,11 @@
   position: relative;
   overflow: hidden;
   height: 100%;
-  border: 1px solid var(--hair);
+  /* 描边与内发光都带 accent，卡片不再只是"白/黑一块" */
+  border: 1px solid var(--card-border);
   border-radius: var(--r-lg);
-  background: linear-gradient(158deg, var(--card-a), var(--card-b) 42%, var(--card-c));
+  background: var(--card-glow),
+    linear-gradient(158deg, var(--card-a), var(--card-b) 42%, var(--card-c));
   box-shadow: var(--shadow-card);
   transition: transform 0.6s var(--ease), border-color 0.5s var(--ease),
     box-shadow 0.6s var(--ease);
@@ -67,6 +69,23 @@
   transform: translateY(-5px);
   border-color: var(--card-hover-border);
   box-shadow: var(--shadow-lift);
+}
+
+/* 描边内侧一圈 accent 冷光，悬停时点亮 */
+.card__surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 0 1px var(--accent-line), inset 0 0 34px -12px var(--accent-soft);
+  transition: opacity 0.55s var(--ease);
+}
+
+.card:hover .card__surface::after {
+  opacity: 1;
 }
 
 .card:hover .card__surface::before {
@@ -173,6 +192,7 @@
   border: 1px solid var(--accent-dim);
   border-radius: 999px;
   background: var(--accent-soft);
+  box-shadow: 0 6px 18px -14px var(--accent-dim);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono);
@@ -190,6 +210,7 @@
 .card:hover .card__badge {
   background: var(--accent-soft);
   border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---- 状态 ---- */
@@ -203,7 +224,7 @@
   gap: 5px;
   height: 20px;
   padding: 0 8px;
-  border: 1px solid var(--hair);
+  border: 1px solid var(--card-border);
   border-radius: 999px;
   background: var(--stage-chip);
   -webkit-backdrop-filter: blur(8px);
@@ -219,6 +240,14 @@
   border-radius: 50%;
   background: var(--dot, var(--paper-faint));
   box-shadow: 0 0 7px 1px var(--dot, transparent);
+}
+
+/* 状态点：保留语义色，但往 accent 上牵一档，跟整页同一个色温 */
+@supports (color: color-mix(in oklab, red, blue)) {
+  .card__status i {
+    background: color-mix(in oklab, var(--dot, var(--paper-faint)) 72%, var(--accent));
+    box-shadow: 0 0 8px 1px color-mix(in oklab, var(--dot, transparent) 60%, transparent);
+  }
 }
 
 [data-status="active"] {
@@ -302,7 +331,7 @@
 
 .tag {
   padding: 2px 7px;
-  border: 1px solid var(--hair);
+  border: 1px solid var(--card-border);
   border-radius: 5px;
   background: var(--glass);
   font-size: 10px;

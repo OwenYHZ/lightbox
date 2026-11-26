@@ -1,0 +1,133 @@
+DSH_STAGE {"name": "boot", "t": 1795688471.385, "run": "run-mwxejvi6l8cq"}
+DSH_STAGE {"name": "engine-prelude", "t": 1795688471.385, "run": "run-mwxejvi6l8cq"}
+DSH_SCRIPT_FILE E:\code\dshCode\Lightbox\scripts\bm21\build.py
+DSH_STAGE {"name": "preload-done", "t": 1795688471.385, "run": "run-mwxejvi6l8cq"}
+Blender 4.2.22 LTS (hash 88937221abfc built 2026-06-23 01:34:44)
+Info: Total files 0 | Changed 0 | Failed 0
+HEADLESS {"bbox_mm": {"x": [-50.0, 50.0], "y": [-17.45, 16.07], "z": [-0.35, 64.3]}, "size_mm": {"x": 100.0, "y": 33.52, "z": 64.65}, "objects": 59}
+Info: Saved "bm21.blend"
+INFO Draco mesh compression is available, use library at D:\Program Files\Blender Foundation\Blender 4.2\4.2\python\lib\site-packages\extern_draco.dll
+18:21:13 | INFO: Starting glTF 2.0 export
+18:21:13 | INFO: Extracting primitive: Shell
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BackCover
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: Grip
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FrontStrip
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FinderHousing
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FinderWindow
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FinderInner
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FinderTopStep
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: AfLampRim
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: AfLampLens
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: AfSensorRim
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: AfSensorLens
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashFrame
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashGlass
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib0
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib1
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib2
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib3
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib4
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib5
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib6
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib7
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib8
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib9
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib10
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib11
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib12
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib13
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FlashRib14
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: StripSlot
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: StripDot0
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: StripDot1
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: StripDot2
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LensBezel
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LensBarrel
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LensWell
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LensBarrier
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BarrierSlit
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: ShutterRing
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: ShutterBtn
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LcdFrame
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: LcdGlass
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: OnBtn
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: ModeBtn
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: PwrBtn
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: TopHole0
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: TopHole1
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: EyePiece
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: EyeGlass
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BackLamp
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BackDial
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BackDialRim
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FilmWinFrame
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: FilmWinGlass
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: SerialPlate
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BatteryCover
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: BattSlot
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: Screw0
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Extracting primitive: Screw1
+18:21:13 | INFO: Primitives created: 1
+18:21:13 | INFO: Finished glTF 2.0 export in 0.16797995567321777 s
+
+HEADLESS {"saved": "E:/code/dshCode/Lightbox/scripts/bm21/bm21.blend", "glb": "E:/code/dshCode/Lightbox/public/assets/models/konica-bm21.glb"}
+DSH_STAGE {"name": "script-end", "t": 1795688473.48, "run": "run-mwxejvi6l8cq"}
+DSH_STAGE {"name": "done", "t": 1795688473.48, "run": "run-mwxejvi6l8cq"}

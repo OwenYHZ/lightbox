@@ -3,7 +3,7 @@
 <body>
 <canvas id="dialL" width="1024" height="1024"></canvas>
 <canvas id="dialR" width="1024" height="1024"></canvas>
-<canvas id="plate" width="1536" height="1365"></canvas>
+<canvas id="plate" width="1536" height="1296"></canvas>
 <canvas id="backIcon" width="512" height="512"></canvas>
 <canvas id="shoeBack" width="512" height="213"></canvas>
 <canvas id="bottomPanel" width="1280" height="1052"></canvas>
@@ -15,7 +15,7 @@
      与官方 p1 顶面图一致（12 点为直立，顺时针逐渐转倒）。
    --------------------------------------------------------------- */
 var TAU = Math.PI * 2;
-var DIAL_MM = 21.2;             // 拨盘外径（mm）——与 build.py 的 DIAL_R 联动，只改这一处
+var DIAL_MM = 23.0;             // 拨盘外径（mm）——与 build.py 的 DIAL_R 联动，只改这一处
 var K = 1024 / DIAL_MM;
 var U = DIAL_MM / 16;           // 所有 mm 数值按 Ø16 标定，按 U 等比缩放
 var C = 512;
@@ -103,9 +103,13 @@ function dialFace(g) {
   var ink = "#24272a";
   var nums = ["11", "8", "5.6", "4", "2.8", "2"];
   for (var i = 0; i < nums.length; i++) {
-    ringText(g, nums[i], 5.85, 6 + i * 28.2, 2.00, ink, 500, false, 0.55);
+    ringText(g, nums[i], 5.85, 6 + i * 28.2, 2.00, ink, 500, false, 0.58);
   }
-  ringText(g, "f/stop", 5.85, 266, 1.42, ink, 500, false, 0.62);
+  // f/stop 沿盘缘弧向逐字排（p1：f 在 10 点、p 在 8 点）
+  var fstr = ["f", "/", "s", "t", "o", "p"];
+  for (var fi = 0; fi < fstr.length; fi++) {
+    ringText(g, fstr[fi], 5.85, 300 - fi * 11.5, 1.14, ink, 500, false, 0.62);
+  }
   star(g, 5.85, 81, 0.82, ink);
   // 中心连接柱压环（几何件之上再叠一圈暗环）
   g.strokeStyle = "rgba(30,33,34,0.55)";
@@ -127,14 +131,14 @@ function dialFace(g) {
   var red = "#8f352c";
   var pw = ["-1/64", "-1/32", "-1/16", "-1/8", "-1/4", "-1/2", "-FULL"];
   for (var i = 0; i < pw.length; i++) {
-    ringText(g, pw[i], 6.15, 353 + i * 29.5, 1.45, red, 500, true, 0.55);
+    ringText(g, pw[i], 5.45, 353 + i * 29.5, 1.24, red, 500, true, 0.72);
   }
   var iso = ["50", "100", "200", "400", "800", "1600"];
   for (var j = 0; j < iso.length; j++) {
-    ringText(g, iso[j], 4.90, 316 - j * 23.4, 1.60, ink, 500, true, 0.55);
+    ringText(g, iso[j], 6.15, 316 - j * 23.4, 1.36, ink, 500, true, 0.72);
   }
-  ringText(g, "ISO", 3.00, 302, 0.85, ink, 700, false, 0.60);
-  star(g, 3.70, 258, 0.78, ink);
+  ringText(g, "ISO", 3.10, 302, 0.85, ink, 700, false, 0.60);
+  star(g, 6.15, 258, 0.80, ink);
   g.strokeStyle = "rgba(30,33,34,0.55)";
   g.lineWidth = 0.10 * K;
   g.beginPath(); g.arc(C, C, 2.72 * U * K, 0, TAU); g.stroke();

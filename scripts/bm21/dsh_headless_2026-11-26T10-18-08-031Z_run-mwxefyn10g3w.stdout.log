@@ -1,0 +1,7 @@
+DSH_STAGE {"name": "boot", "t": 1795688290.116, "run": "run-mwxefyn10g3w"}
+DSH_STAGE {"name": "engine-prelude", "t": 1795688290.116, "run": "run-mwxefyn10g3w"}
+DSH_SCRIPT_FILE E:\code\dshCode\Lightbox\scripts\bm21\build.py
+DSH_STAGE {"name": "preload-done", "t": 1795688290.116, "run": "run-mwxefyn10g3w"}
+Blender 4.2.22 LTS (hash 88937221abfc built 2026-06-23 01:34:44)
+
+Blender quit

@@ -245,8 +245,12 @@
         <div class="stage" id="stage">
           <div class="stage__mount" id="stageMount"></div>
           <div class="stage__loader" id="stageLoader" role="status">
-            <span class="stage__spinner" aria-hidden="true"></span>
-            <span class="mono" id="stageLoaderText">正在搭建三维场景…</span>
+            <!-- 加载动画：用这台器材的封面矢量图描边画出来（JS 注入 coverArt） -->
+            <div class="stage__loader-art" id="stageLoaderArt" aria-hidden="true"></div>
+            <div class="stage__loader-foot">
+              <span class="stage__loader-bar" aria-hidden="true"></span>
+              <span class="mono" id="stageLoaderText">正在搭建三维场景…</span>
+            </div>
           </div>
           <div class="stage__fallback" id="stageFallback" hidden></div>
           <p class="stage__hint mono">拖拽旋转 · 滚轮 / 双指缩放 · 双击复位</p>

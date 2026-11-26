@@ -13,6 +13,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { buildModel } from "./models.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 const REDUCED_MOTION =
   typeof window !== "undefined" &&
@@ -190,7 +191,8 @@ export class StageViewer {
     this.controls.maxDistance = 18;
     this.controls.minPolarAngle = 0.16;
     this.controls.maxPolarAngle = Math.PI * 0.52;
-    this.controls.autoRotate = !REDUCED_MOTION;
+    this.controls.autoRotate = false;
+    this.spin = !REDUCED_MOTION;
     this.controls.autoRotateSpeed = 0.85;
 
     this._ro = new ResizeObserver(() => this.resize());
@@ -203,12 +205,32 @@ export class StageViewer {
   }
 
   _setupLights(preset) {
+    RectAreaLightUniformsLib.init();
+
     const hemi = new THREE.HemisphereLight(preset.hemiSky, preset.hemiGround, preset.hemiIntensity);
     this.scene.add(hemi);
     this.hemi = hemi;
 
-    const key = new THREE.DirectionalLight(preset.keyColor, preset.keyIntensity);
-    key.position.set(4.2, 6.4, 4.6);
+    /* 灯架：正面 / 上面 / 左面 三块大面积柔光，整体随相机方位转，
+       这样“模型在转、光不跟着模型转”，明暗关系始终稳定。 */
+    const rig = new THREE.Group();
+    rig.name = "lightRig";
+    this.scene.add(rig);
+    this.rig = rig;
+
+    const area = (color, intensity, w, h, pos, target) => {
+      const light = new THREE.RectAreaLight(color, intensity, w, h);
+      light.position.set(pos[0], pos[1], pos[2]);
+      light.lookAt(target[0], target[1], target[2]);
+      rig.add(light);
+      return light;
+    };
+    this.rectFront = area(preset.keyColor, preset.keyIntensity * 1.0, 3.6, 2.4, [0, 1.35, 3.6], [0, 0.9, 0]);
+    this.rectTop = area(preset.fillColor, preset.keyIntensity * 0.72, 4.0, 4.0, [0, 4.4, 0.7], [0, 0.8, 0]);
+    this.rectLeft = area(preset.rimColor, preset.keyIntensity * 0.55, 2.8, 2.8, [-3.6, 1.5, 1.6], [0, 0.8, 0]);
+
+    const key = new THREE.DirectionalLight(preset.keyColor, preset.keyIntensity * 0.3);
+    key.position.set(2.4, 4.2, 3.4);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
     key.shadow.camera.near = 1;
@@ -220,17 +242,17 @@ export class StageViewer {
     key.shadow.radius = 4;
     key.shadow.bias = -0.0012;
     key.shadow.normalBias = 0.02;
-    this.scene.add(key);
+    rig.add(key);
     this.key = key;
 
     const rim = new THREE.DirectionalLight(preset.rimColor, preset.rimIntensity);
-    rim.position.set(-5.6, 3.4, -4.2);
-    this.scene.add(rim);
+    rim.position.set(-3.6, 2.2, 1.8);
+    rig.add(rim);
     this.rim = rim;
 
     const fill = new THREE.DirectionalLight(preset.fillColor, preset.fillIntensity);
-    fill.position.set(-2.4, 1.2, 5.4);
-    this.scene.add(fill);
+    fill.position.set(0.6, 1.0, 3.2);
+    rig.add(fill);
     this.fill = fill;
 
     const accent = new THREE.PointLight(preset.accentColor, preset.accentIntensity, 14, 2);
@@ -337,6 +359,18 @@ export class StageViewer {
     if (this.accent) {
       this.accent.color.copy(state.accentColor);
       this.accent.intensity = state.accentIntensity;
+    }
+    if (this.rectFront) {
+      this.rectFront.color.copy(state.keyColor);
+      this.rectFront.intensity = state.keyIntensity * 1.0;
+    }
+    if (this.rectTop) {
+      this.rectTop.color.copy(state.fillColor);
+      this.rectTop.intensity = state.keyIntensity * 0.72;
+    }
+    if (this.rectLeft) {
+      this.rectLeft.color.copy(state.rimColor);
+      this.rectLeft.intensity = state.keyIntensity * 0.55;
     }
     if (this.bounce) {
       this.bounce.color.copy(state.bounceColor);
@@ -482,16 +516,20 @@ export class StageViewer {
   }
 
   _install(model, params = {}) {
-    /* GLB 的真实 PBR 材质对强光更敏感，单独用一套灯光强度 */
+    /* GLB 的真实 PBR 材质对环境反射更敏感，环境强度单独压一档；
+       主光由灯架（3 块柔光 + 一盏阴影 key）负责，不再按模型改灯光强度。 */
     const isGlb = Boolean(params.glb);
     this._isGlb = isGlb;
-    if (this.key) this.key.intensity = isGlb ? 0.6 : 2.15;
-    if (this.rimLight) this.rimLight.intensity = isGlb ? 0.5 : 1.5;
-    if (this.fillLight) this.fillLight.intensity = isGlb ? 0.3 : 0.4;
     if (this.scene) {
       const baseEnv = (this._current && this._current.environmentIntensity) || 1;
-      this.scene.environmentIntensity = baseEnv * (isGlb ? 0.22 : 1);
+      this.scene.environmentIntensity = baseEnv * (isGlb ? 0.45 : 1);
     }
+
+    /* 归一化尺寸：最大边 = 1，后续取景与灯光常量对 mm 级 GLB 与单位模型都成立 */
+    const rawBox = new THREE.Box3().setFromObject(model);
+    const rawSize = rawBox.getSize(new THREE.Vector3());
+    const norm = 1 / Math.max(rawSize.x, rawSize.y, rawSize.z, 1e-6);
+    if (Math.abs(norm - 1) > 1e-4) model.scale.multiplyScalar(norm);
 
     /* 把模型摆平：底部落在 y=0，水平方向居中 */
     const box = new THREE.Box3().setFromObject(model);
@@ -616,7 +654,8 @@ export class StageViewer {
   }
 
   setAutoRotate(on) {
-    this.controls.autoRotate = on && !REDUCED_MOTION;
+    this.spin = Boolean(on) && !REDUCED_MOTION;
+    if (this.controls) this.controls.autoRotate = false;
   }
 
   resize() {
@@ -652,11 +691,11 @@ export class StageViewer {
 
     this._advanceTheme(dt);
 
-    /* 极轻微的呼吸感：模型自己几乎察觉不到地转一点点 */
-    if (this.model && !this.controls.autoRotate) {
-      this.model.rotation.y = Math.sin(t * 0.32) * 0.035;
+    /* 模型自转：光相对观察者固定，所以各面依次经过同一套光 → 明暗会随转动变化 */
+    if (this.model && this.spin) {
+      this.model.rotation.y += dt * 0.5;
     } else if (this.model) {
-      this.model.rotation.y = 0;
+      this.model.rotation.y = Math.sin(t * 0.32) * 0.035;
     }
 
     if (this.ring) {
@@ -664,6 +703,11 @@ export class StageViewer {
     }
 
     this.controls.update();
+    if (this.rig) {
+      const dx = this.camera.position.x - this.controls.target.x;
+      const dz = this.camera.position.z - this.controls.target.z;
+      this.rig.rotation.y = Math.atan2(dx, dz);
+    }
     this.renderer.render(this.scene, this.camera);
   };
 
