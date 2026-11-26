@@ -819,6 +819,7 @@ export const GEAR = [
     year: 1994,
     cat: "body",
     kind: "konica-bm21",
+    glb: "./assets/models/konica-bm21.glb",
     mount: "fixed",
     form: "compact",
     lens: "fixed",

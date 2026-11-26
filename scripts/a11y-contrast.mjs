@@ -35,7 +35,7 @@ for (const theme of ["dark", "light"]) {
   await page.waitForTimeout(700);
   for (const accent of ACC) {
     await page.evaluate(([t, a]) => { window.Lightbox.setTheme(t); window.Lightbox.setAccent(a); }, [theme, accent]);
-    await page.waitForTimeout(140);
+    await page.waitForTimeout(560);
     const home = await page.evaluate(SCAN);
     await page.evaluate(() => { void window.Lightbox.open("zeniko-za12"); });
     await page.waitForTimeout(480);

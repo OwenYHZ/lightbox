@@ -49,13 +49,13 @@
 
   /* 由 accent 推导的饱和度：在极低明度上要给得足一点才看得见色相 */
   /* 深色底要"看得出色相"：饱和度给足一点，否则 graphite/slate/celadon 像纯黑 */
-  --tint-s: calc(var(--accent-s) * 0.78 + 5%);
-  --tint-s-soft: calc(var(--accent-s) * 0.8 + 5%);
+  --tint-s: calc(var(--accent-s) * 1.05 + 7%);
+  --tint-s-soft: calc(var(--accent-s) * 1.1 + 7%);
   --paper-s: calc(var(--accent-s) * 0.16);
 
-  --ink-0: hsl(var(--accent-h) var(--tint-s) 4.2%);
-  --ink-1: hsl(var(--accent-h) var(--tint-s) 6.2%);
-  --ink-2: hsl(var(--accent-h) var(--tint-s) 9.2%);
+  --ink-0: hsl(var(--accent-h) var(--tint-s) 5.2%);
+  --ink-1: hsl(var(--accent-h) var(--tint-s) 7.2%);
+  --ink-2: hsl(var(--accent-h) var(--tint-s) 10.2%);
   --paper: hsl(var(--accent-h) var(--paper-s) 95.5%);
   --paper-dim: hsl(var(--accent-h) var(--paper-s) 92% / 0.66);
   /* 小字（≤11px）专用：≥4.5:1；--paper-faint 只留给图形/分隔线 */
@@ -191,9 +191,11 @@
   --hair: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 24% / 0.16);
   --hair-2: hsl(var(--accent-h) calc(var(--accent-s) * 0.55) 22% / 0.28);
 
-  --accent: hsl(var(--accent-h) var(--accent-s) 31%);
+  --accent: hsl(var(--accent-h) var(--accent-s) 28%);
   --accent-ink: hsl(var(--accent-h) calc(var(--accent-s) * 0.2) 98%);
-  --accent-dim: hsl(var(--accent-h) var(--accent-s) 31% / 0.74);
+  --accent-dim: hsl(var(--accent-h) calc(var(--accent-s) * 0.85) 25% / 0.8);
+  /* 小号 accent 文字（badge / 英文注记）专用，比 --accent 再深一档 */
+  --accent-text: hsl(var(--accent-h) calc(var(--accent-s) * 0.95) 21%);
   --accent-soft: hsl(var(--accent-h) calc(var(--accent-s) * 1.15) 42% / 0.14);
   --accent-line: hsl(var(--accent-h) calc(var(--accent-s) * 0.85) 32% / 0.28);
   --accent-wash: hsl(var(--accent-h) calc(var(--accent-s) * 1.2) 52% / 0.09);
@@ -279,13 +281,7 @@
   --scroll-thumb-hover: hsl(var(--accent-h) calc(var(--accent-s) * 0.9) 32% / 0.55);
 }
 
-/* 主题切换时的短暂过渡（避免全局 transition 拖慢滚动） */
-html.is-theme-switching,
-html.is-theme-switching *,
-html.is-theme-switching *::before,
-html.is-theme-switching *::after {
-  /* 只让"能插值且不伤对比度"的属性过渡：color/fill/stroke/background-image 一律瞬切，
-     否则底色（渐变）已经切完、文字还在 0.35s 的对比度低谷里 */
-  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease),
-    box-shadow 0.2s var(--ease) !important;
-}
+/* 主题切换：一律瞬时。
+   整页底色是 background-image 渐变（不可插值、本来就瞬切），只要还有任何一个
+   color / background-color 走过渡，就会出现"底色已换、文字还在半路"的对比度低谷。
+   class 仍由 main.js 打上（方便将来做伪元素交叉淡入），这里不再加任何 transition。 */
