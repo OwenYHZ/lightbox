@@ -171,7 +171,7 @@ def bevel(obj, width_mm, seg=3, angle=30):
     bpy.ops.object.modifier_apply(modifier=md.name)
 
 
-def box_uv(obj, scale_mm=7.0):
+def box_uv(obj, scale_mm=0.9):
     me = obj.data
     if not me.uv_layers:
         me.uv_layers.new(name="UVMap")
@@ -495,6 +495,15 @@ print("HEADLESS " + json.dumps({"grip_pts": len(_gp), "grip_bbox": [round(min(p[
       "grip_tail": [[round(a, 1), round(b, 1)] for a, b in _gp[-6:]]}))
 _gp_out = [(x, min(max(z, 0.0), H)) for x, z in offset_profile(_gp, 0.25)]
 grip = prism_y("Grip", _gp_out, FRONT_Y - 0.06, BACK_YEND + 0.06, M_BLACK_SOFT, 1.2, 3)
+# 缝线内侧模压凸筋（沿缝线内偏 1.8，0.35 宽 x 0.12 高）
+_rib_pts = []
+_zz2 = 5.0
+while _zz2 <= 57.0:
+    _rib_pts.append((seam_clamped(_zz2) - 1.80, _zz2))
+    _zz2 += 1.0
+_rib_prof = _rib_pts + [(x - 0.35, z) for x, z in reversed(_rib_pts)]
+prism_y("GripRib", _rib_prof, FRONT_Y - 0.17, FRONT_Y + 0.10, M_BLACK_SOFT, 0.10, 2)
+
 # 缝线 V 槽（细黑带，压出腰形边界）
 _seam_rib = []
 _zz = 1.5
@@ -506,7 +515,7 @@ prism_y("SeamGroove", _rib, FRONT_Y - 0.16, FRONT_Y + 0.55, M_BLACK, 0.0, 2)
 
 # ============================================================ 正面：暗面板 / 取景 / AF / 闪光
 strip = prism_y("FrontStrip", rounded_local(STRIP_X0, STRIP_X1, STRIP_Z0, STRIP_Z1, 3.2),
-                FRONT_Y - 0.32, FRONT_Y + 0.6, M_CHARCOAL, 0.30, 3)
+                FRONT_Y - 0.34, FRONT_Y + 0.6, M_CHARCOAL, 0.70, 1)
 # 取景窗：框 + 深色玻璃 + 内亮片
 _vx0, _vx1 = VF_CX - VF_W / 2, VF_CX + VF_W / 2
 _vz0, _vz1 = VF_CZ - VF_H / 2, VF_CZ + VF_H / 2
@@ -521,8 +530,8 @@ prism_y("FinderInner",
 rbox("FinderTopStep", VF_W - 2.0, 0.7, 0.5, (VF_CX, FRONT_Y - 1.05, _vz1 - 0.4), 0.24, M_BLACK_SOFT, 3)
 # AF 窗（左：灯；右：测距）
 for nm, cx, cz in (("AfLamp", AF_L_X, AF_L_Z), ("AfSensor", AF_R_X, AF_R_Z)):
-    cyl(nm + "Rim", 3.55, 0.36, (cx, FRONT_Y - 0.48, cz), M_BLACK_SOFT, 64, 0.12, 'Y')
-    cyl(nm + "Lens", 2.95, 0.44, (cx, FRONT_Y - 0.50, cz), M_LENSGLASS, 64, 0.22, 'Y')
+    cyl(nm + "Rim", (2.95 if nm == "AfLamp" else 3.0), 0.36, (cx, FRONT_Y - 0.48, cz), M_BLACK_SOFT, 64, 0.12, 'Y')
+    cyl(nm + "Lens", (2.35 if nm == "AfLamp" else 2.45), 0.44, (cx, FRONT_Y - 0.50, cz), M_LENSGLASS, 64, 0.22, 'Y')
 # 闪光窗
 _fx0, _fx1 = FL_CX - FL_W / 2, FL_CX + FL_W / 2
 _fz0, _fz1 = FL_CZ - FL_H / 2, FL_CZ + FL_H / 2
@@ -538,18 +547,18 @@ for i in range(_NF):
          0.18, M_FLASH, 2)
 # 闪光窗下方凹槽（analyst §2：19.6 x 1.2 深色）
 rbox("FlashGroove", 19.6, 0.30, 1.2, (FL_CX, FRONT_Y - 0.16, _fz0 - 1.6), 0.3, M_BLACK_SOFT, 2)
-cyl("StripLobe", 5.95, 0.34, (AF_L_X, FRONT_Y - 0.30, AF_L_Z), M_CHARCOAL, 64, 0.10, 'Y')
+cyl("StripLobe", 5.95, 0.34, (-14.5, FRONT_Y - 0.30, 54.8), M_CHARCOAL, 64, 0.10, 'Y')
 rbox("StripSlot", 2.6, 0.4, 1.8, (43.6, FRONT_Y - 0.38, 55.8), 0.7, M_BLACK_SOFT, 3)
-for i, (dx, dz) in enumerate(((-18.3, 45.4), (17.6, 44.9), (17.6, 59.6))):
+for i, (dx, dz) in enumerate(((-15.5, 45.4), (11.2, 44.9), (11.2, 59.6))):
     cyl("StripDot%d" % i, 0.6, 0.28, (dx, FRONT_Y - 0.36, dz), M_BLACK_SOFT, 24, 0.08, 'Y')
 
 # ============================================================ 镜头筒（前凸 2.5）
-cone("LensBezel", 16.2, LENS_BEZEL_R, 1.25, (LENS_CX, FRONT_Y - 0.62, LENS_CZ), M_CHAMP_BRIGHT, 128, 'Y')
+cone("LensBezel", 17.2, LENS_RING_R, 1.2, (LENS_CX, FRONT_Y - 0.60, LENS_CZ), M_CHAMP_BRIGHT, 128, 'Y')
 bevel(bpy.data.objects["LensBezel"], 0.28, 3)
 _BARREL_LEN = abs(LENS_FRONT_Y - FRONT_Y) - 1.1
 cyl("LensBarrel", LENS_RING_R, _BARREL_LEN, (LENS_CX, FRONT_Y - 1.1 - _BARREL_LEN / 2, LENS_CZ), M_RING, 128, 0.0, 'Y')
 bevel(bpy.data.objects["LensBarrel"], 0.55, 4)
-cyl("LensWell", LENS_INNER_R + 0.4, 1.5, (LENS_CX, LENS_FRONT_Y + 1.4, LENS_CZ), M_RING_MATTE, 96, 0.0, 'Y')
+cyl("LensWell", 7.65, 1.4, (LENS_CX, LENS_FRONT_Y + 1.35, LENS_CZ), M_RING_MATTE, 96, 0.0, 'Y')
 ring_decal("LensRingText", LENS_CX, LENS_CZ, LENS_INNER_R + 0.08, LENS_RING_R - 0.22,
            LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0)
 prism_y("LensBarrier",
@@ -563,7 +572,7 @@ slit = rbox("BarrierSlit", 15.0, 0.26, 0.95, (LENS_CX, LENS_FRONT_Y + 0.46, LENS
 cyl("ShutterRing", 7.5, 0.55, (SHUT_X, SHUT_Y, H + 0.12), M_CHAMP, 96, 0.22, 'Z')
 cyl("ShutterBtn", SHUT_R, 0.90, (SHUT_X, SHUT_Y, H + 0.48), M_DARKGREY, 96, 0.38, 'Z')
 # LCD：与顶面齐平（框 62.0，玻璃再降 0.15）
-tube_z("LcdFrame", LCD_X0 - 1.0, LCD_X1 + 1.0, LCD_Y0 - 1.0, LCD_Y1 + 1.0, 1.6, 1.1,
+tube_z("LcdFrame", LCD_X0 - 1.6, LCD_X1 + 1.6, LCD_Y0 - 1.2, LCD_Y1 + 1.2, 1.8, 1.2,
        H - 0.42, H + 0.02, M_BLACK, 14)
 rbox("LcdGlass", LCD_X1 - LCD_X0 + 0.5, LCD_Y1 - LCD_Y0 + 0.4, 0.24,
      ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H - 0.26), 0.8, M_LCD, 4)
@@ -598,24 +607,32 @@ cyl("BackLamp", LAMP_R, 0.8, (LAMP_X, BACK_YEND + 0.28, LAMP_Z), M_CHARCOAL, 48,
 cyl("BackDial", DIAL_R, 0.95, (DIAL_X, BACK_YEND + 0.16, DIAL_Z), M_CHARCOAL, 96, 0.36, 'Y')
 cyl("BackDialRim", DIAL_R + 0.7, 0.40, (DIAL_X, BACK_YEND + 0.01, DIAL_Z), M_BLACK, 96, 0.10, 'Y')
 # 竖条检片窗
-rbox("FilmWinFrame", (FW_X1 - FW_X0) + 2.2, 0.62, (FW_Z1 - FW_Z0) + 2.2,
+rbox("FilmWinFrame", 4.7, 0.62, (FW_Z1 - FW_Z0) + 0.6,
      ((FW_X0 + FW_X1) / 2, BACK_YEND + 0.22, (FW_Z0 + FW_Z1) / 2), 1.1, M_BLACK_SOFT, 4)
-rbox("FilmWinGlass", FW_X1 - FW_X0, 0.46, FW_Z1 - FW_Z0,
+rbox("FilmWinGlass", 4.1, 0.46, FW_Z1 - FW_Z0,
      ((FW_X0 + FW_X1) / 2, BACK_YEND + 0.38, (FW_Z0 + FW_Z1) / 2), 0.9, M_LCD, 3)
+
+# 背面 +X 端香槟收边（照片右端为香槟色）
+_rear_cap = lift(offset_profile(prof_right(44.0, HW, HH, R_LEFT, R_LEFT), 0.12))
+prism_y("RearEndCap", [(x, z) for x, z in _rear_cap], 9.6, BACK_YEND + 0.12, M_CHAMP, 1.0, 3)
 
 # ============================================================ 底面
 rbox("SerialPlate", SER_X1 - SER_X0, SER_H, 0.12, ((SER_X0 + SER_X1) / 2, 0.0, -0.04), 0.5, M_BLACK, 3)
-cyl("BatteryCover", BATT_R, 0.20, (BATT_X, BATT_Y, -0.08), M_BLACK, 96, 0.09, 'Z')
-rbox("BattSlot", 3.0, 0.7, 0.12, (BATT_X, BATT_Y, -0.12), 0.28, M_BLACK_SOFT, 2)
+cyl("BatteryWell", 3.8, 0.10, (BATT_X, BATT_Y, -0.02), M_BLACK_SOFT, 96, 0.0, 'Z')
+cyl("BatteryWellRing", 4.35, 0.13, (BATT_X, BATT_Y, -0.03), M_CHAMP_BRIGHT, 96, 0.05, 'Z')
+cyl("BatteryCover", 3.55, 0.16, (BATT_X, BATT_Y, -0.16), M_BLACK, 96, 0.08, 'Z')
+cyl("BattDotPin", 0.25, 0.12, (42.3, 3.0, -0.08), M_BLACK, 16, 0.0, 'Z')
+# 三脚孔（沉台 + 金属环）
+cyl("TripodRecess", 4.6, 0.30, (24.0, 0.0, -0.12), M_BLACK, 64, 0.10, 'Z')
+cyl("TripodRing", 3.15, 0.22, (24.0, 0.0, -0.22), M_CHAMP_BRIGHT, 48, 0.06, 'Z')
+cyl("TripodBore", 2.05, 0.9, (24.0, 0.0, -0.05), M_BLACK, 32, 0.0, 'Z')
 for i, sx in enumerate(SCREW_X):
     cyl("Screw%d" % i, 1.35, 0.18, (sx, 0.0, -0.07), M_DARKGREY, 32, 0.05, 'Z')
 
 # ============================================================ +X 端黑色圆顶端盖（analyst v1.1 §1）
-_end_prof = lift(offset_profile(prof_left(-46.0, HW, HH, R_GRIP, R_GRIP), 0.20))
-prism_y("EndCap", _end_prof, FRONT_Y - 0.20, BACK_YEND + 0.20, M_BLACK_SOFT, 1.4, 3)
-rbox("HingeBar", 0.60, 4.0, 32.0, (-50.15, 1.0, 33.0), 0.12, M_CHAMP_BRIGHT, 2)
+rbox("HingeBar", 0.30, 3.6, 31.0, (-50.20, 1.0, 33.0), 0.10, M_CHARCOAL, 2)
 for _hx in (10.4, 52.6):
-    cyl("HingeScrew%d" % int(_hx), 0.95, 0.20, (-50.14, 1.0, _hx), M_CHAMP_BRIGHT, 24, 0.04, 'X')
+    cyl("HingeScrew%d" % int(_hx), 0.90, 0.16, (-50.24, 1.0, _hx), M_CHAMP_BRIGHT, 24, 0.03, 'X')
 
 # ============================================================ 侧面件（+X 端：锁盘/窗/点/导轨）
 cyl("SideDialRing", 6.8, 0.5, (49.9, 1.0, 24.0), M_CHAMP_BRIGHT, 64, 0.12, 'X')

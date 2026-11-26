@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""BM-21 六视图 Cycles CPU 渲染（front/top/back/bottom/quarter/side）。"""
-import bpy, math, os, json, sys
+"""BM-21 多视角渲染：8 视角 + 4 特写（Cycles CPU）。"""
+import bpy, math, os, json
 from mathutils import Vector
 
 ROOT = r"E:/code/dshCode/Lightbox"
@@ -8,14 +8,13 @@ BLEND = ROOT + "/scripts/bm21/bm21.blend"
 OUT = ROOT + "/shots/bm21"
 os.makedirs(OUT, exist_ok=True)
 
-SAMPLES = int(os.environ.get("BM21_SAMPLES", "96"))
-TAG = os.environ.get("BM21_TAG", "v1")
-RES = int(os.environ.get("BM21_RES", "1000") or 0)
+SAMPLES = int(os.environ.get("BM21_SAMPLES", "64"))
+TAG = os.environ.get("BM21_TAG", "v17")
+ONLY = [v for v in os.environ.get("BM21_VIEWS", "").split(",") if v]
+W = int(os.environ.get("BM21_RES", "900"))
 
 bpy.ops.wm.open_mainfile(filepath=BLEND)
 scene = bpy.context.scene
-
-# ---------------- 渲染设置
 scene.render.engine = 'CYCLES'
 scene.cycles.device = 'CPU'
 scene.cycles.samples = SAMPLES
@@ -25,85 +24,86 @@ try:
 except Exception:
     pass
 scene.cycles.max_bounces = 8
-scene.cycles.transmission_bounces = 8
-scene.cycles.caustics_reflective = False
-scene.cycles.caustics_refractive = False
 scene.render.film_transparent = True
-scene.render.resolution_percentage = 100
 scene.view_settings.view_transform = 'Standard'
 scene.view_settings.look = 'None'
-scene.view_settings.exposure = 0.0
 
-# ---------------- 世界（白背景）
 world = bpy.data.worlds.new("W") if not scene.world else scene.world
 scene.world = world
 world.use_nodes = True
 bg = world.node_tree.nodes["Background"]
 bg.inputs[0].default_value = (0.93, 0.93, 0.94, 1.0)
-bg.inputs[1].default_value = 0.80
-
-# ---------------- 灯光（柔和棚拍）
-def area(name, loc, size, power, target=(0, 0, 31.5), color=(1, 1, 1)):
-    d = bpy.data.lights.new(name, 'AREA')
-    d.energy = power
-    d.size = size
-    d.color = color
-    o = bpy.data.objects.new(name, d)
-    scene.collection.objects.link(o)
-    o.location = (loc[0] * 0.001, loc[1] * 0.001, loc[2] * 0.001)
-    dirv = Vector((target[0] * 0.001, target[1] * 0.001, target[2] * 0.001)) - o.location
-    o.rotation_euler = dirv.to_track_quat('-Z', 'Y').to_euler()
-    return o
+bg.inputs[1].default_value = 0.72
 
 for o in list(scene.objects):
     if o.type == 'LIGHT':
         bpy.data.objects.remove(o, do_unlink=True)
-area("Key", (-320, -420, 420), 420, 250)
-area("Fill", (380, -300, 120), 360, 85)
-area("Top", (60, -120, 520), 380, 105)
-area("Rim", (40, 480, 300), 320, 130)
 
-# ---------------- 相机
-def make_cam(name, loc, rot, ortho=None, lens=70):
-    cd = bpy.data.cameras.new(name)
-    if ortho:
-        cd.type = 'ORTHO'
-        cd.ortho_scale = ortho
-    else:
-        cd.lens = lens
-    o = bpy.data.objects.new(name, cd)
-    scene.collection.objects.link(o)
-    o.location = loc
+
+def area(name, loc, size, power, target=(0, 0, 31.5)):
+    d = bpy.data.lights.new(name, 'AREA'); d.energy = power; d.size = size
+    o = bpy.data.objects.new(name, d); scene.collection.objects.link(o)
+    o.location = (loc[0] * 0.001, loc[1] * 0.001, loc[2] * 0.001)
+    dv = Vector((target[0] * 0.001, target[1] * 0.001, target[2] * 0.001)) - o.location
+    o.rotation_euler = dv.to_track_quat('-Z', 'Y').to_euler()
+    return o
+
+
+area("Key", (-320, -420, 420), 420, 200)
+area("Fill", (380, -300, 120), 360, 66)
+area("Top", (60, -120, 520), 380, 84)
+area("Rim", (40, 480, 300), 320, 150)
+area("Bottom", (0, 0, -420), 400, 55, (0, 0, 0))
+
+R = math.radians
+
+
+def ortho_cam(name, loc, rot, scale):
+    cd = bpy.data.cameras.new(name); cd.type = 'ORTHO'; cd.ortho_scale = scale * 0.001
+    cd.clip_start = 0.001; cd.clip_end = 10.0
+    o = bpy.data.objects.new(name, cd); scene.collection.objects.link(o)
+    o.location = (loc[0] * 0.001, loc[1] * 0.001, loc[2] * 0.001)
     o.rotation_euler = rot
     return o
 
-R = math.radians
-DIST = 600
-views = {}
-views["front"] = (make_cam("C_front", (0, -DIST * 0.001, 31.5 * 0.001), (R(90), 0, 0), ortho=0.118), 1000, 700)
-views["top"] = (make_cam("C_top", (0, 0, 400 * 0.001), (0, 0, R(180)), ortho=0.118), 1000, 420)
-views["back"] = (make_cam("C_back", (0, DIST * 0.001, 31.5 * 0.001), (R(90), 0, R(180)), ortho=0.118), 1000, 700)
-views["bottom"] = (make_cam("C_bottom", (0, 0, -400 * 0.001), (R(180), 0, 0), ortho=0.118), 1000, 420)
-views["side"] = (make_cam("C_side", (DIST * 0.001, 0, 31.5 * 0.001), (R(90), 0, R(90)), ortho=0.118), 1000, 700)
-qc = make_cam("C_quarter", (-158 * 0.001, -228 * 0.001, 168 * 0.001), (0, 0, 0), lens=95)
-tgt = Vector((0.0, 0.0, 31.5 * 0.001))
-qc.rotation_euler = (tgt - qc.location).to_track_quat('-Z', 'Y').to_euler()
-views["quarter"] = (qc, 1000, 700)
 
-ONLY = [v for v in os.environ.get("BM21_VIEWS", "").split(",") if v]
-results = {}
-for name, (cam, rw, rh) in views.items():
+def persp_cam(name, loc, target, lens=95):
+    cd = bpy.data.cameras.new(name); cd.lens = lens; cd.clip_start = 0.001; cd.clip_end = 10.0
+    o = bpy.data.objects.new(name, cd); scene.collection.objects.link(o)
+    o.location = (loc[0] * 0.001, loc[1] * 0.001, loc[2] * 0.001)
+    dv = Vector((target[0] * 0.001, target[1] * 0.001, target[2] * 0.001)) - o.location
+    o.rotation_euler = dv.to_track_quat('-Z', 'Y').to_euler()
+    return o
+
+
+D = 600
+VIEWS = [
+    ("front", ortho_cam("C_f", (0, -D, 31.5), (R(90), 0, 0), 118), 900, 700),
+    ("back", ortho_cam("C_b", (0, D, 31.5), (R(90), 0, R(180)), 118), 900, 700),
+    ("left", ortho_cam("C_l", (D, 0, 31.5), (R(90), 0, R(90)), 118), 900, 700),
+    ("right", ortho_cam("C_r", (-D, 0, 31.5), (R(90), 0, R(-90)), 118), 900, 700),
+    ("top", ortho_cam("C_t", (0, 0, 400), (0, 0, R(180)), 118), 900, 420),
+    ("bottom", ortho_cam("C_bo", (0, 0, -400), (R(180), 0, 0), 118), 900, 420),
+    ("quarter-fl", persp_cam("C_qfl", (-150, -215, 160), (0, 0, 30)), 900, 700),
+    ("quarter-br", persp_cam("C_qbr", (150, 215, 160), (0, 0, 30)), 900, 700),
+    # ---- 特写
+    ("close-lens", ortho_cam("C_cl", (-1.5, -300, 24.4), (R(90), 0, 0), 46), 900, 900),
+    ("close-top", ortho_cam("C_ct", (-14, 1, 300), (0, 0, R(180)), 62), 900, 760),
+    ("close-grip", ortho_cam("C_cg", (-26, -300, 33), (R(90), 0, 0), 58), 900, 900),
+    ("close-bottom", ortho_cam("C_cb", (6, 0, -300), (R(180), 0, 0), 74), 900, 620),
+]
+
+res = {}
+for name, cam, rw, rh in VIEWS:
     if ONLY and name not in ONLY:
         continue
-    if RES:
-        sc = RES / float(rw)
-        rw, rh = int(rw * sc), int(rh * sc)
     scene.camera = cam
-    scene.render.resolution_x = rw
-    scene.render.resolution_y = rh
+    sc = W / float(rw)
+    scene.render.resolution_x = int(rw * sc)
+    scene.render.resolution_y = int(rh * sc)
     scene.render.filepath = os.path.join(OUT, "%s-%s.png" % (TAG, name))
     bpy.ops.render.render(write_still=True)
-    results[name] = scene.render.filepath
+    res[name] = scene.render.filepath
     print("rendered", name)
 
-print("HEADLESS " + json.dumps({"renders": results}))
+print("HEADLESS " + json.dumps({"tag": TAG, "renders": len(res)}))

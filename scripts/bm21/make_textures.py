@@ -127,7 +127,7 @@ def bottom_print():
     def M(x, y):
         return (int((x + 34.0) * ppm), int((y + 12.0) * ppm))
     fit_text(im, "CE", (*M(-15.9, -2.2), *M(-6.5, 2.6)), (150, 146, 136), F_REG)
-    fit_text(im, "KONICA CORPORATION", (*M(-1.0, 7.6), *M(15.6, 5.2)), (116, 114, 106), F_REG)
+    fit_text(im, "KONICA CORPORATION", (*M(-3.0, 7.7), *M(20.0, 5.3)), (116, 114, 106), F_REG)
     im.save(OUT + "bottom_print.png")
     print("bottom_print", im.size)
 

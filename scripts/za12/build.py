@@ -15,7 +15,7 @@ BASE_INSET = 0.20
 CORNER = 7.5                  # 外壳竖棱圆角（用户目测 R7–8）
 FILLET = 0.12                 # 侧面→顶面直角（仅 0.12 破边）
 
-PLATE_SINK = 0.0              # 顶盖顶面与外壳顶面齐平（用户纠正：0.3 是拨盘面高出顶面）
+PLATE_SINK = 0.02             # 顶盖比壳顶低 0.02（视觉齐平，避开共面 z-fighting）
 PLATE_MARGIN = 1.2            # 顶盖到外壳的银边宽（四边等宽）
 PLATE_W, PLATE_D = 55.0 - 2 * PLATE_MARGIN, 47.0 - 2 * PLATE_MARGIN
 PLATE_R = CORNER - PLATE_MARGIN   # 与外壳同圆心收敛（贴住外壳圆角）
@@ -26,7 +26,8 @@ DIAL_X = 15.2                 # 中心距 30.4（两盘净空 6.4，容 4.4 的�
 DIAL_Y = 23.2 - DIAL_R        # 盘心 Y = +11.2（盘后缘 23.2，超顶盖 0.9、机身内 0.3）
 DIAL_BACK_D = 9.5             # 盘心距机身后缘（p6 + 实拍 222313：拨盘靠后）
 DIAL_TOP = 24.7               # 盘面高（滚花露出 1.4）
-DIAL_BOT = BODY_H - PLATE_SINK - 0.02   # 低 0.02 避免与外壳顶面共面
+DIAL_H = 2.0                  # 滚花圆柱高（用户实拍 2.0）
+DIAL_BOT = DIAL_TOP - DIAL_H   # 22.70：其中 0.9 在顶面下、1.1 露出
 DIAL_TEETH, DIAL_TOOTH = 180, 0.22   # Ø24 下齿距 0.42
 
 WIN_CX, WIN_CZ = -2.2, 14.5
@@ -45,7 +46,7 @@ SHOE_MOUNT_W, SHOE_MOUNT_D = 17.0, 16.0
 SHOE_FOOT_W, SHOE_FOOT_D = 19.0, 17.0
 SHOE_BOT = -(TOTAL_H - DIAL_TOP)          # -11.3
 
-BOT_PANEL_W, BOT_PANEL_D, BOT_PANEL_R = 50.4, 41.4, 4.5
+BOT_PANEL_W, BOT_PANEL_D, BOT_PANEL_R = 50.0, 41.0, 4.5   # 四周银边 2.3
 USB_Z = -0.2
 
 ROOT = r"E:/code/dshCode/Lightbox"
@@ -113,6 +114,7 @@ if "Specular IOR Level" in M_SENSOR.node_tree.nodes["Principled BSDF"].inputs:
     M_SENSOR.node_tree.nodes["Principled BSDF"].inputs["Specular IOR Level"].default_value = 0.15
 M_SENSRIM = mat("ZA12_sensor_rim", (0.062, 0.065, 0.068), 0.10, 0.50)
 M_SLOT   = mat("ZA12_slot", (0.860, 0.865, 0.845), 0.0, 0.52)
+M_POST   = mat("ZA12_post", (0.900, 0.905, 0.910), 1.0, 0.10)   # 中心连接柱：抛光金属
 M_FRAME  = mat("ZA12_win_frame", (0.500, 0.510, 0.520), 1.0, 0.62)
 M_SHOE   = mat("ZA12_shoe", (0.480, 0.492, 0.500), 0.88, 0.34)
 
@@ -345,8 +347,9 @@ for poly in base.data.polygons:
 shell = prism("Shell", W, D, BASE_H, BODY_H, CORNER, M_SILVER, FILLET)
 
 POCKET_FLOOR = BODY_H - PLATE_SINK - 1.3
-pocket = rbox("Pocket", PLATE_W + 2 * PLATE_GAP, PLATE_D + 2 * PLATE_GAP, 5.0,
-              (0, 0, POCKET_FLOOR + 2.5), PLATE_R + 0.2, M_CAVITY, 6)
+# 凹槽用 prism（rounded_points，角半径精确）切：顶盖比凹槽每边大 0.03 → 装配后无缝隙无黑槽
+pocket = prism("Pocket", PLATE_W - 0.06, PLATE_D - 0.06, POCKET_FLOOR, BODY_H + 1.0,
+               PLATE_R - 0.03, M_CAVITY, 0.0, seg=32)
 boolean_cut(shell, pocket, "pocket")
 
 plate = prism("TopPlate", PLATE_W, PLATE_D, POCKET_FLOOR, BODY_H - PLATE_SINK,
@@ -356,10 +359,7 @@ plate = prism("TopPlate", PLATE_W, PLATE_D, POCKET_FLOOR, BODY_H - PLATE_SINK,
 dial("DialLeft", DIAL_X, DIAL_Y, M_GEAR, M_DIAL_L)
 dial("DialRight", -DIAL_X, DIAL_Y, M_GEAR, M_DIAL_R)
 for sx in (DIAL_X, -DIAL_X):
-    # 盘根环形暗缝（量测书 §7.2）
-    washer("DialGroove", DIAL_R + 0.54, DIAL_R + 0.15, 0.26,
-           (sx, DIAL_Y, DIAL_BOT + 0.26), M_CAVITY, 72, axis='Z')
-    cyl("Post", 2.55, 0.28, (sx, DIAL_Y, DIAL_TOP - 0.08), M_GEAR, 40, 0.05, 'Z')
+    cyl("Post", 2.55, 0.28, (sx, DIAL_Y, DIAL_TOP - 0.08), M_POST, 40, 0.05, 'Z')
 
 slot = prism("Slot", SLOT_W, SLOT_H, BODY_H - PLATE_SINK - 0.10, BODY_H - PLATE_SINK + 0.02,
               SLOT_H / 2, M_SLOT, 0.0, seg=12)
@@ -395,7 +395,7 @@ cyl("Tube", 1.5, 21.0, (WIN_CX, -D / 2 + 3.4, WIN_CZ), M_TUBE, 32, 0.0, 'X')
 
 # 菲涅尔：同心环棱
 FRE_W, FRE_H = 26.8, 7.70   # 略大于窗洞，盖住洞壁避免露出暗缝
-PERIOD, AMP = 1.2, 0.22
+PERIOD, AMP = 1.35, 0.22
 FRE_Y = -D / 2 + WIN_FRAME_D + 0.5
 NANG, DR, RC = 140, 0.18, 1.55
 RMAX = math.hypot(FRE_W / 2, FRE_H / 2)

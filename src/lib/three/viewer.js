@@ -11,7 +11,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { buildModel } from "./models.js";
+/* 图元模型库很大（30 台设备），只在回退路径按需加载；GLB 路径完全不碰它 */
+let modelsPromise = null;
+function loadModels() {
+  if (!modelsPromise) modelsPromise = import("./models.js");
+  return modelsPromise;
+}
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
@@ -453,9 +458,11 @@ export class StageViewer {
         }
       } catch (error) {
         console.warn("[lightbox] GLB 加载失败，回退到图元模型", error);
+        const { buildModel } = await loadModels();
         model = buildModel(kind, params);
       }
     } else {
+      const { buildModel } = await loadModels();
       model = buildModel(kind, params);
     }
     if (token !== this._showToken) {

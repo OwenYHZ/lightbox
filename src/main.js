@@ -12,6 +12,7 @@ import "./styles/detail.css";
 import { GEAR, CATEGORIES, CATEGORY_LABEL, DIMENSIONS, STATUS_META } from "./data/gear.js";
 import { coverArt } from "./lib/art.js";
 import { ACCENTS, applyAccent, bootAccent, getAccent, swatchColor } from "./data/accents.js";
+import { StageViewer } from "./lib/three/viewer.js";
 
 /* ------------------------------------------------------------------ 工具 */
 
@@ -764,14 +765,6 @@ function webglAvailable() {
   }
 }
 
-/* 预热三维 chunk：主包里只做动态 import，首次点开要现下载约 1MB。
-   空闲时先把它取回来，点开时基本命中缓存。 */
-let stageWarmed = false;
-function warmStageChunk() {
-  if (stageWarmed) return;
-  stageWarmed = true;
-  import("./lib/three/viewer.js").catch(() => {});
-}
 
 async function ensureStage() {
   if (stage) return stage;
@@ -780,8 +773,8 @@ async function ensureStage() {
     return null;
   }
   if (!stagePromise) {
-    stagePromise = import("./lib/three/viewer.js")
-      .then(({ StageViewer }) => {
+    stagePromise = Promise.resolve()
+      .then(() => {
         stage = new StageViewer(el.stageMount, {
           theme: state.theme,
           onReady: () => markStageLoaderReady(),
@@ -1111,8 +1104,6 @@ function boot() {
   bindEvents();
   route();
 
-/* 首屏稳定后再预热三维场景，避免抢主线程 */
-window.setTimeout(warmStageChunk, 1200);
 
 }
 

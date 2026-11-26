@@ -20,3 +20,6 @@
 {"at":1795694473125,"elapsedMs":10013,"logBytes":420,"lines":7,"stage":"preload-done","progressAt":null,"progressAgeMs":null}
 {"at":1795694511664,"elapsedMs":5005,"logBytes":420,"lines":7,"stage":"preload-done","progressAt":null,"progressAgeMs":null}
 {"at":1795694824854,"elapsedMs":5021,"logBytes":420,"lines":7,"stage":"preload-done","progressAt":null,"progressAgeMs":null}
+{"at":1795705012106,"elapsedMs":5003,"logBytes":0,"lines":1,"stage":null,"progressAt":null,"progressAgeMs":null}
+{"at":1795705017157,"elapsedMs":10054,"logBytes":310,"lines":5,"stage":"preload-done","progressAt":null,"progressAgeMs":null}
+{"at":1795705022162,"elapsedMs":15059,"logBytes":420,"lines":7,"stage":"preload-done","progressAt":null,"progressAgeMs":null}
