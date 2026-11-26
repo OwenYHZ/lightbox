@@ -78,7 +78,7 @@ for name, src in LEFT_SRC.items():
 # ---------- 4 特写（同物理宽度：先按 mm 裁官方，再统一缩放到 760）
 DET = {
     "close-lens": (PH + "bm21-front.png", 7.84, 468, 395, 46),
-    "close-top": (PH + "bm21-top.png", 9.66, 377, 291, 62),
+    "close-top": (PH + "bm21-top.png", 9.66, 647, 291, 62),
     "close-grip": (PH + "bm21-front.png", 7.84, 276, 342, 58),
     "close-bottom": (PH + "bm21-bottom.png", 10.11, 566, 340, 74),
 }

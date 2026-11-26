@@ -132,10 +132,13 @@ M_CHAMP = mat("BM21_champagne", srgb("#ddd7cb"), 0.68, 0.55, bump="grain_normal.
 M_CHAMP_BRIGHT = mat("BM21_champagne_edge", srgb("#cfc9bd"), 0.70, 0.40, bump="grain_normal.png")
 M_BLACK = mat("BM21_black_matte", srgb("#1b1b1d"), 0.05, 0.66, bump="grain_normal.png")
 M_BLACK_SOFT = mat("BM21_black_soft", srgb("#3d3f45"), 0.0, 0.78, bump="grain_normal.png")
+M_BLACK_RIB = mat("BM21_black_rib", srgb("#5a5d66"), 0.0, 0.62, bump="grain_normal.png")
 M_CHARCOAL = mat("BM21_charcoal", srgb("#34353a"), 0.10, 0.62, bump="grain_normal.png")
 M_RING = mat("BM21_lens_ring", srgb("#383942"), 0.12, 0.35)
 M_RING_MATTE = mat("BM21_lens_ring_matte", srgb("#131315"), 0.05, 0.52)
-M_BARRIER = mat("BM21_barrier", srgb("#17171a"), 0.0, 0.46)
+M_BARRIER = mat("BM21_barrier", srgb("#141416"), 0.0, 0.45)
+M_SLIT = mat("BM21_slit", srgb("#0a0a0c"), 0.0, 0.7)
+M_BEZEL_RING = mat("BM21_bezel_ring", srgb("#e9e4d8"), 0.75, 0.30, bump="grain_normal.png")
 M_LENSGLASS = mat("BM21_lensglass", srgb("#2b2b30"), 0.0, 0.16, transmission=0.12, ior=1.6)
 M_GLASS = mat("BM21_glass", srgb("#9a9da0"), 0.0, 0.05, transmission=1.0, ior=1.5)
 M_LCD = mat("BM21_lcd", srgb("#b9c2c6"), 0.0, 0.14, transmission=0.0, ior=1.5)
@@ -171,7 +174,7 @@ def bevel(obj, width_mm, seg=3, angle=30):
     bpy.ops.object.modifier_apply(modifier=md.name)
 
 
-def box_uv(obj, scale_mm=0.9):
+def box_uv(obj, scale_mm=7.0):
     me = obj.data
     if not me.uv_layers:
         me.uv_layers.new(name="UVMap")
@@ -510,6 +513,12 @@ print("HEADLESS " + json.dumps({"grip_pts": len(_gp), "grip_bbox": [round(min(p[
       round(min(p[1] for p in _gp), 2), round(max(p[1] for p in _gp), 2)],
       "grip_head": [[round(a, 1), round(b, 1)] for a, b in _gp[:6]],
       "grip_tail": [[round(a, 1), round(b, 1)] for a, b in _gp[-6:]]}))
+# 三脚孔布尔（沉台 Ø7.5 + 深孔 Ø6.4）
+_cutA = cyl("CutTripodA", 3.75, 1.7, (43.0, 1.0, 0.75), M_BLACK, 64, 0.0, 'Z')
+boolean_cut(shell, _cutA)
+_cutB = cyl("CutTripodB", 3.20, 3.6, (43.0, 1.0, 1.70), M_BLACK, 48, 0.0, 'Z')
+boolean_cut(shell, _cutB)
+
 _gp_out = [(x, min(max(z, 0.0), H)) for x, z in offset_profile(_gp, 0.25)]
 grip = prism_y("Grip", _gp_out, FRONT_Y - 0.06, BACK_YEND + 0.06, M_BLACK_SOFT, 1.2, 3)
 # 缝线内侧模压凸筋（沿缝线内偏 1.8，0.35 宽 x 0.12 高）
@@ -519,7 +528,7 @@ while _zz2 <= 57.0:
     _rib_pts.append((seam_clamped(_zz2) - 1.80, _zz2))
     _zz2 += 1.0
 _rib_prof = _rib_pts + [(x - 0.35, z) for x, z in reversed(_rib_pts)]
-prism_y("GripRib", _rib_prof, FRONT_Y - 0.17, FRONT_Y + 0.10, M_BLACK_SOFT, 0.10, 2)
+prism_y("GripRib", _rib_prof, FRONT_Y - 0.30, FRONT_Y + 0.10, M_BLACK_RIB, 0.15, 3)
 
 # 缝线 V 槽（细黑带，压出腰形边界）
 _seam_rib = []
@@ -565,12 +574,16 @@ for i in range(_NF):
 # 闪光窗下方凹槽（analyst §2：19.6 x 1.2 深色）
 rbox("FlashGroove", 19.6, 0.30, 1.2, (FL_CX, FRONT_Y - 0.16, _fz0 - 1.6), 0.3, M_BLACK_SOFT, 2)
 cyl("StripLobe", 5.95, 0.34, (-14.5, FRONT_Y - 0.30, 54.8), M_CHARCOAL, 64, 0.10, 'Y')
+rbox("StripEdgeTop", (STRIP_X1 - STRIP_X0) - 3.2, 0.34, 0.36,
+     ((STRIP_X0 + STRIP_X1) / 2, FRONT_Y - 0.40, STRIP_Z1 - 0.55), 0.14, M_CHAMP_BRIGHT, 2)
+rbox("StripEdgeBot", (STRIP_X1 - STRIP_X0) - 3.2, 0.34, 0.36,
+     ((STRIP_X0 + STRIP_X1) / 2, FRONT_Y - 0.40, STRIP_Z0 + 0.55), 0.14, M_CHAMP_BRIGHT, 2)
 rbox("StripSlot", 2.6, 0.4, 1.8, (43.6, FRONT_Y - 0.38, 55.8), 0.7, M_BLACK_SOFT, 3)
 for i, (dx, dz) in enumerate(((-15.5, 45.4), (11.2, 44.9), (11.2, 59.6))):
     cyl("StripDot%d" % i, 0.6, 0.28, (dx, FRONT_Y - 0.36, dz), M_BLACK_SOFT, 24, 0.08, 'Y')
 
 # ============================================================ 镜头筒（前凸 2.5）
-cone("LensBezel", 17.2, LENS_RING_R, 1.2, (LENS_CX, FRONT_Y - 0.60, LENS_CZ), M_CHAMP_BRIGHT, 128, 'Y')
+cone("LensBezel", 17.62, LENS_RING_R, 1.2, (LENS_CX, FRONT_Y - 0.60, LENS_CZ), M_BEZEL_RING, 128, 'Y')
 bevel(bpy.data.objects["LensBezel"], 0.28, 3)
 _BARREL_LEN = abs(LENS_FRONT_Y - FRONT_Y) - 1.1
 cyl("LensBarrel", LENS_RING_R, _BARREL_LEN, (LENS_CX, FRONT_Y - 1.1 - _BARREL_LEN / 2, LENS_CZ), M_RING, 128, 0.0, 'Y')
@@ -579,12 +592,13 @@ cyl("LensWell", 7.65, 1.4, (LENS_CX, LENS_FRONT_Y + 1.35, LENS_CZ), M_RING_MATTE
 ring_decal("LensRingText", LENS_CX, LENS_CZ, 7.05, LENS_RING_R - 0.22,
            LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0,
            rrect=(BARRIER_W / 2, BARRIER_H / 2, BARRIER_R))
-prism_y("LensBarrier",
+_barrier = prism_y("LensBarrier",
         rounded_local(LENS_CX - BARRIER_W / 2, LENS_CX + BARRIER_W / 2,
                       LENS_CZ - BARRIER_H / 2, LENS_CZ + BARRIER_H / 2, BARRIER_R),
-        LENS_FRONT_Y + 0.38, LENS_FRONT_Y + 1.20, M_BARRIER, 0.9, 4)
-slit = rbox("BarrierSlit", 14.0, 0.30, 0.9, (LENS_CX, LENS_FRONT_Y + 0.44, LENS_CZ + 0.1),
-            0.0, M_BLACK, 2, rot=(0, -math.radians(31), 0))
+        LENS_FRONT_Y + 0.40, LENS_FRONT_Y + 1.20, M_BARRIER, 0.7, 4)
+_slitcut = rbox("BarrierSlitCut", 14.0, 0.30, 1.6, (LENS_CX, LENS_FRONT_Y + 0.40 + 0.12, LENS_CZ + 0.15),
+                0.0, M_SLIT, 2, rot=(0, -math.radians(31), 0))
+boolean_cut(_barrier, _slitcut)
 
 # ============================================================ 顶面（z=62）
 cyl("ShutterRing", 7.5, 0.55, (SHUT_X, SHUT_Y, H + 0.12), M_CHAMP, 96, 0.22, 'Z')
@@ -592,8 +606,8 @@ cyl("ShutterBtn", SHUT_R, 0.90, (SHUT_X, SHUT_Y, H + 0.48), M_DARKGREY, 96, 0.38
 # LCD：与顶面齐平（框 62.0，玻璃再降 0.15）
 tube_z("LcdFrame", LCD_X0 - 1.6, LCD_X1 + 1.6, LCD_Y0 - 1.2, LCD_Y1 + 1.2, 1.8, 1.2,
        H - 0.42, H + 0.02, M_BLACK, 14)
-rbox("LcdGlass", LCD_X1 - LCD_X0 + 0.5, LCD_Y1 - LCD_Y0 + 0.4, 0.24,
-     ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H - 0.26), 0.8, M_LCD, 4)
+rbox("LcdGlass", LCD_X1 - LCD_X0 + 0.5, LCD_Y1 - LCD_Y0 + 0.4, 0.16,
+     ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H + 0.02), 0.7, M_LCD, 4)
 for nm, bx, by, bw, bd in BTNS:
     rbox(nm, bw, bd, 0.90, (bx, by, H + 0.42), 1.4, M_DARKGREY, 4)
 # C:AF 指示（空心环 Ø4.4 + 实心点 Ø2.5）
@@ -636,14 +650,11 @@ prism_y("RearEndCap", [(x, z) for x, z in _rear_cap], 9.6, BACK_YEND + 0.12, M_C
 
 # ============================================================ 底面
 rbox("SerialPlate", SER_X1 - SER_X0, SER_H, 0.12, ((SER_X0 + SER_X1) / 2, 0.0, -0.04), 0.5, M_BLACK, 3)
-cyl("BatteryWell", 3.8, 0.10, (BATT_X, BATT_Y, -0.02), M_BLACK_SOFT, 96, 0.0, 'Z')
-cyl("BatteryWellRing", 4.35, 0.13, (BATT_X, BATT_Y, -0.03), M_CHAMP_BRIGHT, 96, 0.05, 'Z')
-cyl("BatteryCover", 3.55, 0.16, (BATT_X, BATT_Y, -0.16), M_BLACK, 96, 0.08, 'Z')
-cyl("BattDotPin", 0.25, 0.12, (42.3, 3.0, -0.08), M_BLACK, 16, 0.0, 'Z')
-# 三脚孔（沉台 + 金属环）
-cyl("TripodRecess", 4.6, 0.30, (24.0, 0.0, -0.12), M_BLACK, 64, 0.10, 'Z')
-cyl("TripodRing", 3.15, 0.22, (24.0, 0.0, -0.22), M_CHAMP_BRIGHT, 48, 0.06, 'Z')
-cyl("TripodBore", 2.05, 0.9, (24.0, 0.0, -0.05), M_BLACK, 32, 0.0, 'Z')
+# 三脚孔：与黑底缘一体的黑座 + Ø7.5 沉台 + Ø6.4 真孔（布尔）+ 内缘亮环
+cyl("TripodPad", 8.0, 0.10, (43.0, 1.0, -0.02), M_BLACK_SOFT, 96, 0.03, 'Z')
+cyl("TripodBoreWall", 3.16, 2.6, (43.0, 1.0, 2.00), M_BLACK, 48, 0.0, 'Z')
+cyl("TripodCounterRing", 3.78, 0.12, (43.0, 1.0, 1.16), M_CHAMP_BRIGHT, 64, 0.03, 'Z')
+cyl("BattDotPin", 0.25, 0.10, (43.0, 5.0, -0.02), M_BLACK, 16, 0.0, 'Z')
 for i, sx in enumerate(SCREW_X):
     cyl("Screw%d" % i, 1.35, 0.18, (sx, 0.0, -0.07), M_DARKGREY, 32, 0.05, 'Z')
 

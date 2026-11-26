@@ -698,11 +698,10 @@ export class StageViewer {
 
     this._advanceTheme(dt);
 
-    /* 模型自转：光相对观察者固定，所以各面依次经过同一套光 → 明暗会随转动变化 */
+    /* 模型自转：光相对观察者固定，所以各面依次经过同一套光 → 明暗会随转动变化。
+       关掉时**立刻停住**并保持当前角度——不做“呼吸”微旋，免得看起来还在动。 */
     if (this.model && this.spin) {
       this.model.rotation.y += dt * 0.5;
-    } else if (this.model) {
-      this.model.rotation.y = Math.sin(t * 0.32) * 0.035;
     }
 
     if (this.ring) {

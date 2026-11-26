@@ -158,30 +158,33 @@ def buttons():
 
 
 # ---------------- 磨砂颗粒法线（可平铺，细噪声）
-def grain(size=512, strength=0.55):
-    rnd = random.Random(21)
-    h = Image.new("L", (size, size))
-    px = h.load()
-    for y in range(size):
-        for x in range(size):
-            px[x, y] = 128 + int((rnd.random() - 0.5) * 255)
-    # 轻微模糊成颗粒簇
-    from PIL import ImageFilter
-    h = h.filter(ImageFilter.GaussianBlur(0.6))
-    gx = h.filter(ImageFilter.Kernel((3, 3), [-1, 0, 1, -2, 0, 2, -1, 0, 1], scale=1, offset=0))
-    gy = h.filter(ImageFilter.Kernel((3, 3), [-1, -2, -1, 0, 0, 0, 1, 2, 1], scale=1, offset=0))
-    nm = Image.new("RGB", (size, size))
-    p = nm.load(); a = gx.load(); b = gy.load()
-    for y in range(size):
-        for x in range(size):
-            nx = (a[x, y] - 128) / 128.0 * strength
-            ny = (b[x, y] - 128) / 128.0 * strength
-            nz = 1.0
-            ln = math.sqrt(nx * nx + ny * ny + nz * nz)
-            p[x, y] = (int((nx / ln * 0.5 + 0.5) * 255), int((ny / ln * 0.5 + 0.5) * 255),
-                       int((nz / ln * 0.5 + 0.5) * 255))
-    nm.save(OUT + "grain_normal.png")
-    print("grain_normal", nm.size)
+def grain(size=512, strength=0.26):
+    """可平铺（FFT 合成的整数频率噪声）磨砂颗粒法线图。"""
+    import numpy as np
+    rng = np.random.default_rng(21)
+    n = size
+    fy = np.fft.fftfreq(n)[:, None]
+    fx = np.fft.fftfreq(n)[None, :]
+    fr = np.sqrt(fx * fx + fy * fy)
+    fr[0, 0] = 1e-6
+    amp = (1.0 / fr) ** 1.15
+    amp[0, 0] = 0.0
+    amp[fr > 0.28] = 0.0              # 高频截止 → 颗粒尺度约 0.3-0.5mm（UV 7mm）
+    phase = rng.random((n, n)) * 2 * np.pi
+    spec = amp * np.exp(1j * phase)
+    h = np.real(np.fft.ifft2(spec))
+    h = (h - h.min()) / (h.max() - h.min())
+    gy, gx = np.gradient(h)
+    nx = -gx * strength * 20.0
+    ny = -gy * strength * 20.0
+    nz = np.ones_like(nx)
+    ln = np.sqrt(nx * nx + ny * ny + nz * nz)
+    img = np.zeros((n, n, 3), dtype=np.uint8)
+    img[..., 0] = ((nx / ln * 0.5 + 0.5) * 255).astype(np.uint8)
+    img[..., 1] = ((ny / ln * 0.5 + 0.5) * 255).astype(np.uint8)
+    img[..., 2] = ((nz / ln * 0.5 + 0.5) * 255).astype(np.uint8)
+    Image.fromarray(img, "RGB").save(OUT + "grain_normal.png")
+    print("grain_normal tileable", (n, n))
 
 
 if __name__ == "__main__":

@@ -13,6 +13,12 @@
  *
  * 只用 class：line / text / accent-fill（深浅主题自动换色，不写死颜色）。
  * 线宽与留白对齐 olympus-45 / zeniko-za12：主轮廓 1.5、次要 1.2、细节 1。
+ *
+ * ⚠ 维护约定（bm21-reviewer / web-reviewer 2026-11-26 签收时约定）：
+ *   调整 opacity / 线宽前，必须用签收口径复测——「卡片 art 区 bbox 众数背景 + 极端 0.8% 像素」，
+ *   1440 宽、卡片完整入视口。全幅（480×360）口径会高估 15–20%，两套口径来回拉扯只会空转。
+ *   签收实测：BM-21 浅 4.54 / 深 7.37；Olympus-45 3.73 / 7.35；ZENIKO ZA12 4.47 / 9.94。
+ *   当前点位：主轮廓 0.56、次要 0.55、镜圈黑环 0.56、丝印 0.58/0.52/0.30、握把排线 0.09。
  */
 
 const SANS = '"Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif';
