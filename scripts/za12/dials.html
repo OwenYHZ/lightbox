@@ -1,0 +1,329 @@
+<!doctype html>
+<html><head><meta charset="utf-8" /><style>body{margin:0;background:#000}canvas{display:block}</style></head>
+<body>
+<canvas id="dialL" width="1024" height="1024"></canvas>
+<canvas id="dialR" width="1024" height="1024"></canvas>
+<canvas id="plate" width="1536" height="1365"></canvas>
+<canvas id="backIcon" width="512" height="512"></canvas>
+<canvas id="shoeBack" width="512" height="213"></canvas>
+<canvas id="bottomPanel" width="1280" height="1052"></canvas>
+<script>
+/* ---------------------------------------------------------------
+   ZA12 拨盘 / 顶板 贴图。坐标约定：
+   - 拨盘 canvas 1024px = 16mm（K px/mm），圆心 (512,512)
+   - 环向文字：clock 角自 12 点起顺时针；字头朝盘外（radial outward），
+     与官方 p1 顶面图一致（12 点为直立，顺时针逐渐转倒）。
+   --------------------------------------------------------------- */
+var TAU = Math.PI * 2;
+var DIAL_MM = 21.2;             // 拨盘外径（mm）——与 build.py 的 DIAL_R 联动，只改这一处
+var K = 1024 / DIAL_MM;
+var U = DIAL_MM / 16;           // 所有 mm 数值按 Ø16 标定，按 U 等比缩放
+var C = 512;
+
+/* radial=true  → 字串沿半径朝外阅读（官方右盘外环/内环）
+   radial=false → 字串沿圆周（切线）阅读，字头朝外（官方左盘） */
+function ringText(g, text, rMm, clockDeg, capMm, color, weight, radial, condense) {
+  var a = clockDeg * Math.PI / 180;
+  var r = rMm * U * K;
+  g.save();
+  g.translate(C + Math.sin(a) * r, C - Math.cos(a) * r);
+  g.rotate(radial ? (a - Math.PI / 2) : a);
+  g.scale(condense || 0.55, 1.0);          // 官方为窄体：横向压到 ~55%
+  g.fillStyle = color;
+  g.font = (weight || 500) + " " + (capMm * U * K * 1.40).toFixed(1) + "px Helvetica, Arial, sans-serif";
+  g.textAlign = "center";
+  g.textBaseline = "middle";
+  g.fillText(text, 0, 0);
+  g.restore();
+}
+
+function star(g, rMm, clockDeg, sizeMm, color) {
+  var a = clockDeg * Math.PI / 180, r = rMm * U * K;
+  var x = C + Math.sin(a) * r, y = C - Math.cos(a) * r;
+  var s = sizeMm * U * K * 0.5;
+  g.save();
+  g.translate(x, y);
+  g.rotate(a - Math.PI / 2);
+  g.fillStyle = color;
+  g.beginPath();
+  for (var i = 0; i < 8; i++) {
+    var ang = i * Math.PI / 4;
+    var rad = (i % 2 === 0) ? s : s * 0.42;
+    var px = Math.sin(ang) * rad, py = -Math.cos(ang) * rad;
+    if (i === 0) g.moveTo(px, py); else g.lineTo(px, py);
+  }
+  g.closePath(); g.fill();
+  g.restore();
+}
+
+/* 盘面底：亮银车削面 */
+function dialFace(g) {
+  var grd = g.createRadialGradient(C, C, 0, C, C, C);
+  grd.addColorStop(0.00, "#d3d5d6");
+  grd.addColorStop(0.62, "#cccecf");
+  grd.addColorStop(0.93, "#c2c4c5");
+  grd.addColorStop(1.00, "#a8aaab");
+  g.fillStyle = grd;
+  g.beginPath(); g.arc(C, C, C, 0, TAU); g.fill();
+  // 车削同心细纹
+  g.save();
+  g.beginPath(); g.arc(C, C, C, 0, TAU); g.clip();
+  for (var r = 6; r < C; r += 3) {
+    g.globalAlpha = (r % 15 < 3) ? 0.055 : 0.028;
+    g.strokeStyle = (r % 6 === 0) ? "#ffffff" : "#8f9192";
+    g.lineWidth = 1.1;
+    g.beginPath(); g.arc(C, C, r, 0, TAU); g.stroke();
+  }
+  g.globalAlpha = 1;
+  // 细噪点（喷砂感）
+  for (var i = 0; i < 9000; i++) {
+    var a = Math.random() * TAU, rr = Math.sqrt(Math.random()) * C;
+    g.globalAlpha = 0.05;
+    g.fillStyle = Math.random() > 0.5 ? "#ffffff" : "#7c7e7f";
+    g.fillRect(C + Math.cos(a) * rr, C + Math.sin(a) * rr, 1.3, 1.3);
+  }
+  g.globalAlpha = 1;
+  g.restore();
+  // 滚花环内侧细线
+  g.strokeStyle = "rgba(40,44,45,0.30)";
+  g.lineWidth = 0.07 * K;
+  g.beginPath(); g.arc(C, C, 7.42 * U * K, 0, TAU); g.stroke();
+  // 外圈倒角压暗
+  g.strokeStyle = "rgba(90,94,95,0.55)";
+  g.lineWidth = 0.16 * K;
+  g.beginPath(); g.arc(C, C, 7.86 * U * K, 0, TAU); g.stroke();
+}
+
+/* ---------- 左盘：f/stop ---------- */
+(function () {
+  var g = document.getElementById("dialL").getContext("2d");
+  g.clearRect(0, 0, 1024, 1024);
+  dialFace(g);
+  g.save(); g.translate(C, C); g.rotate(Math.PI); g.translate(-C, -C);
+  var ink = "#24272a";
+  var nums = ["11", "8", "5.6", "4", "2.8", "2"];
+  for (var i = 0; i < nums.length; i++) {
+    ringText(g, nums[i], 5.85, 6 + i * 28.2, 2.00, ink, 500, false, 0.55);
+  }
+  ringText(g, "f/stop", 5.85, 266, 1.42, ink, 500, false, 0.62);
+  star(g, 5.85, 81, 0.82, ink);
+  // 中心连接柱压环（几何件之上再叠一圈暗环）
+  g.strokeStyle = "rgba(30,33,34,0.55)";
+  g.lineWidth = 0.10 * K;
+  g.beginPath(); g.arc(C, C, 2.72 * U * K, 0, TAU); g.stroke();
+  g.strokeStyle = "rgba(255,255,255,0.35)";
+  g.lineWidth = 0.06 * K;
+  g.beginPath(); g.arc(C, C, 2.62 * U * K, 0, TAU); g.stroke();
+  g.restore();
+})();
+
+/* ---------- 右盘：功率比（外环，暗红）+ ISO（内环） ---------- */
+(function () {
+  var g = document.getElementById("dialR").getContext("2d");
+  g.clearRect(0, 0, 1024, 1024);
+  dialFace(g);
+  g.save(); g.translate(C, C); g.rotate(Math.PI); g.translate(-C, -C);
+  var ink = "#24272a";
+  var red = "#8f352c";
+  var pw = ["-1/64", "-1/32", "-1/16", "-1/8", "-1/4", "-1/2", "-FULL"];
+  for (var i = 0; i < pw.length; i++) {
+    ringText(g, pw[i], 6.15, 353 + i * 29.5, 1.45, red, 500, true, 0.55);
+  }
+  var iso = ["50", "100", "200", "400", "800", "1600"];
+  for (var j = 0; j < iso.length; j++) {
+    ringText(g, iso[j], 4.90, 316 - j * 23.4, 1.60, ink, 500, true, 0.55);
+  }
+  ringText(g, "ISO", 3.00, 302, 0.85, ink, 700, false, 0.60);
+  star(g, 3.70, 258, 0.78, ink);
+  g.strokeStyle = "rgba(30,33,34,0.55)";
+  g.lineWidth = 0.10 * K;
+  g.beginPath(); g.arc(C, C, 2.72 * U * K, 0, TAU); g.stroke();
+  g.restore();
+})();
+
+/* ---------- 顶板：ZENIKO + 细磨砂 ---------- */
+(function () {
+  var cv = document.getElementById("plate");
+  var g = cv.getContext("2d");
+  var PW = 49.5, PD = 44.0;
+  var W = cv.width, H = cv.height;
+  var k = W / PW;                       // px per mm
+  var cx = W / 2, cy = H / 2;
+  var Xm = function (x) { return cx + x * k; };
+  var Ym = function (zb) { return cy - zb * k; };  // zb>0 = 朝背面 = 画布上方
+
+  g.fillStyle = "#0c0f11";
+  g.fillRect(0, 0, W, H);
+  // 轻暗角（近边略深）
+  var vg = g.createRadialGradient(cx, cy, W * 0.18, cx, cy, W * 0.72);
+  vg.addColorStop(0, "rgba(0,0,0,0)");
+  vg.addColorStop(1, "rgba(0,0,0,0.55)");
+  g.fillStyle = vg;
+  g.fillRect(0, 0, W, H);
+  // 细磨砂噪点
+  var img = g.getImageData(0, 0, W, H);
+  var d = img.data;
+  for (var i = 0; i < d.length; i += 4) {
+    var n = (Math.random() - 0.5) * 9;
+    d[i] += n; d[i + 1] += n; d[i + 2] += n;
+  }
+  g.putImageData(img, 0, 0);
+
+  // ---- ZENIKO：靠正面一侧，字头朝前（p6 等距图 + 实拍 222313 一致） ----
+  var CAP = 4.6;                       // 字高 mm
+  var TW = 23.1;                       // 字串宽 mm
+  var zb = -11.2;                      // 前 11.2mm（距机身前缘 12.3mm）
+  g.save();
+  g.translate(Xm(0), Ym(zb));
+  g.rotate(Math.PI);                   // 旋转 180°：字头指向 -Y（正面）
+  g.font = '200 ' + (CAP * 1.42 * k).toFixed(1) + 'px "Segoe UI Light", "Segoe UI", Helvetica, Arial, sans-serif';
+  g.textAlign = "center";
+  g.textBaseline = "alphabetic";
+  var glyphs = ["Z", "E", "N", "I", "K", "O"];
+  var ws = glyphs.map(function (ch) { return g.measureText(ch).width; });
+  var sum = ws.reduce(function (a, b) { return a + b; }, 0);
+  var gap = (TW * k - sum) / (glyphs.length - 1);
+  var baseY = CAP * k * 0.5;
+  var x = -TW * k / 2;
+  var centers = [];
+  for (var gi = 0; gi < glyphs.length; gi++) {
+    var gx = x + ws[gi] / 2;
+    centers.push(gx);
+    // 阴刻+烫银（旋转坐标系里偏移取反，保证受光方向仍是左上）
+    g.fillStyle = "rgba(0,0,0,0.55)";
+    g.fillText(glyphs[gi], gx - 0.9, baseY - 0.9);
+    g.fillStyle = "#8d9294";
+    g.fillText(glyphs[gi], gx, baseY);
+    g.fillStyle = "#d3d7d9";
+    g.fillText(glyphs[gi], gx + 0.5, baseY + 0.5);
+    x += ws[gi] + gap;
+  }
+  // O 下短横杠（商标体，位于字身下侧 = 朝背面）
+  var ow = 2.2 * k, oh = 0.52 * k;
+  g.fillStyle = "#c9cdcf";
+  g.fillRect(centers[5] - ow / 2, baseY + 1.15 * k, ow, oh);
+  g.restore();
+
+  document.title = "ready";
+})();
+
+/* ---------- 背面按键面：⏻ ／ ⚡（p5：正立电源符 + 斜杠 + 右下闪电） ---------- */
+(function () {
+  var cv = document.getElementById("backIcon");
+  var g = cv.getContext("2d");
+  var W = cv.width;
+  var k = W / 7.4;                       // 7.4mm 面 → px per mm
+  var cx = W / 2, cy = W / 2;
+  var P = function (x, y) { return [cx + x * k, cy + y * k]; };
+  g.clearRect(0, 0, W, W);
+  g.fillStyle = "#d2d4d5";
+  g.fillRect(0, 0, W, W);
+  var ink = "#3f4448";
+  // 外圈
+  g.strokeStyle = ink; g.lineWidth = 0.50 * k;
+  g.beginPath(); g.arc(cx, cy, 3.10 * k, 0, TAU); g.stroke();
+  // 电源符（左上，开口朝上 + 顶竖杆）
+  g.lineWidth = 0.44 * k;
+  var pc = P(-1.02, -0.92);
+  g.beginPath(); g.arc(pc[0], pc[1], 0.80 * k, Math.PI * 0.30, Math.PI * 2.70); g.stroke();
+  var b0 = P(-1.02, -2.22), b1 = P(-1.02, -1.05);
+  g.beginPath(); g.moveTo(b0[0], b0[1]); g.lineTo(b1[0], b1[1]); g.stroke();
+  // 斜杠
+  g.lineWidth = 0.44 * k;
+  var s0 = P(-2.05, 1.45), s1 = P(0.85, -1.45);
+  g.beginPath(); g.moveTo(s0[0], s0[1]); g.lineTo(s1[0], s1[1]); g.stroke();
+  // 闪电（右下，尖端朝下）
+  var pts = [[0.88, -0.50], [1.95, -0.50], [1.18, 0.55], [1.70, 0.55],
+             [0.52, 2.02], [0.95, 0.78], [0.44, 0.78]];
+  g.fillStyle = ink;
+  g.beginPath();
+  for (var i = 0; i < pts.length; i++) {
+    var q = P(pts[i][0], pts[i][1]);
+    if (i === 0) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
+  }
+  g.closePath(); g.fill();
+})();
+
+/* ---------- 底面铭牌（51×41.9 黑面板上的认证丝印） ---------- */
+(function () {
+  var cv = document.getElementById("bottomPanel");
+  var g = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  var k = W / 51;                        // px per mm（板面 51mm 宽）
+  var ink = "#b9bfc4";
+  g.fillStyle = "#131820"; g.fillRect(0, 0, W, H);
+  // 细噪点
+  var img = g.getImageData(0, 0, W, H), d = img.data;
+  for (var i = 0; i < d.length; i += 4) {
+    var n = (Math.random() - 0.5) * 7;
+    d[i] += n; d[i + 1] += n; d[i + 2] += n;
+  }
+  g.putImageData(img, 0, 0);
+  g.fillStyle = ink;
+  g.textBaseline = "alphabetic";
+  g.textAlign = "left";
+  var T = function (txt, xMm, yMm, capMm, weight) {
+    g.font = (weight || 500) + " " + (capMm * k * 1.40).toFixed(1) + "px Helvetica, Arial, sans-serif";
+    g.fillText(txt, xMm * k, yMm * k);
+  };
+  // 左上说明
+  // 三行说明全部收进"前缘空带"（y<8.2mm，热靴座不会压到）
+  T("双线轮顶闪光灯 Dual-Dial Camera Flash", 2.2, 3.0, 1.22, 600);
+  T("Li-ion Battery: DC7.4V, 300mAh, 2.22Wh", 2.2, 5.4, 1.18);
+  T("Input: 5V=0.5A   CAN ICES-003 (B) / NMB-003 (B)", 2.2, 7.8, 1.18);
+  // 认证图标行：移到热靴座下方空带（y>27.2mm）
+  var iy = 19.5;
+  var iyIcons = 34.2;
+  T("CE", 2.6, iyIcons, 2.7, 700);
+  T("UK", 7.0, iyIcons - 1.1, 1.15, 700);
+  T("CA", 7.0, iyIcons, 1.15, 700);
+  T("FC", 11.6, iyIcons, 2.7, 700);
+  T("III", 16.2, iyIcons, 2.7, 700);
+  g.strokeStyle = ink; g.lineWidth = 0.26 * k;
+  g.strokeRect(19.8 * k, iyIcons * k - 2.7 * k, 2.4 * k, 2.7 * k);
+  g.beginPath(); g.arc(23.8 * k, iyIcons * k - 1.35 * k, 1.35 * k, 0, TAU); g.stroke();
+  g.beginPath();
+  g.moveTo(22.6 * k, iyIcons * k - 2.45 * k); g.lineTo(25.0 * k, iyIcons * k - 0.25 * k);
+  g.moveTo(25.0 * k, iyIcons * k - 2.45 * k); g.lineTo(22.6 * k, iyIcons * k - 0.25 * k);
+  g.stroke();
+  // KC
+  T("KC", 28.6, iy - 1.0, 2.9, 700);
+  T("R-R-znk-008", 28.6, iy + 2.4, 1.10);
+  // 厂商与地址
+  T("Zeniko Technology Co., LTD", 28.6, iy + 6.8, 1.12);
+  T("Add.: 1208 Room, Jinshan", 28.6, iy + 9.4, 1.02);
+  T("Building, No.5033, Shennan", 28.6, iy + 11.6, 1.02);
+  T("East Road, Xinwei Community,", 28.6, iy + 13.8, 1.02);
+  T("Guiyuan Street, Luohu District,", 28.6, iy + 16.0, 1.02);
+  T("Shenzhen City.", 28.6, iy + 18.2, 1.02);
+  T("Made in China", 2.6, 38.4, 1.40, 600);
+  // QR（右上）
+  var qx = 43.2, qy = 1.0, qs = 6.2, n = 21, cell = qs / n;
+  for (var r = 0; r < n; r++) {
+    for (var c = 0; c < n; c++) {
+      var on = ((r * 7 + c * 13 + ((r * c) % 5)) % 3 === 0) || (r < 7 && c < 7) || (r < 7 && c > n - 8) || (r > n - 8 && c < 7);
+      if (r < 7 && c < 7) on = !(r === 0 || r === 6 || c === 0 || c === 6) || (r > 1 && r < 5 && c > 1 && c < 5);
+      if (r < 7 && c > n - 8) on = !(r === 0 || r === 6 || c === n - 7 || c === n - 1) || (r > 1 && r < 5 && c > n - 6 && c < n - 2);
+      if (r > n - 8 && c < 7) on = !(r === n - 7 || r === n - 1 || c === 0 || c === 6) || (r > n - 6 && r < n - 2 && c > 1 && c < 5);
+      if (on) g.fillRect((qx + c * cell) * k, (qy + r * cell) * k, cell * k, cell * k);
+    }
+  }
+})();
+
+/* ---------- 热靴座背面 ZA12 ---------- */
+(function () {
+  var cv = document.getElementById("shoeBack");
+  var g = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  g.fillStyle = "#08090a";
+  g.fillRect(0, 0, W, H);
+  g.fillStyle = "#9ba1a5";
+  g.save();
+  g.translate(W / 2, H / 2 + 2);
+  g.scale(0.72, 1.0);
+  g.font = '600 249px Helvetica, Arial, sans-serif';
+  g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillText("ZA12", 0, 0);
+  g.restore();
+})();
+</script></body></html>

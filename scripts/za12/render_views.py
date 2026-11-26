@@ -46,15 +46,16 @@ cam = bpy.data.objects.new("Cam", cam_data)
 scene.collection.objects.link(cam)
 scene.camera = cam
 cam_data.type = 'ORTHO'
-cam_data.ortho_scale = 0.086
+cam_data.ortho_scale = 0.098
 
-TARGET = Vector((0, 0, 0.015))
+TARGET = Vector((0, 0, 0.018))
 views = {
-    "front":  ((0, -0.3, 0.015), (math.pi/2, 0, 0)),
-    "back":   ((0,  0.3, 0.015), (math.pi/2, 0, math.pi)),
-    "left":   ((-0.3, 0, 0.015), (math.pi/2, 0, -math.pi/2)),
-    "right":  ((0.3, 0, 0.015),  (math.pi/2, 0, math.pi/2)),
+    "front":  ((0, -0.3, 0.018), (math.pi/2, 0, 0)),
+    "back":   ((0,  0.3, 0.018), (math.pi/2, 0, math.pi)),
+    "left":   ((-0.3, 0, 0.018), (math.pi/2, 0, -math.pi/2)),
+    "right":  ((0.3, 0, 0.018),  (math.pi/2, 0, math.pi/2)),
     "top":    ((0, 0, 0.3),      (0, 0, 0)),
+    "top-p1": ((0, 0, 0.3),      (0, 0, math.pi)),
     "bottom": ((0, 0, -0.3),     (math.pi, 0, 0)),
 }
 for name, (loc, rot) in views.items():

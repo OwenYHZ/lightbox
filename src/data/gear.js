@@ -879,10 +879,10 @@ export const GEAR = [
       ["指数", "GN 12（ISO 100 · m）"],
       ["档位", "f/2 – f/11 · 1/1 – 1/64"],
       ["供电", "内置锂电 300 mAh · USB-C 5V⎓0.5A"],
-      ["尺寸", "55.6 × 46.5 × 23.6 mm（不含拨盘）"],
+      ["尺寸", "55 × 47 × 36 mm（含热靴）"],
     ],
     tags: ["闪光灯", "手动", "迷你"],
     glb: "./assets/models/zeniko-za12.glb",
-    model: { seed: 12, tone: "silver" },
+    model: { seed: 12, tone: "silver", elevation: 1.55, azimuth: 0.5 },
   },
 ];

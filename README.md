@@ -155,3 +155,11 @@ npm run preview   # 预览构建产物
 - 「介质」只作用于机身；镜头不区分胶片/数码。
 - 转接环按 `mount` 与 `mountTo` 两端参与卡口筛选。
 - 支持的 WebGL 设备才会有三维预览，其余显示提示文字。
+
+
+## ZA12 模型对比口径
+
+- 官方 p1（顶视特写）↔ `shots/za12/top-p1.png`（俯视、正面朝上）
+- 实拍 222217（顶视）↔ `shots/za12/top.png`
+- 实拍 222313（左前 3/4）↔ `shots/za12/detail/compare-222313-vs-model.png`
+- 审核报告：`docs/reviews/za12-glb/r1..r5.md`
