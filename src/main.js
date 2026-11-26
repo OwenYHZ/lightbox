@@ -629,13 +629,14 @@ function mountStageLoaderArt(item) {
     requestAnimationFrame(() => {
       if (el.stageLoader) el.stageLoader.style.removeProperty("transition");
     });
-    /* 兜底：模型加载失败 / 卡住时，最多挡 4s */
+    /* 兜底：只在真的失败/卡住时（viewer chunk 首次约 1MB，冷启动可达十几秒）
+       才允许挡到 24s；正常路径由 markStageLoaderReady() 收起，避免"动画完就空白" */
     stageLoaderFailSafe = window.setTimeout(() => {
       if (cycle !== stageLoaderCycle || !el.stageLoader) return;
       if (el.stageLoader.classList.contains("is-done")) return;
       el.stageLoader.classList.add("is-done");
       scheduleStageLoaderHide();
-    }, 4000);
+    }, 24000);
   }
 
   stageLoaderShownAt = performance.now();
@@ -761,6 +762,15 @@ function webglAvailable() {
   } catch (error) {
     return false;
   }
+}
+
+/* 预热三维 chunk：主包里只做动态 import，首次点开要现下载约 1MB。
+   空闲时先把它取回来，点开时基本命中缓存。 */
+let stageWarmed = false;
+function warmStageChunk() {
+  if (stageWarmed) return;
+  stageWarmed = true;
+  import("./lib/three/viewer.js").catch(() => {});
 }
 
 async function ensureStage() {
@@ -1100,6 +1110,10 @@ function boot() {
   syncAccentUI();
   bindEvents();
   route();
+
+/* 首屏稳定后再预热三维场景，避免抢主线程 */
+window.setTimeout(warmStageChunk, 1200);
+
 }
 
 boot();

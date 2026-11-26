@@ -1,0 +1,13 @@
+import { chromium } from "playwright-core";
+const browser = await chromium.launch({ channel: "chrome", headless: true, args: ["--enable-unsafe-swiftshader"] });
+const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, colorScheme: "dark" });
+const net = [];
+page.on("requestfailed", (r) => net.push({ fail: r.url(), err: r.failure() && r.failure().errorText }));
+page.on("response", (r) => { const u = r.url(); if (/\.js$/.test(u)) net.push({ status: r.status(), url: u.split("/").pop() }); });
+page.on("pageerror", (e) => net.push({ pageerror: e.message }));
+page.on("console", (m) => { if (m.type() === "error") net.push({ console: m.text() }); });
+await page.goto("https://owenyhz.github.io/lightbox/#/zeniko-za12", { waitUntil: "domcontentloaded", timeout: 60000 });
+await page.waitForTimeout(5000);
+console.log(JSON.stringify(net.slice(-25), null, 1));
+await browser.close();
+process.exit(0);
