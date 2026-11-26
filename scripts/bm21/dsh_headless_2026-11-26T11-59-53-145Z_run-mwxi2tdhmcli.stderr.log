@@ -1,0 +1,6 @@
+TBBmalloc: skip allocation functions replacement in ucrtbase.dll: unknown prologue for function _msize
+Traceback (most recent call last):
+  File "C:\Users\15756\AppData\Local\dsh-blender-rt\dsh_headless_mwxi2tdm_48bchl.py", line 2172, in <module>
+    _end_prof = lift(offset_profile(prof_left(-46.0, HW, HH, R_GRIP, R_GRIP), 0.20))
+                                    ^^^^^^^^^
+NameError: name 'prof_left' is not defined

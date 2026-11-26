@@ -12,13 +12,13 @@ html[data-accent="copper"] {
 }
 
 html[data-accent="wine"] {
-  --accent-h: 352;
-  --accent-s: 44%;
+  --accent-h: 356;
+  --accent-s: 52%;
 }
 
 html[data-accent="rose"] {
-  --accent-h: 340;
-  --accent-s: 40%;
+  --accent-h: 332;
+  --accent-s: 47%;
 }
 
 html[data-accent="plum"] {
@@ -32,8 +32,8 @@ html[data-accent="indigo"] {
 }
 
 html[data-accent="slate"] {
-  --accent-h: 210;
-  --accent-s: 26%;
+  --accent-h: 206;
+  --accent-s: 34%;
 }
 
 html[data-accent="celadon"] {
@@ -57,6 +57,6 @@ html[data-accent="ochre"] {
 }
 
 html[data-accent="graphite"] {
-  --accent-h: 220;
-  --accent-s: 10%;
+  --accent-h: 226;
+  --accent-s: 5%;
 }

@@ -21,13 +21,13 @@ PLATE_W, PLATE_D = 55.0 - 2 * PLATE_MARGIN, 47.0 - 2 * PLATE_MARGIN
 PLATE_R = CORNER - PLATE_MARGIN   # 与外壳同圆心收敛（贴住外壳圆角）
 PLATE_GAP = 0.17
 
-DIAL_R = 13.0                 # 拨盘 Ø26.0（外缘 ±29 超机身 1.5，后缘 24.8 超机身 1.3）
-DIAL_X = 16.0                 # 中心距 32.0（两盘净空 6.0，容 4.4 的槽）
-DIAL_Y = 24.8 - DIAL_R        # 盘心 Y = +11.8（盘后缘 24.8）
+DIAL_R = 12.0                 # 拨盘 Ø24.0（外缘 ±27.2：机身内 0.3、黑顶盖外 0.9）
+DIAL_X = 15.2                 # 中心距 30.4（两盘净空 6.4，容 4.4 的槽 + 两侧各 1.0）
+DIAL_Y = 23.2 - DIAL_R        # 盘心 Y = +11.2（盘后缘 23.2，超顶盖 0.9、机身内 0.3）
 DIAL_BACK_D = 9.5             # 盘心距机身后缘（p6 + 实拍 222313：拨盘靠后）
 DIAL_TOP = 24.7               # 盘面高（滚花露出 1.4）
 DIAL_BOT = BODY_H - PLATE_SINK - 0.02   # 低 0.02 避免与外壳顶面共面
-DIAL_TEETH, DIAL_TOOTH = 194, 0.22   # Ø26 下齿距 0.42
+DIAL_TEETH, DIAL_TOOTH = 180, 0.22   # Ø24 下齿距 0.42
 
 WIN_CX, WIN_CZ = -2.2, 14.5
 WIN_W, WIN_H, WIN_R = 26.7, 7.6, 1.6
@@ -40,7 +40,7 @@ SLOT_W, SLOT_H, SLOT_Z = 4.4, 1.7, 11.7  # 更短；槽心与盘心(+11.8)同深
 
 BTN_X, BTN_Z, BTN_R, BTN_OUT = -0.5, 13.8, 3.8, 0.7
 
-SHOE_X, SHOE_Y = -10.0, 5.5   # 按 222234 实拍：底面中心左下（左 -10 / 后 +5.5）
+SHOE_X, SHOE_Y = -8.0, 4.7    # 222234 4096 原图 25.6px/mm：脚板心 −7.5 / +4.8
 SHOE_MOUNT_W, SHOE_MOUNT_D = 17.0, 16.0
 SHOE_FOOT_W, SHOE_FOOT_D = 19.0, 17.0
 SHOE_BOT = -(TOTAL_H - DIAL_TOP)          # -11.3

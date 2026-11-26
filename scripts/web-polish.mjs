@@ -21,6 +21,15 @@ fs.mkdirSync(shots, { recursive: true });
 fs.mkdirSync(auditDir, { recursive: true });
 
 const QUICK = process.env.WP_QUICK === "1";
+/* 默认服务 dist/：审核以产物为准（源码直出会掩盖 CSS 分包顺序问题）
+   WP_SRC=1 可切回源码直出，仅用于设计意图排查 */
+const DIST = process.env.WP_SRC !== "1";
+const siteRoot = DIST ? path.join(root, "dist") : root;
+const EXPECT = {
+  amber: [38, "46%"], copper: [22, "52%"], wine: [356, "52%"], rose: [332, "47%"],
+  plum: [300, "34%"], indigo: [252, "40%"], slate: [206, "34%"], celadon: [178, "30%"],
+  pine: [154, "34%"], moss: [100, "26%"], ochre: [55, "50%"], graphite: [226, "5%"],
+};
 const STYLE_ORDER = ["tokens.css", "accents.css", "base.css", "cards.css", "detail.css"];
 const styleBundle = STYLE_ORDER.map((f) => fs.readFileSync(path.join(root, "src", "styles", f), "utf8")).join("\n");
 
@@ -84,6 +93,24 @@ function send(res, type, body, status = 200) {
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent((req.url || "/").split("?")[0]);
   const query = new URLSearchParams((req.url || "").split("?")[1] || "");
+
+  if (DIST) {
+    if (url === "/__sheet") {
+      const theme = query.get("theme") === "light" ? "light" : "dark";
+      const files = fs.readdirSync(auditDir).filter((f) => f.startsWith(theme + "-") && f.endsWith("-home.jpg")).sort();
+      return send(res, MIME[".html"], sheetHtml(theme, files));
+    }
+    if (url.startsWith("/_shots/")) {
+      const f = path.join(shots, url.slice("/_shots/".length));
+      if (fs.existsSync(f)) return send(res, MIME[path.extname(f)] || "application/octet-stream", fs.readFileSync(f));
+      return send(res, "text/plain", "not found", 404);
+    }
+    let distFile = path.join(siteRoot, url === "/" ? "index.html" : url);
+    if (!distFile.startsWith(siteRoot) || !fs.existsSync(distFile) || fs.statSync(distFile).isDirectory()) {
+      distFile = path.join(siteRoot, "index.html");
+    }
+    return send(res, MIME[path.extname(distFile)] || "application/octet-stream", fs.readFileSync(distFile));
+  }
 
   if (url === "/" || url === "/index.html") return send(res, MIME[".html"], appHtml());
   if (url === "/__styles.css") return send(res, MIME[".css"], styleBundle);
@@ -356,6 +383,19 @@ if (!QUICK) {
       await page.evaluate((a) => window.Lightbox.setAccent(a), accent);
       await page.waitForTimeout(560);
       await page.screenshot({ path: path.join(auditDir, theme + "-" + accent + "-home.jpg"), type: "jpeg", quality: 74 });
+      const seen = await page.evaluate(() => {
+        const cs = getComputedStyle(document.documentElement);
+        return { h: cs.getPropertyValue("--accent-h").trim(), s: cs.getPropertyValue("--accent-s").trim() };
+      });
+      const want = EXPECT[accent];
+      if (!want || seen.h !== String(want[0]) || seen.s !== want[1]) {
+        throw new Error(
+          "[accent 未生效] " + theme + "/" + accent + " 期望 --accent-h=" + (want && want[0]) +
+            " --accent-s=" + (want && want[1]) + "，实际 " + seen.h + " / " + seen.s +
+            (DIST ? "（请检查 dist 里 accents.css 是否进包/是否被 :root 压掉）" : "")
+        );
+      }
+
       results.audit[theme + "-" + accent] = await page.evaluate((probeSrc) => {
         const cs = getComputedStyle(document.documentElement);
         const contrast = eval(probeSrc);
@@ -369,6 +409,34 @@ if (!QUICK) {
     }
   }
   await ctx.close();
+
+  /* tools 页是否跟随主站主题（P1-6）：浅色 + 靛青 */
+  {
+    const tctx = await browser.newContext({ viewport: { width: 1280, height: 860 }, colorScheme: "light", locale: "zh-CN" });
+    const tp = await tctx.newPage();
+    hook(tp, "tools");
+    await tp.goto(base + "tools/gear-editor.html", { waitUntil: "networkidle" });
+    await tp.evaluate(() => {
+      localStorage.setItem("lightbox.theme", "light");
+      localStorage.setItem("lightbox.accent", "indigo");
+    });
+    await tp.reload({ waitUntil: "networkidle" });
+    await tp.waitForTimeout(600);
+    results.tools = await tp.evaluate(() => {
+      const cs = getComputedStyle(document.documentElement);
+      const body = getComputedStyle(document.body);
+      return {
+        theme: document.documentElement.dataset.theme,
+        accent: document.documentElement.dataset.accent,
+        accentH: cs.getPropertyValue("--accent-h").trim(),
+        ink0: cs.getPropertyValue("--ink-0").trim(),
+        bodyBg: body.backgroundColor,
+        bodyColor: body.color,
+      };
+    });
+    await tp.screenshot({ path: path.join(shots, "tools-editor-light-indigo.jpg"), type: "jpeg", quality: 80 });
+    await tctx.close();
+  }
 
   const sheetCtx = await browser.newContext({ viewport: { width: 1400, height: 1080 } });
   for (const theme of ["dark", "light"]) {

@@ -176,7 +176,7 @@
   z-index: 3;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: var(--paper-faint);
+  color: var(--paper-meta);
 }
 
 .card__badge {
@@ -198,7 +198,7 @@
   font-family: var(--font-mono);
   font-size: 8.5px;
   letter-spacing: 0.16em;
-  color: var(--accent);
+  color: var(--accent-text);
   transition: background 0.45s var(--ease), border-color 0.45s var(--ease);
 }
 
@@ -210,7 +210,7 @@
 .card:hover .card__badge {
   background: var(--accent-soft);
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ---- 状态 ---- */
@@ -293,7 +293,7 @@
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--paper-faint);
+  color: var(--paper-meta);
 }
 
 .card__title {
@@ -348,7 +348,7 @@
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: var(--paper-faint);
+  color: var(--paper-meta);
   transition: color 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
@@ -358,7 +358,7 @@
 }
 
 .card:hover .card__cue {
-  color: var(--accent);
+  color: var(--accent-text);
   transform: translateX(2px);
 }
 

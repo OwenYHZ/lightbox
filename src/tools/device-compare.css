@@ -1,5 +1,10 @@
-:root { color-scheme: dark; --bg: #07070a; --fg: #f3f1ec; --dim: rgba(243,241,236,.6); --line: rgba(243,241,236,.12); --art-line: rgba(243,241,236,.62); --art-accent: #e4cfa8; --art-text: rgba(243,241,236,.42); --art-grid: rgba(243,241,236,.06); --media-bg: radial-gradient(130% 96% at 50% -6%, #171b21 0%, #0c0d11 58%, #08090b 100%); }
-[data-theme="light"] { color-scheme: light; --bg: #f1ece2; --fg: #17181d; --dim: rgba(23,24,29,.6); --line: rgba(23,24,29,.14); --art-line: rgba(23,24,29,.62); --art-accent: #a07336; --art-text: rgba(23,24,29,.46); --art-grid: rgba(23,24,29,.07); --media-bg: radial-gradient(130% 96% at 50% -6%, #fdfaf4 0%, #f2ede3 58%, #e9e3d7 100%); }
+:root {
+  /* 全部走主站 token：明暗、主题色、封面线稿、画面底都跟着全局设置 */
+  --bg: var(--ink-0);
+  --fg: var(--paper);
+  --dim: var(--paper-meta);
+  --line: var(--card-border);
+}
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 13px/1.6 -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
 .mono { font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; }

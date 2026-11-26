@@ -9,16 +9,16 @@ export const ACCENT_KEY = "lightbox.accent";
 export const ACCENTS = [
   { id: "amber", label: "琥珀", h: 38, s: 46 },
   { id: "copper", label: "赤铜", h: 22, s: 52 },
-  { id: "wine", label: "酒红", h: 352, s: 44 },
-  { id: "rose", label: "玫瑰", h: 340, s: 40 },
+  { id: "wine", label: "酒红", h: 356, s: 52 },
+  { id: "rose", label: "玫瑰", h: 332, s: 47 },
   { id: "plum", label: "绛紫", h: 300, s: 34 },
   { id: "indigo", label: "靛青", h: 252, s: 40 },
-  { id: "slate", label: "雾蓝", h: 210, s: 26 },
+  { id: "slate", label: "雾蓝", h: 206, s: 34 },
   { id: "celadon", label: "青瓷", h: 178, s: 30 },
   { id: "pine", label: "松绿", h: 154, s: 34 },
   { id: "moss", label: "苔绿", h: 100, s: 26 },
   { id: "ochre", label: "赭黄", h: 55, s: 50 },
-  { id: "graphite", label: "石墨", h: 220, s: 10 },
+  { id: "graphite", label: "石墨", h: 226, s: 5 },
 ];
 
 export const DEFAULT_ACCENT = "amber";

@@ -22,7 +22,7 @@ const MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; cha
 /* AUDIT_SRC=1 时改为"源码直出"（与 scripts/web-polish.mjs 同口径：手工按 tokens→accents→base→cards→detail 拼 CSS），
    用来评估 12 色"设计意图"；默认服务 dist/（= 线上产物）。 */
 const SRC_MODE = process.env.AUDIT_SRC === "1";
-const LABEL = SRC_MODE ? "src" : "dist";
+const LABEL = process.env.AUDIT_LIVE === "1" ? "live" : SRC_MODE ? "src" : "dist";
 const STYLE_FILES = ["tokens.css", "accents.css", "base.css", "cards.css", "detail.css"];
 const styleBundle = SRC_MODE ? STYLE_FILES.map((f) => fs.readFileSync(path.join(root, "src", "styles", f), "utf8")).join("\n") : "";
 const IMPORT_MAP = '<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>';
@@ -58,10 +58,14 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": MIME[ext] || "application/octet-stream", "Cache-Control": "no-store" });
   res.end(body);
 });
-await new Promise((r) => server.listen(4191, "127.0.0.1", r));
-const base = "http://127.0.0.1:4191/";
+/* AUDIT_LIVE=1：直接对线上跑（修复后复核用） */
+const LIVE = process.env.AUDIT_LIVE === "1";
+if (!LIVE) await new Promise((r) => server.listen(4191, "127.0.0.1", r));
+const base = LIVE ? "https://owenyhz.github.io/lightbox/" : "http://127.0.0.1:4191/";
 
-const ACCENTS = ["amber", "copper", "wine", "rose", "plum", "indigo", "slate", "celadon", "pine", "moss", "ochre", "graphite"];
+const ACCENTS = LIVE
+  ? ["amber", "celadon", "wine", "ochre", "indigo", "graphite"]
+  : ["amber", "copper", "wine", "rose", "plum", "indigo", "slate", "celadon", "pine", "moss", "ochre", "graphite"];
 const THEMES = ["dark", "light"];
 const out = { meta: { servedFrom: dist, startedAt: new Date().toISOString() }, tokens: {}, scan: {}, cardArt: {}, loader: {}, regression: {}, errors: [] };
 

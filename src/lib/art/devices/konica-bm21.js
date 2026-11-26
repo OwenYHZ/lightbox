@@ -14,11 +14,12 @@
  * 量测书读数（X 从握把端 / Z 从正面顶边，单位 mm）：
  *   · 握把缝：Z0:23.4 → 腰 16.9（Z34–38）→ 底 20.9，浅 S 曲线
  *   · 黑窗带 X29.5–96 / Z2–19.2，左端圆形凸缘 Ø11.9 @(35.5, 8.2)
- *   · 窗：AF Ø5.9 @(36.4,6.8) / 取景 14.5×11.5 @(50.0,8.4) / 右圆 Ø6.0 @(62.8,7.2) / 闪光 20.8×9.7 @(80.1,7.8) 7 棱
+ *   · 窗：AF Ø5.9 @(36.4,6.8) / 取景开口 18.3×11.9 @(50.0,8.7)（玻璃 12.4×9.6）/ 右圆 Ø6.0 @(62.8,7.2) / 闪光 20.8×9.7 @(80.1,7.8) 7 棱
  *   · 镜头 (48.5, 38.6)：黑圈 Ø30.3、银环 Ø34.4、前窗 14×11.3 R3、弧字基线半径 11.4、字高 2.0
  *   · 2×3 圆点 X79.1/83.9/88.5 × Z48.1/53.2，Ø1.8（前脸右下角）
  *   · 丝印：Konica X74–90 基线 Z26；big mini Z40.2；两行小字 Z43.7 / Z46.7
- *   · 右端面是黑的：正面只能看到右缘一道窄边，用双线示意
+ *   · 右端面是香槟色（黑铰链端在 X=0 的握把侧）：右缘只有一条 X≈96.4 的分模线
+ *   · 顶面橡胶只上翻 ≈7 mm（照片实测 3.2–7.9；量测书 T9 的 13 偏大，已按 reviewer 复核值走）
  */
 
 const SANS = '"Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif';
@@ -52,11 +53,6 @@ function rrect(x, y, w, h, r) {
   );
 }
 
-function circlePath(cx, cy, r) {
-  return "M" + n(cx - r) + " " + n(cy) + "A" + r + " " + r + " 0 1 0 " + n(cx + r) + " " + n(cy) +
-    "A" + r + " " + r + " 0 1 0 " + n(cx - r) + " " + n(cy) + "Z";
-}
-
 /** Catmull-Rom → 三次贝塞尔：把量测表的折线读成顺滑曲线 */
 function smooth(pts) {
   let d = "M" + n(pts[0][0]) + " " + n(pts[0][1]);
@@ -88,17 +84,19 @@ export function glyphKonicaBM21() {
   const TOP = T - 14; /* 顶棱示意带的上沿 90 */
 
   /* 机身轮廓：左上 R6.5 / 左下 R5.8 / 右端 R1.5（量测书 §2.1） */
+  /* 左上角被橡胶包住，所以正面矩形本身是"方"的左上角，圆角留给顶棱示意带 */
   const body =
-    "M" + n(96 + 6.5 * U) + " " + T + "H" + n(R - 1.5 * U) +
+    "M96 " + T + "H" + n(R - 1.5 * U) +
     "A" + n(1.5 * U) + " " + n(1.5 * V) + " 0 0 1 " + R + " " + n(T + 1.5 * V) +
     "V" + n(B - 1.5 * V) + "A" + n(1.5 * U) + " " + n(1.5 * V) + " 0 0 1 " + n(R - 1.5 * U) + " " + B +
     "H" + n(96 + 5.8 * U) + "A" + n(5.8 * U) + " " + n(5.8 * V) + " 0 0 1 96 " + n(B - 5.8 * V) +
-    "V" + n(T + 6.5 * V) + "A" + n(6.5 * U) + " " + n(6.5 * V) + " 0 0 1 " + n(96 + 6.5 * U) + " " + T + "Z";
+    "V" + T + "Z";
 
   /* 顶棱示意带：一条窄带，只交代顶面按键的轮廓 */
   const cap =
-    "M96 " + TOP + "H" + n(R - 5 * U) +
-    "A" + n(5 * U) + " " + n(6) + " 0 0 1 " + R + " " + n(TOP + 6) + "V" + T + "H96Z";
+    "M96 " + n(TOP + 6) + "A" + n(5 * U) + " 6 0 0 1 " + n(96 + 5 * U) + " " + TOP +
+    "H" + n(R - 5 * U) + "A" + n(5 * U) + " 6 0 0 1 " + R + " " + n(TOP + 6) +
+    "V" + T + "H96Z";
 
   /* 握把缝（量测书 §2.2 折线） */
   const seamPts = [
@@ -112,7 +110,8 @@ export function glyphKonicaBM21() {
   const grip =
     seam + "H" + n(96 + 5.8 * U) + "A" + n(5.8 * U) + " " + n(5.8 * V) + " 0 0 1 96 " + n(B - 5.8 * V) +
     "V" + n(TOP + 6) + "A" + n(5 * U) + " 6 0 0 1 " + n(96 + 5 * U) + " " + TOP +
-    "H" + px(21.5) + "V" + T + "Z";
+    /* 顶面上橡胶只包到 X≈13 mm，往前缘再张开到握把缝的 23.4 */
+    "H" + px(7) + "C" + px(13) + " " + n(TOP + 8) + " " + px(20.6) + " " + n(T - 5) + " " + px(23.4) + " " + T + "Z";
 
   /* 模压凸筋（橡胶上那道线，平行于缝） */
   const rib = smooth([[20.6, 8], [18.9, 20], [17.9, 32], [17.5, 43], [18.1, 54], [19.4, 62]]
@@ -131,7 +130,8 @@ export function glyphKonicaBM21() {
 
   /* 四个窗 */
   const af = { x: px(36.4), y: pz(6.8), r: n(2.95 * U) };
-  const vf = { x: px(50) - n(7.25 * U), y: pz(8.4) - n(5.75 * V), w: n(14.5 * U), h: n(11.5 * V) };
+  /* 取景窗：18.3×11.9 是黑窗带上的"开口"，玻璃只有 12.4×9.6（reviewer 核对） */
+  const vf = { x: px(50) - n(9.15 * U), y: pz(8.7) - n(5.95 * V), w: n(18.3 * U), h: n(11.9 * V) };
   const rf = { x: px(62.8), y: pz(7.2), r: n(3 * U) };
   const fl = { x: px(69.7), y: pz(2.9), w: n(20.8 * U), h: n(9.7 * V) };
   const slot = { x: px(70.3), y: pz(12.8), w: n(19.5 * U), h: n(1.2 * V) };
@@ -157,18 +157,18 @@ export function glyphKonicaBM21() {
 
   /* 2 × 3 圆点 */
   let dots = "";
-  [48.1, 53.2].forEach((z) => {
+  [48.5, 53.5].forEach((z) => {
     [79.1, 83.9, 88.5].forEach((x) => {
       dots +=
         '<circle class="line" cx="' + px(x) + '" cy="' + pz(z) + '" r="' + n(0.9 * U) +
-        '" stroke-opacity="0.42" stroke-width="0.9" fill="none"/>';
+        '" stroke-opacity="0.41" stroke-width="0.9" fill="none"/>';
     });
   });
 
   /* 顶面按键（只画轮廓，不做透视） */
   const btn = (cx, cy, w, h, label, fs) =>
     '<rect class="line" x="' + n(cx - w / 2) + '" y="' + n(cy - h / 2) + '" width="' + n(w) + '" height="' + n(h) +
-    '" rx="' + n(h / 2) + '" stroke-opacity="0.5" stroke-width="1" fill="none"/>' +
+    '" rx="' + n(h / 2) + '" stroke-opacity="0.44" stroke-width="1" fill="none"/>' +
     (label
       ? '<text class="text" x="' + n(cx) + '" y="' + n(cy + fs * 0.35) + '" text-anchor="middle" fill-opacity="0.55"' +
         ' font-family="' + SANS + '" font-size="' + fs + '" font-weight="600">' + label + "</text>"
@@ -179,11 +179,11 @@ export function glyphKonicaBM21() {
   return (
     "<defs>" +
     /* 唯一的一层排线：黑胶 / 黑窗带共用，极淡，只用来区分块面 */
-    '<pattern id="' + id + '-h" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-    '<path class="line" d="M0 0V3" stroke-opacity="0.16" stroke-width="1"/>' +
+    '<pattern id="' + id + '-h" width="3.7" height="3.7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+    '<path class="line" d="M0 0V3.7" stroke-opacity="0.14" stroke-width="1"/>' +
     "</pattern>" +
-    '<pattern id="' + id + '-k" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-    '<path class="line" d="M0 0V2.4" stroke-opacity="0.2" stroke-width="1"/>' +
+    '<pattern id="' + id + '-k" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+    '<path class="line" d="M0 0V3" stroke-opacity="0.18" stroke-width="1"/>' +
     "</pattern>" +
     '<clipPath id="' + id + '-g"><path d="' + grip + '"/></clipPath>' +
     '<path id="' + id + '-ta" d="' + arc(kx, ky, n(10.4 * U), 208, 332, 1) + '"/>' +
@@ -193,56 +193,62 @@ export function glyphKonicaBM21() {
     /* ---------- 黑胶握把：排线 + 缝 + 凸筋 ---------- */
     '<g clip-path="url(#' + id + '-g)"><path d="' + grip + '" fill="url(#' + id + '-h)" stroke="none"/></g>' +
     '<g class="line" fill="none" stroke-linejoin="round" stroke-linecap="round">' +
-    '<path d="' + seam + '" stroke-opacity="0.72" stroke-width="1.5"/>' +
+    '<path d="' + seam + '" stroke-opacity="0.64" stroke-width="1.5"/>' +
+    /* 橡胶翻上顶面的那道边（顶面只包到 13 mm，往正面顶棱张开到 23.4） */
+    '<path d="M' + px(7) + " " + TOP + "C" + px(13) + " " + n(TOP + 8) + " " + px(20.6) + " " + n(T - 5) +
+    " " + px(23.4) + " " + T + '" stroke-opacity="0.49" stroke-width="1.3"/>' +
     '<path d="' + rib + '" stroke-opacity="0.34" stroke-width="1.1"/>' +
     "</g>" +
 
     /* ---------- 黑窗带：排线 + 外框 ---------- */
     '<path d="' + panel + '" fill="url(#' + id + '-k)" stroke="none"/>' +
     '<g class="line" fill="none" stroke-linejoin="round" stroke-linecap="round">' +
-    '<path d="' + panel + '" stroke-opacity="0.58" stroke-width="1.2"/>' +
+    '<path d="' + panel + '" stroke-opacity="0.52" stroke-width="1.2"/>' +
 
     /* AF 圆窗 */
-    '<circle cx="' + af.x + '" cy="' + af.y + '" r="' + af.r + '" stroke-opacity="0.62" stroke-width="1.2"/>' +
-    '<circle cx="' + af.x + '" cy="' + af.y + '" r="' + n(2.45 * U) + '" stroke-opacity="0.32" stroke-width="1"/>' +
+    '<circle cx="' + af.x + '" cy="' + af.y + '" r="' + af.r + '" stroke-opacity="0.55" stroke-width="1.2"/>' +
+    '<circle cx="' + af.x + '" cy="' + af.y + '" r="' + n(2.45 * U) + '" stroke-opacity="0.31" stroke-width="1"/>' +
     '<path d="M' + n(af.x - n(2.45 * U)) + " " + af.y + "H" + n(af.x + n(2.45 * U)) + '" stroke-opacity="0.24" stroke-width="0.9"/>' +
 
     /* 取景窗：外框 + 内框 + 一道斜反光 */
-    '<path d="' + rrect(vf.x, vf.y, vf.w, vf.h, 2.2) + '" stroke-opacity="0.62" stroke-width="1.2"/>' +
+    '<path d="' + rrect(vf.x, vf.y, vf.w, vf.h, 2.2) + '" stroke-opacity="0.55" stroke-width="1.2"/>' +
     '<path d="' + rrect(vf.x + n(0.7 * U), vf.y + n(0.7 * V), vf.w - n(1.4 * U), vf.h - n(1.4 * V), 1.4) +
     '" stroke-opacity="0.34" stroke-width="1"/>' +
+    '<path d="' + rrect(px(50) - n(6.2 * U), pz(8.7) - n(4.8 * V), n(12.4 * U), n(9.6 * V), 1.2) +
+    '" stroke-opacity="0.24" stroke-width="0.9"/>' +
     '<path d="M' + n(vf.x + n(2.4 * U)) + " " + n(vf.y + vf.h - n(2.2 * V)) + "L" + n(vf.x + n(4.6 * U)) + " " +
-    n(vf.y + n(2.2 * V)) + '" stroke-opacity="0.26" stroke-width="1"/>' +
+    n(vf.y + n(2.2 * V)) + '" stroke-opacity="0.25" stroke-width="1"/>' +
 
     /* 右圆窗 */
-    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + rf.r + '" stroke-opacity="0.56" stroke-width="1.2"/>' +
-    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + n(2.2 * U) + '" stroke-opacity="0.26" stroke-width="0.9"/>' +
+    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + rf.r + '" stroke-opacity="0.49" stroke-width="1.2"/>' +
+    '<circle cx="' + rf.x + '" cy="' + rf.y + '" r="' + n(2.2 * U) + '" stroke-opacity="0.25" stroke-width="0.9"/>' +
 
     /* 窗带上的两颗凹点 + 闪光窗下长槽 */
-    '<circle cx="' + d1.x + '" cy="' + d1.y + '" r="' + d1.r + '" stroke-opacity="0.32" stroke-width="0.9"/>' +
-    '<circle cx="' + d2.x + '" cy="' + d2.y + '" r="' + d2.r + '" stroke-opacity="0.32" stroke-width="0.9"/>' +
+    '<circle cx="' + d1.x + '" cy="' + d1.y + '" r="' + d1.r + '" stroke-opacity="0.31" stroke-width="0.9"/>' +
+    '<circle cx="' + d2.x + '" cy="' + d2.y + '" r="' + d2.r + '" stroke-opacity="0.31" stroke-width="0.9"/>' +
     '<path d="' + rrect(slot.x, slot.y, slot.w, slot.h, n(0.6 * V)) + '" stroke-opacity="0.3" stroke-width="0.9"/>' +
 
     /* 闪光窗 */
-    '<path d="' + rrect(fl.x, fl.y, fl.w, fl.h, n(1.6 * U)) + '" stroke-opacity="0.6" stroke-width="1.2"/>' +
+    '<path d="' + rrect(fl.x, fl.y, fl.w, fl.h, n(1.6 * U)) + '" stroke-opacity="0.53" stroke-width="1.2"/>' +
     ribs +
 
-    /* ---------- 右端面：黑的，正面只见一道窄边 ---------- */
-    '<path d="M' + n(R - 3.2) + " " + n(T + 3) + "V" + n(B - 3) + '" stroke-opacity="0.3" stroke-width="1"/>' +
-    '<path d="M' + n(R - 1.4) + " " + n(T + 4) + "V" + n(B - 4) + '" stroke-opacity="0.16" stroke-width="0.9"/>' +
+    /* ---------- 右端分模线（X≈96.4，距右缘 3.6 mm，上下随 R1.5 弯一下） ---------- */
+    '<path d="M' + px(96.4) + " " + pz(6) + "V" + pz(57) +
+    "M" + px(96.4) + " " + pz(6) + "C" + px(96.4) + " " + pz(2.4) + " " + px(97.4) + " " + pz(1.5) + " " + px(99) + " " + pz(1.5) +
+    "M" + px(96.4) + " " + pz(57) + "C" + px(96.4) + " " + pz(60.6) + " " + px(97.4) + " " + pz(61.5) + " " + px(99) + " " + pz(61.5) +
+    '" stroke-opacity="0.3" stroke-width="1"/>' +
 
-    /* ---------- 镜头：银环 + 黑圈（先铺最淡排线） + 前窗 ---------- */
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" fill="url(#' + id + '-h)" stroke="none"/>' +
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kSilver + '" stroke-opacity="0.42" stroke-width="1"/>' +
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + n(15.8 * U) + '" stroke-opacity="0.2" stroke-width="0.9"/>' +
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" stroke-opacity="0.66" stroke-width="1.5"/>' +
+    /* ---------- 镜头：银环 + 素黑镜圈（只有描边，不铺排线） + 前窗 ---------- */
+    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kSilver + '" stroke-opacity="0.58" stroke-width="1"/>' +
+    '<circle cx="' + kx + '" cy="' + ky + '" r="' + n(15.8 * U) + '" stroke-opacity="0.19" stroke-width="0.9"/>' +
+    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" stroke-opacity="0.59" stroke-width="1.5"/>' +
     '<path d="' + rrect(kx - kCovW, ky - kCovH, kCovW * 2, kCovH * 2, n(3 * U)) + '" stroke-opacity="0.46" stroke-width="1.15"/>' +
     '<path d="M' + n(kx - kCovW + n(2.4 * U)) + " " + n(ky + kCovH * 0.7) + "L" + n(kx + kCovW - n(2.4 * U)) + " " +
-    n(ky - kCovH * 0.6) + '" stroke-opacity="0.2" stroke-width="0.9"/>' +
+    n(ky - kCovH * 0.6) + '" stroke-opacity="0.19" stroke-width="0.9"/>' +
     '<path d="' + arc(kx, ky, n(15.8 * U), 202, 254, 1) + '" stroke-opacity="0.28" stroke-width="1.4"/>' +
     "</g>" +
 
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" class="line" fill="none" stroke-opacity="0.66" stroke-width="1.5"/>' +
+
 
     /* ---------- 镜圈刻字 ---------- */
     '<text class="text" fill-opacity="0.9" font-family="' + SANS + '" font-size="8" font-weight="500" letter-spacing="0.1">' +
@@ -252,40 +258,40 @@ export function glyphKonicaBM21() {
 
     /* ---------- 丝印 ---------- */
     '<text class="text" x="' + px(82) + '" y="' + pz(26) + '" text-anchor="middle" textLength="' + n(16 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.8" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.66" font-family="' + SANS +
     '" font-size="18.6" font-weight="700">Konica</text>' +
     '<text class="text" x="' + px(81.5) + '" y="' + pz(40.2) + '" text-anchor="middle" textLength="' + n(17 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.74" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.6" font-family="' + SANS +
     '" font-size="15" font-weight="700">big mini</text>' +
     '<text class="text" x="' + px(81.8) + '" y="' + pz(43.7) + '" text-anchor="middle" textLength="' + n(16.5 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.52" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.44" font-family="' + SANS +
     '" font-size="7.4" font-weight="500" letter-spacing="0.1">RED EYE REDUCTION</text>' +
     '<text class="text" x="' + px(82) + '" y="' + pz(46.7) + '" text-anchor="middle" textLength="' + n(17 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.52" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.44" font-family="' + SANS +
     '" font-size="7.6" font-weight="500" letter-spacing="0.1">AUTO FOCUS <tspan font-style="italic" font-weight="700" font-size="8.2">BM-21</tspan></text>' +
     dots +
 
     /* ---------- 顶棱示意带：四钮 + LCD ---------- */
-    '<path class="line" d="' + cap + '" stroke-opacity="0.5" stroke-width="1.3" fill="none"/>' +
+    '<path class="line" d="' + cap + '" stroke-opacity="0.44" stroke-width="1.3" fill="none"/>' +
     '<g clip-path="url(#' + id + '-g)"><rect x="96" y="' + TOP + '" width="' + n(R - 96) + '" height="' + n(14) +
     '" fill="url(#' + id + '-h)" stroke="none"/></g>' +
-    '<path class="line" d="M' + n(96 + 1) + " " + (T - 1.5) + "H" + n(R - 1) + '" stroke-opacity="0.14" stroke-width="1"/>' +
+    '<path class="line" d="M' + n(96 + 1) + " " + (T - 1.5) + "H" + n(R - 1) + '" stroke-opacity="0.13" stroke-width="1"/>' +
     /* 大圆快门钮：只画露出的一半，不做透视 */
     '<path class="line" d="M' + n(px(14.4) - n(6.6 * U)) + " " + n(T - 2) + "A" + n(6.6 * U) + " " + n(9) +
-    " 0 0 1 " + n(px(14.4) + n(6.6 * U)) + " " + n(T - 2) + '" stroke-opacity="0.62" stroke-width="1.4" fill="none"/>' +
-    btn(px(25.4), n(TOP + 3.6), n(6.3 * U), 6, "MODE", 2.9) +
+    " 0 0 1 " + n(px(14.4) + n(6.6 * U)) + " " + n(T - 2) + '" stroke-opacity="0.55" stroke-width="1.4" fill="none"/>' +
+    btn(px(25.4), n(TOP + 3.6), n(6.3 * U), 6, "", 0) +
     btn(px(32.7) + 4, n(TOP + 3.4), n(6 * U), 6, "", 0) +
-    btn(px(28.3), n(TOP + 9.4), n(8.3 * U), 6, "ON", 3.1) +
-    '<path class="line" d="M' + n(px(35.4)) + " " + n(TOP + 2.6) + "V" + n(TOP + 4.2) + '" stroke-opacity="0.5" stroke-width="0.8"/>' +
-    '<circle class="line" cx="' + n(px(35.4)) + '" cy="' + n(TOP + 4.2) + '" r="1.4" stroke-opacity="0.42" stroke-width="0.8" fill="none"/>' +
-    '<path class="line" d="' + rrect(lcd.x, lcd.y, lcd.w, lcd.h, 2.2) + '" stroke-opacity="0.55" stroke-width="1.3" fill="none"/>' +
-    '<path class="line" d="' + rrect(lcd.x + 2, lcd.y + 2, lcd.w - 4, lcd.h - 4, 1.4) + '" stroke-opacity="0.26" stroke-width="0.9" fill="none"/>' +
+    btn(px(28.3), n(TOP + 9.4), n(8.3 * U), 6, "", 0) +
+    '<path class="line" d="M' + n(px(35.4)) + " " + n(TOP + 2.6) + "V" + n(TOP + 4.2) + '" stroke-opacity="0.44" stroke-width="0.8"/>' +
+    '<circle class="line" cx="' + n(px(35.4)) + '" cy="' + n(TOP + 4.2) + '" r="1.4" stroke-opacity="0.41" stroke-width="0.8" fill="none"/>' +
+    '<path class="line" d="' + rrect(lcd.x, lcd.y, lcd.w, lcd.h, 2.2) + '" stroke-opacity="0.49" stroke-width="1.3" fill="none"/>' +
+    '<path class="line" d="' + rrect(lcd.x + 2, lcd.y + 2, lcd.w - 4, lcd.h - 4, 1.4) + '" stroke-opacity="0.25" stroke-width="0.9" fill="none"/>' +
 
     /* ---------- 唯一的强调色：LCD 屏的一点微光 ---------- */
     '<rect class="accent-fill" x="' + n(lcd.x + 2) + '" y="' + n(lcd.y + 2) + '" width="' + n(lcd.w - 4) +
     '" height="' + n(lcd.h - 4) + '" rx="1.4" fill-opacity="0.1"/>' +
 
     /* ---------- 机身轮廓压在最上 ---------- */
-    '<path class="line" d="' + body + '" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>'
+    '<path class="line" d="' + body + '" stroke-opacity="0.71" stroke-width="1.5" fill="none"/>'
   );
 }

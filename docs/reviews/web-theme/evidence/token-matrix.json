@@ -1,0 +1,4198 @@
+{
+ "matrix": {
+  "src/dark/amber": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.83,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.11,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.22,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.29,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 12.22,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 10.87,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.29,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 12.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 13.57,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.63,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.62,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.12,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.11,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.65,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.04,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.13,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.84,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.09,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.51,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.36,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/copper": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.8,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.16,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.28,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.85,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.29,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 11.16,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 10.02,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.91,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 11.4,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 12.9,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 8.44,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.71,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.11,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.17,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.72,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.33,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.86,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.16,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.5,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.33,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.24,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/wine": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.96,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.85,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.93,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.25,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.26,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 10.01,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.1,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.45,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 10.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 11.99,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.04,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.88,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.79,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.57,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.88,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.24,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.48,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.22,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/rose": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.95,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.28,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.93,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.25,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 10.13,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.2,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.51,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 10.55,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 12.1,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.2,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.87,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.28,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.83,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.8,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.52,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.88,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.23,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.48,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.22,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/plum": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.94,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.78,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.92,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.26,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 10.57,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.58,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.64,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 10.82,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 12.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.62,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.86,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.28,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.82,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.49,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.88,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.21,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.49,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.23,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/indigo": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 18,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.51,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.01,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.97,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.24,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 9.54,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 8.72,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 10.09,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 11.69,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 6.45,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.95,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.08,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.33,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.88,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.79,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.99,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.66,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.89,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.28,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.47,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.27,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.21,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/slate": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.89,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.33,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.59,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.32,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.91,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 11.06,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.96,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 11.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 12.78,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 8.17,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.76,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.1,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.21,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.75,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.37,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.86,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.18,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.5,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.32,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.24,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/celadon": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.73,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.02,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.11,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.31,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 12.32,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 10.94,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.35,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 12.19,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 13.64,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.79,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.57,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.12,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.08,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.61,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.86,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.04,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.03,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.82,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.07,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.51,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.37,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/pine": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.77,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.07,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.17,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 12.37,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 10.99,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.37,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 12.24,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 13.72,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.89,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.61,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.12,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.1,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.64,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.86,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.04,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.07,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.82,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.07,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.51,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.37,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/moss": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.73,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.24,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.28,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 12.14,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 10.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 12.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 13.51,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.54,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.64,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.11,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.13,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.66,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.04,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.14,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.84,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.08,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.51,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.36,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/ochre": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.67,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 16.82,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 14.76,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.27,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.72,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.32,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.26,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 13.49,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 11.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.83,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 13.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 14.48,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 11.38,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.13,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 6.99,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.51,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.88,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.06,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 11.8,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.78,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 15.99,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.52,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.41,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/dark/graphite": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 17.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 17.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.59,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 7.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.9,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.29,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.27,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 11.08,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.99,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 11.23,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 12.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 8.15,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 10.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 1.1,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 7.24,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 7.79,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 2.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 12.46,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 4.88,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 16.19,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 6.5,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.31,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.24,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/amber": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.55,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.38,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.93,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.15,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.03,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 5.02,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 6.47,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.06,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 6.97,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 4.6,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.25,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.28,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 16.04,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.19,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.2,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.45,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.16,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.55,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 11.97,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.29,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/copper": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.55,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.32,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.07,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 5.78,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 7.78,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.4,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 8.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 5.68,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 8.57,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.14,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 15.32,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.51,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.68,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.65,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.04,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.38,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/wine": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 11.71,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.67,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.49,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.86,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.13,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.14,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 6.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.7,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.89,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 10.03,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 7.36,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 10.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 2.97,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 14.5,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 3.79,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 3.8,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.6,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 15.18,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.76,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.09,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.48,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.32,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/rose": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 11.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.69,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.5,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.86,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.13,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.14,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 6.76,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 9.52,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 9.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 7.2,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 10.23,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 14.65,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 3.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 3.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.6,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 15.16,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.74,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.08,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.47,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.31,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/plum": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.47,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 11.92,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.6,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.11,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.12,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 6.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 8.93,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.68,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 9.35,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 6.71,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.72,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.03,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 14.82,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 3.88,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 3.89,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.57,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.98,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.71,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.06,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.43,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/indigo": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.36,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 11.66,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.9,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.42,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.59,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.87,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.16,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.17,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 7.79,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 11.29,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 4.22,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 11.38,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 8.89,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 11.86,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 2.91,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 14.24,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 3.73,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 3.73,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.64,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.84,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 15.43,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.8,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.13,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.52,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.33,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.3,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/slate": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.46,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.09,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.31,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.44,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.35,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.08,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 6.16,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 8.32,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.51,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 8.74,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 6.17,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.11,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.13,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 15.3,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.52,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.73,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.67,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.07,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.39,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/celadon": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.62,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.9,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.15,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 4.9,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 6.27,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 6.82,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 4.45,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.07,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 16.14,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.22,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.23,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.44,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.2,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.55,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.29,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.25,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/pine": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.53,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.38,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.83,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.38,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.12,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.83,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.03,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 4.84,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 6.19,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 6.73,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 4.38,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 6.98,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 16.14,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.22,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.23,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.45,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.13,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.54,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 11.98,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.28,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.25,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/moss": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.56,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.45,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.92,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.15,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.01,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.02,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 5.11,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 6.53,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.09,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 7.1,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 4.68,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 7.35,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.3,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 16.15,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.22,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.23,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.46,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.19,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.57,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.04,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.3,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.26,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/ochre": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.64,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.66,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 15.53,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.41,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.01,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.81,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 2.97,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 2.98,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 4.07,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/card",
+    "ratio": 5,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 2.66,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 5.55,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 3.44,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 5.71,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.44,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 16.83,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 4.4,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 4.41,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.36,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.79,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 13.66,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.45,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 11.82,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.18,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.22,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.28,
+    "need": 0,
+    "fail": false
+   }
+  ],
+  "src/light/graphite": [
+   {
+    "label": "正文 --paper/ink-0",
+    "ratio": 13.46,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/ink-1",
+    "ratio": 12.02,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "正文 --paper/card",
+    "ratio": 16.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/ink-1",
+    "ratio": 5.43,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "次要 --paper-dim/card",
+    "ratio": 6.39,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "弱化 --paper-faint/ink-1",
+    "ratio": 2.85,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/ink-2",
+    "ratio": 3.08,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "弱化 --paper-faint/card",
+    "ratio": 3.1,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "accent/ink-1",
+    "ratio": 6.21,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent/card",
+    "ratio": 8.46,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "accent-dim/ink-1",
+    "ratio": 3.52,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "芯片字/chip-bg",
+    "ratio": 8.81,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变亮端",
+    "ratio": 6.27,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "实心按钮字/渐变暗端",
+    "ratio": 9.22,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 active/ink-1",
+    "ratio": 3.1,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 retired/ink-1",
+    "ratio": 15.14,
+    "need": 4.5,
+    "fail": false
+   },
+   {
+    "label": "状态 sold/ink-1",
+    "ratio": 3.96,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "状态 broken/ink-1",
+    "ratio": 3.97,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台角标/chip底",
+    "ratio": 3.53,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "舞台署名/stage底",
+    "ratio": 1.82,
+    "need": 4.5,
+    "fail": true
+   },
+   {
+    "label": "封面线稿/card",
+    "ratio": 14.66,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "封面注记/card",
+    "ratio": 3.65,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载线稿/stage底",
+    "ratio": 12.03,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "加载注记/stage底",
+    "ratio": 4.38,
+    "need": 3,
+    "fail": false
+   },
+   {
+    "label": "卡片描边/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   },
+   {
+    "label": "发丝线/ink-1(信息)",
+    "ratio": 1.29,
+    "need": 0,
+    "fail": false
+   }
+  ]
+ },
+ "palette": {
+  "dark": [
+   {
+    "accent": "amber",
+    "modeHex": "#15120b",
+    "modeL": 5.6,
+    "modeC": 3.8,
+    "modeH": 92,
+    "meanHex": "#211d14",
+    "meanL": 10.8,
+    "meanC": 6.9,
+    "meanH": 89,
+    "heroC": 7.6,
+    "heroH": 86,
+    "dE_mean_vs_amber": 0
+   },
+   {
+    "accent": "copper",
+    "modeHex": "#1b130d",
+    "modeL": 6.6,
+    "modeC": 5.3,
+    "modeH": 62,
+    "meanHex": "#221913",
+    "meanL": 9.8,
+    "meanC": 6.6,
+    "meanH": 62,
+    "heroC": 7.4,
+    "heroH": 58,
+    "dE_mean_vs_amber": 3.7
+   },
+   {
+    "accent": "wine",
+    "modeHex": "#140b0c",
+    "modeL": 3.8,
+    "modeC": 3.1,
+    "modeH": 14,
+    "meanHex": "#211516",
+    "meanL": 8.2,
+    "meanC": 6.7,
+    "meanH": 15,
+    "heroC": 7.7,
+    "heroH": 10,
+    "dE_mean_vs_amber": 8.5
+   },
+   {
+    "accent": "rose",
+    "modeHex": "#130b0d",
+    "modeL": 3.8,
+    "modeC": 3.1,
+    "modeH": 1,
+    "meanHex": "#211518",
+    "meanL": 8.3,
+    "meanC": 6.6,
+    "meanH": 0,
+    "heroC": 7.6,
+    "heroH": 355,
+    "dE_mean_vs_amber": 9.7
+   },
+   {
+    "accent": "plum",
+    "modeHex": "#140c13",
+    "modeL": 4.2,
+    "modeC": 4.7,
+    "modeH": 326,
+    "meanHex": "#20151f",
+    "meanL": 8.6,
+    "meanC": 8.9,
+    "meanH": 327,
+    "heroC": 10.2,
+    "heroH": 325,
+    "dE_mean_vs_amber": 14.2
+   },
+   {
+    "accent": "indigo",
+    "modeHex": "#0d0b13",
+    "modeL": 3.4,
+    "modeC": 4.3,
+    "modeH": 298,
+    "meanHex": "#181521",
+    "meanL": 7.5,
+    "meanC": 8.9,
+    "meanH": 302,
+    "heroC": 9.9,
+    "heroH": 299,
+    "dE_mean_vs_amber": 15.8
+   },
+   {
+    "accent": "slate",
+    "modeHex": "#12151a",
+    "modeL": 6.7,
+    "modeC": 4.1,
+    "modeH": 270,
+    "meanHex": "#171a1f",
+    "meanL": 9.1,
+    "meanC": 3.6,
+    "meanH": 264,
+    "heroC": 3.8,
+    "heroH": 257,
+    "dE_mean_vs_amber": 10.9
+   },
+   {
+    "accent": "celadon",
+    "modeHex": "#0d1313",
+    "modeL": 5.5,
+    "modeC": 2.4,
+    "modeH": 203,
+    "meanHex": "#161e1f",
+    "meanL": 10.7,
+    "meanC": 4.1,
+    "meanH": 200,
+    "heroC": 4.9,
+    "heroH": 196,
+    "dE_mean_vs_amber": 9.4
+   },
+   {
+    "accent": "pine",
+    "modeHex": "#0d1512",
+    "modeL": 5.9,
+    "modeC": 3.5,
+    "modeH": 171,
+    "meanHex": "#15201c",
+    "meanL": 11,
+    "meanC": 5.8,
+    "meanH": 169,
+    "heroC": 6.7,
+    "heroH": 166,
+    "dE_mean_vs_amber": 8.3
+   },
+   {
+    "accent": "moss",
+    "modeHex": "#141b12",
+    "modeL": 8.7,
+    "modeC": 6.8,
+    "modeH": 138,
+    "meanHex": "#191e17",
+    "meanL": 10.7,
+    "meanC": 6.4,
+    "meanH": 135,
+    "heroC": 7.1,
+    "heroH": 134,
+    "dE_mean_vs_amber": 5
+   },
+   {
+    "accent": "ochre",
+    "modeHex": "#14140a",
+    "modeL": 5.9,
+    "modeC": 4.9,
+    "modeH": 109,
+    "meanHex": "#212013",
+    "meanL": 12.1,
+    "meanC": 9.4,
+    "meanH": 106,
+    "heroC": 10.8,
+    "heroH": 104,
+    "dE_mean_vs_amber": 3.3
+   },
+   {
+    "accent": "graphite",
+    "modeHex": "#121215",
+    "modeL": 5.7,
+    "modeC": 1.6,
+    "modeH": 277,
+    "meanHex": "#191a1c",
+    "meanL": 9.2,
+    "meanC": 2,
+    "meanH": 273,
+    "heroC": 2,
+    "heroH": 273,
+    "dE_mean_vs_amber": 8.6
+   }
+  ],
+  "light": [
+   {
+    "accent": "amber",
+    "modeHex": "#ebe4d4",
+    "modeL": 90.6,
+    "modeC": 8.6,
+    "modeH": 92,
+    "meanHex": "#e5dece",
+    "meanL": 88.6,
+    "meanC": 8.6,
+    "meanH": 91,
+    "heroC": 13,
+    "heroH": 86,
+    "dE_mean_vs_amber": 0
+   },
+   {
+    "accent": "copper",
+    "modeHex": "#ede2db",
+    "modeL": 90.6,
+    "modeC": 5.5,
+    "modeH": 62,
+    "meanHex": "#e7d7cd",
+    "meanL": 87.1,
+    "meanC": 8,
+    "meanH": 63,
+    "heroC": 12.6,
+    "heroH": 58,
+    "dE_mean_vs_amber": 4.8
+   },
+   {
+    "accent": "wine",
+    "modeHex": "#ecdbdc",
+    "modeL": 88.7,
+    "modeC": 6.3,
+    "modeH": 12,
+    "meanHex": "#e5cfd2",
+    "meanL": 85.1,
+    "meanC": 8.1,
+    "meanH": 12,
+    "heroC": 13.3,
+    "heroH": 10,
+    "dE_mean_vs_amber": 11.8
+   },
+   {
+    "accent": "rose",
+    "modeHex": "#ecdde2",
+    "modeL": 89.3,
+    "modeC": 6.2,
+    "modeH": 354,
+    "meanHex": "#e5d0d6",
+    "meanL": 85.3,
+    "meanC": 8.1,
+    "meanH": 357,
+    "heroC": 12.9,
+    "heroH": 356,
+    "dE_mean_vs_amber": 12.9
+   },
+   {
+    "accent": "plum",
+    "modeHex": "#eadcea",
+    "modeL": 89.2,
+    "modeC": 9.1,
+    "modeH": 325,
+    "meanHex": "#e3d1e2",
+    "meanL": 85.7,
+    "meanC": 11.3,
+    "meanH": 326,
+    "heroC": 17.6,
+    "heroH": 325,
+    "dE_mean_vs_amber": 17.8
+   },
+   {
+    "accent": "indigo",
+    "modeHex": "#dedaeb",
+    "modeL": 87.8,
+    "modeC": 8.9,
+    "modeH": 299,
+    "meanHex": "#d5d0e5",
+    "meanL": 84.4,
+    "meanC": 11,
+    "meanH": 300,
+    "heroC": 17.1,
+    "heroH": 299,
+    "dE_mean_vs_amber": 19.8
+   },
+   {
+    "accent": "slate",
+    "modeHex": "#dde3e9",
+    "modeL": 89.8,
+    "modeC": 4,
+    "modeH": 260,
+    "meanHex": "#d3dae1",
+    "meanL": 86.6,
+    "meanC": 4.7,
+    "meanH": 260,
+    "heroC": 6.7,
+    "heroH": 257,
+    "dE_mean_vs_amber": 13.1
+   },
+   {
+    "accent": "celadon",
+    "modeHex": "#dceaea",
+    "modeL": 91.6,
+    "modeC": 4.7,
+    "modeH": 199,
+    "meanHex": "#d2e1e1",
+    "meanL": 88.5,
+    "meanC": 5.5,
+    "meanH": 200,
+    "heroC": 8.4,
+    "heroH": 196,
+    "dE_mean_vs_amber": 11.4
+   },
+   {
+    "accent": "pine",
+    "modeHex": "#dbeae4",
+    "modeL": 91.6,
+    "modeC": 6.1,
+    "modeH": 169,
+    "meanHex": "#d1e3dc",
+    "meanL": 88.7,
+    "meanC": 7.6,
+    "meanH": 168,
+    "heroC": 11.7,
+    "heroH": 166,
+    "dE_mean_vs_amber": 10.1
+   },
+   {
+    "accent": "moss",
+    "modeHex": "#e5ebe2",
+    "modeL": 92.4,
+    "modeC": 5.3,
+    "modeH": 135,
+    "meanHex": "#d7e1d3",
+    "meanL": 88.5,
+    "meanC": 8.4,
+    "meanH": 135,
+    "heroC": 12.5,
+    "heroH": 134,
+    "dE_mean_vs_amber": 6.3
+   },
+   {
+    "accent": "ochre",
+    "modeHex": "#edecdb",
+    "modeL": 93,
+    "modeC": 8.5,
+    "modeH": 107,
+    "meanHex": "#e5e4cd",
+    "meanL": 90.2,
+    "meanC": 12,
+    "meanH": 107,
+    "heroC": 18.5,
+    "heroH": 105,
+    "dE_mean_vs_amber": 4.5
+   },
+   {
+    "accent": "graphite",
+    "modeHex": "#dbdde2",
+    "modeL": 88.1,
+    "modeC": 2.9,
+    "modeH": 276,
+    "meanHex": "#d6d9de",
+    "meanL": 86.5,
+    "meanC": 2.7,
+    "meanH": 274,
+    "heroC": 3.7,
+    "heroH": 272,
+    "dE_mean_vs_amber": 11.7
+   }
+  ]
+ },
+ "indistinct": {
+  "dark": [
+   {
+    "a": "amber",
+    "b": "copper",
+    "dE_mode": 2.9,
+    "dE_mean": 3.7
+   },
+   {
+    "a": "amber",
+    "b": "ochre",
+    "dE_mode": 2.2,
+    "dE_mean": 3.3
+   },
+   {
+    "a": "wine",
+    "b": "rose",
+    "dE_mode": 0.6,
+    "dE_mean": 1.4
+   },
+   {
+    "a": "rose",
+    "b": "plum",
+    "dE_mode": 2.9,
+    "dE_mean": 5.2
+   },
+   {
+    "a": "plum",
+    "b": "indigo",
+    "dE_mode": 2.6,
+    "dE_mean": 4.3
+   },
+   {
+    "a": "slate",
+    "b": "graphite",
+    "dE_mode": 2.5,
+    "dE_mean": 2.4
+   },
+   {
+    "a": "celadon",
+    "b": "pine",
+    "dE_mode": 2.2,
+    "dE_mean": 4.1
+   }
+  ],
+  "light": [
+   {
+    "a": "wine",
+    "b": "rose",
+    "dE_mode": 2.3,
+    "dE_mean": 1.7
+   },
+   {
+    "a": "slate",
+    "b": "graphite",
+    "dE_mode": 2.4,
+    "dE_mean": 1.7
+   }
+  ]
+ }
+}

@@ -1,0 +1,174 @@
+DSH_STAGE {"name": "boot", "t": 1795693835.815, "run": "run-mwxhquvuik5m"}
+DSH_STAGE {"name": "engine-prelude", "t": 1795693835.815, "run": "run-mwxhquvuik5m"}
+DSH_SCRIPT_FILE E:\code\dshCode\Lightbox\scripts\bm21\build.py
+DSH_STAGE {"name": "preload-done", "t": 1795693835.815, "run": "run-mwxhquvuik5m"}
+Blender 4.2.22 LTS (hash 88937221abfc built 2026-06-23 01:34:44)
+Info: Total files 11 | Changed 11 | Failed 0
+HEADLESS {"grip_pts": 135, "grip_bbox": [-50.0, -5.2, 0.0, 62.0], "grip_head": [[-5.2, 0.0], [-17.7, 0.6], [-26.3, 1.2], [-27.4, 1.8], [-28.4, 2.4], [-29.4, 3.0]], "grip_tail": [[-47.0, 1.0], [-46.3, 0.6], [-45.6, 0.4], [-44.9, 0.2], [-44.2, 0.0], [-43.5, 0.0]]}
+HEADLESS {"pre_bbox": {"x": [-50.05, 50.25], "y": [-22.03, 16.09], "z": [-0.18, 62.93]}}
+HEADLESS {"bbox_mm": {"x": [-50.0, 50.0], "y": [-19.0, 19.0], "z": [-0.18, 62.82]}, "size_mm": {"x": 100.0, "y": 38.0, "z": 63.0}, "objects": 74}
+Info: Saved "bm21.blend"
+INFO Draco mesh compression is available, use library at D:\Program Files\Blender Foundation\Blender 4.2\4.2\python\lib\site-packages\extern_draco.dll
+19:50:37 | INFO: Starting glTF 2.0 export
+19:50:37 | INFO: Extracting primitive: Shell
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BackCover
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: Grip
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FrontStrip
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FinderHousing
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FinderWindow
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FinderInner
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FinderTopStep
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: AfLampRim
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: AfLampLens
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: AfSensorRim
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: AfSensorLens
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashFrame
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashGlass
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib0
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib1
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib2
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib3
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib4
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib5
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashRib6
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FlashGroove
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: StripLobe
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: StripSlot
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: StripDot0
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: StripDot1
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: StripDot2
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LensBezel
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LensBarrel
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LensWell
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LensRingText
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LensBarrier
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BarrierSlit
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: ShutterRing
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: ShutterBtn
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LcdFrame
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: LcdGlass
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: OnBtn
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: ModeBtn
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: PwrBtn
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: CafRing
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: CafDot
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: EyePiece
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: EyeGlass
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: EyeInner
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BackLamp
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BackDial
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BackDialRim
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FilmWinFrame
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FilmWinGlass
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SerialPlate
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BatteryCover
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BattSlot
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: Screw0
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: Screw1
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: EndCap
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: HingeBar
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: HingeScrew10
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: HingeScrew52
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SideDialRing
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SideDialIn
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SideWin
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SideDot
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: DoorSeam
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: DoorLatch
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: FrontPrint
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: TopPrint
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BackPrint
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: BottomPrint
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SerialText
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: SelectSet
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: OnLbl
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: ModeLbl
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Extracting primitive: PwrLbl
+19:50:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:50:37 | INFO: Primitives created: 1
+19:50:37 | INFO: Finished glTF 2.0 export in 0.2881128787994385 s
+
+HEADLESS {"saved": "E:/code/dshCode/Lightbox/scripts/bm21/bm21.blend", "glb": "E:/code/dshCode/Lightbox/public/assets/models/konica-bm21.glb", "mask_materials": 9}
+DSH_STAGE {"name": "script-end", "t": 1795693837.819, "run": "run-mwxhquvuik5m"}
+DSH_STAGE {"name": "done", "t": 1795693837.819, "run": "run-mwxhquvuik5m"}

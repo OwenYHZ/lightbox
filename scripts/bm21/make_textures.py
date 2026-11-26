@@ -43,10 +43,10 @@ def front_logo():
     im = canvas(39.0, 44.0, ppm)
     def M(x, z):
         return (int((x - 9.0) * ppm), int((45.0 - z) * ppm))
-    fit_text(im, "Konica", (*M(25.4, 39.0), *M(40.5, 35.6)), (104, 103, 97), stretch=1.0)
+    fit_text(im, "Konica", (*M(25.4, 39.2), *M(40.5, 35.5)), (104, 103, 97), stretch=1.0)
     fit_text(im, "big mini", (*M(23.5, 27.4), *M(40.1, 23.6)), (135, 133, 125), F_VERD, stretch=1.0)
-    fit_text(im, "RED EYE REDUCTION", (*M(23.3, 23.1), *M(39.7, 21.6)), (120, 118, 111), F_REG)
-    fit_text(im, "AUTO FOCUS BM-21", (*M(23.3, 21.25), *M(40.0, 19.7)), (120, 118, 111), F_REG)
+    fit_text(im, "RED EYE REDUCTION", (*M(23.3, 21.5), *M(39.7, 20.0)), (120, 118, 111), F_REG)
+    fit_text(im, "AUTO FOCUS BM-21", (*M(23.3, 19.65), *M(40.0, 18.1)), (120, 118, 111), F_REG)
     d = ImageDraw.Draw(im)
     for rz in (14.9, 9.8):
         for cx in (29.1, 33.9, 38.5):
@@ -105,9 +105,9 @@ def top_print():
     def M(x, y):
         return (int((x - 7.0) * ppm), int((y + 6.0) * ppm))
     # 三行块：x 24.9..41.5，总高 4.9（big mini / RED EYE / AUTO FOCUS）
-    fit_text(im, "big mini", (*M(24.9, 5.9), *M(41.5, 3.2)), (168, 164, 153), F_VERD)
-    fit_text(im, "RED EYE REDUCTION", (*M(24.9, 7.8), *M(41.5, 6.6)), (176, 172, 161), F_REG)
-    fit_text(im, "AUTO FOCUS BM-21", (*M(24.9, 9.4), *M(41.5, 8.1)), (176, 172, 161), F_REG)
+    fit_text(im, "big mini", (*M(24.9, 6.0), *M(41.5, 3.3)), (168, 164, 153), F_VERD)
+    fit_text(im, "RED EYE REDUCTION", (*M(24.9, 9.5), *M(41.5, 8.3)), (176, 172, 161), F_REG)
+    fit_text(im, "AUTO FOCUS BM-21", (*M(24.9, 7.9), *M(41.5, 6.6)), (176, 172, 161), F_REG)
     im.save(OUT + "top_print.png")
     print("top_print", im.size)
 

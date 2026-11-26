@@ -24,10 +24,23 @@
           d.setAttribute("data-theme", theme);
           d.setAttribute("data-theme-mode", mode);
           var accents = ["amber", "copper", "wine", "rose", "plum", "indigo", "slate", "celadon", "pine", "moss", "ochre", "graphite"];
+          // 色相/饱和度与 src/data/accents.js 一致；首帧的 theme-color 也由它推导，不再写死米黄
+          var hs = {
+            amber: [38, 46], copper: [22, 52], wine: [356, 52], rose: [332, 47],
+            plum: [300, 34], indigo: [252, 40], slate: [206, 34], celadon: [178, 30],
+            pine: [154, 34], moss: [100, 26], ochre: [55, 50], graphite: [226, 5]
+          };
           var accent = localStorage.getItem("lightbox.accent");
-          d.setAttribute("data-accent", accents.indexOf(accent) === -1 ? "amber" : accent);
+          if (accents.indexOf(accent) === -1) accent = "amber";
+          d.setAttribute("data-accent", accent);
+          var hs1 = hs[accent] || hs.amber;
+          var paperS = theme === "dark"
+            ? (hs1[1] * 0.78 + 5)
+            : (hs1[1] * 0.58 + 7);
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute("content", theme === "dark" ? "#07070a" : "#f5f2ea");
+          if (meta) {
+            meta.setAttribute("content", "hsl(" + hs1[0] + " " + paperS.toFixed(2) + "% " + (theme === "dark" ? "6.2%" : "91%") + ")");
+          }
         } catch (e) {}
       })();
     </script>

@@ -1,5 +1,10 @@
-:root { color-scheme: dark; --bg: #07070a; --fg: #f3f1ec; --dim: rgba(243,241,236,.6); --line: rgba(243,241,236,.12); }
-[data-theme="light"] { color-scheme: light; --bg: #f1ece2; --fg: #17181d; --dim: rgba(23,24,29,.6); --line: rgba(23,24,29,.14); }
+:root {
+  /* 全部走主站 token：明暗与主题色都跟着全局设置 */
+  --bg: var(--ink-0);
+  --fg: var(--paper);
+  --dim: var(--paper-meta);
+  --line: var(--card-border);
+}
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.6 -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
 .mono { font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; }

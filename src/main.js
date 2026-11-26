@@ -58,6 +58,8 @@ const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => res
 
 /* 加载动画至少露多久：预览出得快时也让封面描边演完，而不是闪一下 */
 const STAGE_LOADER_MIN_MS = 820;
+/* 减弱动效下没有描边动画，但静态封面也得停一下，否则等于看不见 */
+const STAGE_LOADER_MIN_MS_REDUCED = 400;
 
 const ICON_CUBE =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7Z"/><path d="M4 7l8 4.2L20 7M12 11.2V21"/></svg>';
@@ -669,9 +671,8 @@ function markStageLoaderReady() {
   if (!el.stageLoader) return;
   window.clearTimeout(stageLoaderFailSafe);
   const cycle = stageLoaderCycle;
-  const wait = prefersReduced
-    ? 0
-    : Math.max(0, STAGE_LOADER_MIN_MS - (performance.now() - stageLoaderShownAt));
+  const minVisible = prefersReduced ? STAGE_LOADER_MIN_MS_REDUCED : STAGE_LOADER_MIN_MS;
+  const wait = Math.max(0, minVisible - (performance.now() - stageLoaderShownAt));
   window.clearTimeout(stageLoaderTimer);
   const finish = () => {
     if (cycle !== stageLoaderCycle || !el.stageLoader) return;

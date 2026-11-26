@@ -299,7 +299,7 @@ export function coverArt(item) {
     /* 主图形：整体放大一点点，让画面更饱满 */
     '<g transform="translate(240 182) scale(1.08) translate(-240 -182)">' + glyph + "</g>" +
     /* 底部注记 */
-    '<text class="text" x="34" y="332" fill-opacity="0.34" font-family="' + MONO + '" font-size="7.5" letter-spacing="1.7">' + escapeText(cat) + " — PRIMITIVE STUDY</text>" +
+    '<text class="text" x="34" y="332" fill-opacity="0.34" font-family="' + MONO + '" font-size="7.5" letter-spacing="1.7">' + escapeText(cat) + (item.glb ? " — BLENDER STUDY" : " — PRIMITIVE STUDY") + "</text>" +
     '<text class="accent-fill" x="446" y="332" text-anchor="end" fill-opacity="0.4" font-family="' + MONO + '" font-size="7.5" letter-spacing="1.7">' + escapeText(String(item.year || "")) + "</text>" +
     "</svg>"
   );
