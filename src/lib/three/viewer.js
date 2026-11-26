@@ -225,9 +225,9 @@ export class StageViewer {
       rig.add(light);
       return light;
     };
-    this.rectFront = area(preset.keyColor, preset.keyIntensity * 1.0, 3.6, 2.4, [0, 1.35, 3.6], [0, 0.9, 0]);
-    this.rectTop = area(preset.fillColor, preset.keyIntensity * 0.72, 4.0, 4.0, [0, 4.4, 0.7], [0, 0.8, 0]);
-    this.rectLeft = area(preset.rimColor, preset.keyIntensity * 0.55, 2.8, 2.8, [-3.6, 1.5, 1.6], [0, 0.8, 0]);
+    this.rectFront = area(preset.keyColor, preset.keyIntensity * 0.78, 3.6, 2.4, [0, 1.35, 3.6], [0, 0.9, 0]);
+    this.rectTop = area(preset.fillColor, preset.keyIntensity * 0.56, 4.0, 4.0, [0, 4.4, 0.7], [0, 0.8, 0]);
+    this.rectLeft = area(preset.rimColor, preset.keyIntensity * 0.42, 2.8, 2.8, [-3.6, 1.5, 1.6], [0, 0.8, 0]);
 
     const key = new THREE.DirectionalLight(preset.keyColor, preset.keyIntensity * 0.3);
     key.position.set(2.4, 4.2, 3.4);
@@ -362,15 +362,15 @@ export class StageViewer {
     }
     if (this.rectFront) {
       this.rectFront.color.copy(state.keyColor);
-      this.rectFront.intensity = state.keyIntensity * 1.0;
+      this.rectFront.intensity = state.keyIntensity * 0.78;
     }
     if (this.rectTop) {
       this.rectTop.color.copy(state.fillColor);
-      this.rectTop.intensity = state.keyIntensity * 0.72;
+      this.rectTop.intensity = state.keyIntensity * 0.56;
     }
     if (this.rectLeft) {
       this.rectLeft.color.copy(state.rimColor);
-      this.rectLeft.intensity = state.keyIntensity * 0.55;
+      this.rectLeft.intensity = state.keyIntensity * 0.42;
     }
     if (this.bounce) {
       this.bounce.color.copy(state.bounceColor);
