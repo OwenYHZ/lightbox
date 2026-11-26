@@ -141,7 +141,7 @@ export function glyphKonicaBM21() {
     "<defs>" +
     /* 唯一的一层排线：只给橡胶握把，间距与 ZA12 顶板那层同档 */
     '<pattern id="' + id + '-h" width="3.7" height="3.7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-    '<path class="line" d="M0 0V3.7" stroke-opacity="0.11" stroke-width="1"/>' +
+    '<path class="line" d="M0 0V3.7" stroke-opacity="0.09" stroke-width="1"/>' +
     "</pattern>" +
     '<clipPath id="' + id + '-c"><path d="' + body + '"/></clipPath>' +
     '<path id="' + id + '-ta" d="' + arc(kx, ky, n(10.4 * U), 208, 332, 1) + '"/>' +
@@ -151,8 +151,8 @@ export function glyphKonicaBM21() {
     /* ---------- 机身 + 握把（握把铺一层最淡排线 = 橡胶） ---------- */
     '<g clip-path="url(#' + id + '-c)"><path d="' + grip + '" fill="url(#' + id + '-h)" stroke="none"/></g>' +
     '<g class="line" fill="none" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="' + body + '" stroke-opacity="0.6" stroke-width="1.5"/>' +
-    '<path d="' + seam + '" stroke-opacity="0.6" stroke-width="1.4"/>' +
+    '<path d="' + body + '" stroke-opacity="0.56" stroke-width="1.5"/>' +
+    '<path d="' + seam + '" stroke-opacity="0.56" stroke-width="1.5"/>' +
 
     /* ---------- 黑窗带 + 四个窗 ---------- */
     '<path d="' + panel + '" stroke-opacity="0.55" stroke-width="1.2"/>' +
@@ -178,7 +178,7 @@ export function glyphKonicaBM21() {
 
     /* ---------- 镜筒：银环 + 黑圈 + 前窗 ---------- */
     '<circle cx="' + kx + '" cy="' + ky + '" r="' + kSilver + '" stroke-opacity="0.45" stroke-width="1"/>' +
-    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" stroke-opacity="0.6" stroke-width="1.5"/>' +
+    '<circle cx="' + kx + '" cy="' + ky + '" r="' + kBlack + '" stroke-opacity="0.56" stroke-width="1.5"/>' +
     '<path d="' + rrect(kx - kCovW, ky - kCovH, kCovW * 2, kCovH * 2, n(3 * U)) + '" stroke-opacity="0.42" stroke-width="1.2"/>' +
     '<path d="M' + n(kx - kCovW + n(2.4 * U)) + " " + n(ky + kCovH * 0.7) + "L" + n(kx + kCovW - n(2.4 * U)) + " " +
     n(ky - kCovH * 0.6) + '" stroke-opacity="0.2" stroke-width="1"/>' +
@@ -188,17 +188,17 @@ export function glyphKonicaBM21() {
     "</g>" +
 
     /* ---------- 镜圈两段弧字 ---------- */
-    '<text class="text" fill-opacity="0.62" font-family="' + SANS + '" font-size="8" font-weight="500" letter-spacing="0.1">' +
+    '<text class="text" fill-opacity="0.58" font-family="' + SANS + '" font-size="8" font-weight="500" letter-spacing="0.1">' +
     '<textPath href="#' + id + '-ta" startOffset="50%" text-anchor="middle">KONICA LENS</textPath></text>' +
     '<text class="text" fill-opacity="0.55" font-family="' + SANS + '" font-size="5.4" font-weight="500">' +
     '<textPath href="#' + id + '-ba" startOffset="50%" text-anchor="middle">AUTO FOCUS 30mm F4.5</textPath></text>' +
 
     /* ---------- 丝印（textLength 压到量测书宽度） ---------- */
     '<text class="text" x="' + px(82) + '" y="' + pz(26) + '" text-anchor="middle" textLength="' + n(16 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.62" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.58" font-family="' + SANS +
     '" font-size="18.6" font-weight="700">Konica</text>' +
     '<text class="text" x="' + px(81.5) + '" y="' + pz(40.2) + '" text-anchor="middle" textLength="' + n(17 * U) +
-    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.56" font-family="' + SANS +
+    '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.52" font-family="' + SANS +
     '" font-size="15" font-weight="700">big mini</text>' +
     '<text class="text" x="' + px(81.8) + '" y="' + pz(43.7) + '" text-anchor="middle" textLength="' + n(16.5 * U) +
     '" lengthAdjust="spacingAndGlyphs" fill-opacity="0.3" font-family="' + SANS +

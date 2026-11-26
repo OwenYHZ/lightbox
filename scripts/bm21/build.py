@@ -128,14 +128,14 @@ def textured_opaque(name, image, metallic, roughness):
 
 
 # ============================================================ 材质
-M_CHAMP = mat("BM21_champagne", srgb("#d7d0c3"), 0.68, 0.55, bump="grain_normal.png")
-M_CHAMP_BRIGHT = mat("BM21_champagne_edge", srgb("#e6e0d3"), 0.70, 0.42, bump="grain_normal.png")
+M_CHAMP = mat("BM21_champagne", srgb("#ddd7cb"), 0.68, 0.55, bump="grain_normal.png")
+M_CHAMP_BRIGHT = mat("BM21_champagne_edge", srgb("#cfc9bd"), 0.70, 0.40, bump="grain_normal.png")
 M_BLACK = mat("BM21_black_matte", srgb("#1b1b1d"), 0.05, 0.66, bump="grain_normal.png")
 M_BLACK_SOFT = mat("BM21_black_soft", srgb("#3d3f45"), 0.0, 0.78, bump="grain_normal.png")
 M_CHARCOAL = mat("BM21_charcoal", srgb("#34353a"), 0.10, 0.62, bump="grain_normal.png")
 M_RING = mat("BM21_lens_ring", srgb("#383942"), 0.12, 0.35)
 M_RING_MATTE = mat("BM21_lens_ring_matte", srgb("#131315"), 0.05, 0.52)
-M_BARRIER = mat("BM21_barrier", srgb("#1c1c20"), 0.12, 0.28)
+M_BARRIER = mat("BM21_barrier", srgb("#17171a"), 0.0, 0.46)
 M_LENSGLASS = mat("BM21_lensglass", srgb("#2b2b30"), 0.0, 0.16, transmission=0.12, ior=1.6)
 M_GLASS = mat("BM21_glass", srgb("#9a9da0"), 0.0, 0.05, transmission=1.0, ior=1.5)
 M_LCD = mat("BM21_lcd", srgb("#b9c2c6"), 0.0, 0.14, transmission=0.0, ior=1.5)
@@ -405,14 +405,31 @@ def decal_plane(name, axis, cval, a0, a1, b0, b1, material, flip_u=False, flip_v
     return o
 
 
-def ring_decal(name, cx, cz, r_in, r_out, y, material, seg=160, tex_r=15.0):
+def ring_decal(name, cx, cz, r_in, r_out, y, material, seg=160, tex_r=15.0, rrect=None):
+    """rrect=(half_w, half_h, corner_r)：内孔用圆角矩形代替圆。"""
+    def inner_r(theta):
+        if not rrect:
+            return r_in
+        a, b, rr = rrect
+        ca, sa = math.cos(theta), math.sin(theta)
+        lo, hi = 0.0, max(a, b) * 1.2
+        for _ in range(28):
+            mid = (lo + hi) / 2
+            x, z = abs(mid * ca), abs(mid * sa)
+            inside = (x <= a - rr and z <= b - rr) or                      ((max(0.0, x - (a - rr)) ** 2 + max(0.0, z - (b - rr)) ** 2) <= rr * rr)
+            if inside:
+                lo = mid
+            else:
+                hi = mid
+        return lo
     bm = bmesh.new()
     outer, inner = [], []
     for i in range(seg):
         a = i / seg * math.tau
         ca, sa = math.cos(a), math.sin(a)
+        ri = inner_r(a)
         outer.append(bm.verts.new(((cx + ca * r_out) * S, y * S, (cz + sa * r_out) * S)))
-        inner.append(bm.verts.new(((cx + ca * r_in) * S, y * S, (cz + sa * r_in) * S)))
+        inner.append(bm.verts.new(((cx + ca * ri) * S, y * S, (cz + sa * ri) * S)))
     for i in range(seg):
         j = (i + 1) % seg
         bm.faces.new((outer[i], outer[j], inner[j], inner[i]))
@@ -560,7 +577,8 @@ cyl("LensBarrel", LENS_RING_R, _BARREL_LEN, (LENS_CX, FRONT_Y - 1.1 - _BARREL_LE
 bevel(bpy.data.objects["LensBarrel"], 0.55, 4)
 cyl("LensWell", 7.65, 1.4, (LENS_CX, LENS_FRONT_Y + 1.35, LENS_CZ), M_RING_MATTE, 96, 0.0, 'Y')
 ring_decal("LensRingText", LENS_CX, LENS_CZ, 7.05, LENS_RING_R - 0.22,
-           LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0)
+           LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0,
+           rrect=(BARRIER_W / 2, BARRIER_H / 2, BARRIER_R))
 prism_y("LensBarrier",
         rounded_local(LENS_CX - BARRIER_W / 2, LENS_CX + BARRIER_W / 2,
                       LENS_CZ - BARRIER_H / 2, LENS_CZ + BARRIER_H / 2, BARRIER_R),

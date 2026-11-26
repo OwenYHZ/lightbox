@@ -612,3 +612,28 @@
     transform: none;
   }
 }
+/* 三维引擎加载失败 / 超时时的替身：封面线稿 + 说明 + 重试 */
+.stage__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px;
+  text-align: center;
+}
+.stage__fallback-art {
+  width: min(62%, 300px);
+  opacity: 0.42;
+  pointer-events: none;
+}
+.stage__fallback-art svg { width: 100%; height: auto; }
+.stage__fallback-text {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--paper-dim);
+}

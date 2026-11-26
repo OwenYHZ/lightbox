@@ -749,11 +749,39 @@ function syncRotateButton() {
   el.btnRotate.setAttribute("aria-pressed", String(state.autoRotate));
 }
 
-function showStageFallback(message) {
+let currentItem = null;
+
+function showStageFallback(message, opts = {}) {
+  const text = message || "这台设备暂时没有可用的 WebGL，三维预览没能启动。";
+  const art = currentItem ? coverArt(currentItem) : "";
   el.stageFallback.hidden = false;
-  el.stageFallback.textContent =
-    message || "这台设备暂时没有可用的 WebGL，三维预览没能启动。";
+  el.stageFallback.innerHTML =
+    '<div class="stage__fallback-art" aria-hidden="true">' + art + "</div>" +
+    '<p class="stage__fallback-text">' + text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])) + "</p>" +
+    (opts.retry ? '<button class="ghost-btn" id="stageRetry" type="button">重新加载三维</button>' : "");
   el.stageLoader.classList.add("is-done");
+  el.stageLoader.hidden = true;
+  const retry = el.stageFallback.querySelector("#stageRetry");
+  if (retry) {
+    retry.addEventListener("click", () => {
+      el.stageFallback.hidden = true;
+      el.stageFallback.innerHTML = "";
+      stagePromise = null;
+      stage = null;
+      if (el.stageMount) el.stageMount.innerHTML = "";
+      el.stageLoader.hidden = false;
+      el.stageLoader.classList.remove("is-done");
+      ensureStage().then((v) => {
+        if (v && currentItem) {
+          v.show(currentItem.kind, Object.assign({}, currentItem.model, {
+            accent: currentItem.accent || swatchColor(getAccent(state.accent), 66),
+            glb: currentItem.glb,
+          }));
+          v.setAutoRotate(state.autoRotate);
+        }
+      });
+    });
+  }
 }
 
 function webglAvailable() {
@@ -781,7 +809,10 @@ async function ensureStage() {
     return null;
   }
   if (!stagePromise) {
-    stagePromise = import("./lib/three/viewer.js")
+    const timeout = new Promise((_, reject) =>
+      window.setTimeout(() => reject(new Error("三维引擎加载超时")), 15000)
+    );
+    stagePromise = Promise.race([import("./lib/three/viewer.js"), timeout])
       .then(({ StageViewer }) => {
         stage = new StageViewer(el.stageMount, {
           theme: state.theme,
@@ -791,7 +822,8 @@ async function ensureStage() {
       })
       .catch((error) => {
         console.error("[lightbox] 三维场景加载失败", error);
-        showStageFallback();
+        stagePromise = null;
+        showStageFallback("三维引擎加载超时或失败（网络较慢时会这样）。可以点下面重试。", { retry: true });
         return null;
       });
   }
@@ -805,6 +837,7 @@ async function openDetail(item, { push = true } = {}) {
   toggleThemeMenu(false);
 
   state.openId = item.id;
+  currentItem = item;
   lastFocused = document.activeElement;
   fillDetail(item);
 
