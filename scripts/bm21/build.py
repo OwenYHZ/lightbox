@@ -516,9 +516,12 @@ prism_y("FlashGlass", rounded_local(_fx0 + 0.8, _fx1 - 0.8, _fz0 + 0.8, _fz1 - 0
 _NF = 7
 for i in range(_NF):
     _t = (i + 0.5) / _NF
-    x = (_fx0 + 0.8) + _t * ((_fx1 - 0.8) - (_fx0 + 0.8))
-    rbox("FlashRib%d" % i, 1.15, 0.36, (_fz1 - _fz0) - 1.7, (x, FRONT_Y - 0.54, FL_CZ),
-         0.20, M_FLASH, 2)
+    z = (_fz0 + 0.8) + _t * ((_fz1 - 0.8) - (_fz0 + 0.8))
+    rbox("FlashRib%d" % i, (_fx1 - _fx0) - 1.7, 0.34, 1.1, (FL_CX, FRONT_Y - 0.54, z),
+         0.18, M_FLASH, 2)
+# 闪光窗下方凹槽（analyst §2：19.6 x 1.2 深色）
+rbox("FlashGroove", 19.6, 0.30, 1.2, (FL_CX, FRONT_Y - 0.16, _fz0 - 1.6), 0.3, M_BLACK_SOFT, 2)
+cyl("StripLobe", 5.95, 0.34, (AF_L_X, FRONT_Y - 0.30, AF_L_Z), M_CHARCOAL, 64, 0.10, 'Y')
 rbox("StripSlot", 2.6, 0.4, 1.8, (43.6, FRONT_Y - 0.38, 55.8), 0.7, M_BLACK_SOFT, 3)
 for i, (dx, dz) in enumerate(((-18.3, 45.4), (17.6, 44.9), (17.6, 59.6))):
     cyl("StripDot%d" % i, 0.6, 0.28, (dx, FRONT_Y - 0.36, dz), M_BLACK_SOFT, 24, 0.08, 'Y')
@@ -589,6 +592,13 @@ rbox("BattSlot", 3.0, 0.7, 0.12, (BATT_X, BATT_Y, -0.12), 0.28, M_BLACK_SOFT, 2)
 for i, sx in enumerate(SCREW_X):
     cyl("Screw%d" % i, 1.35, 0.18, (sx, 0.0, -0.07), M_DARKGREY, 32, 0.05, 'Z')
 
+# ============================================================ +X 端黑色圆顶端盖（analyst v1.1 §1）
+_end_prof = lift(offset_profile(prof_right(46.0, HW, HH, R_LEFT, R_LEFT), 0.18))
+prism_y("EndCap", _end_prof, FRONT_Y - 0.18, BACK_YEND + 0.18, M_BLACK_SOFT, 1.2, 3)
+rbox("HingeBar", 0.7, 4.0, 32.0, (49.9, 1.0, 33.0), 0.25, M_CHAMP_BRIGHT, 2)
+for _hx in (10.4, 52.6):
+    cyl("HingeScrew%d" % int(_hx), 1.0, 0.28, (49.95, 1.0, _hx), M_CHAMP_BRIGHT, 24, 0.05, 'X')
+
 # ============================================================ 侧面件（+X 端：锁盘/窗/点/导轨）
 cyl("SideDialRing", 6.8, 0.5, (49.9, 1.0, 24.0), M_CHAMP_BRIGHT, 64, 0.12, 'X')
 cyl("SideDialIn", 5.2, 0.45, (49.95, 1.0, 24.0), M_CHARCOAL, 64, 0.1, 'X')
@@ -626,9 +636,9 @@ _sy = 32.0 / (bbox0["y"][1] - bbox0["y"][0])
 _sz = 63.0 / (bbox0["z"][1] - bbox0["z"][0])
 _cx = (bbox0["x"][0] + bbox0["x"][1]) / 2
 _cy = (bbox0["y"][0] + bbox0["y"][1]) / 2
-_zmin = bbox0["z"][0]
+_zmin = 0.0   # 底面固定在 z=0（只缩放，不平移）
 Mn = (Matrix.Diagonal((_sx, _sy, _sz, 1.0))
-      @ Matrix.Translation((-_cx * S, -_cy * S, -_zmin * S)))
+      @ Matrix.Translation((-_cx * S, -_cy * S, 0.0)))
 for o in scene.objects:
     o.matrix_world = Mn @ o.matrix_world
 

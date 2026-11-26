@@ -3,7 +3,7 @@
 <body>
 <canvas id="dialL" width="1024" height="1024"></canvas>
 <canvas id="dialR" width="1024" height="1024"></canvas>
-<canvas id="plate" width="1536" height="1296"></canvas>
+<canvas id="plate" width="1536" height="1303"></canvas>
 <canvas id="backIcon" width="512" height="512"></canvas>
 <canvas id="shoeBack" width="512" height="213"></canvas>
 <canvas id="bottomPanel" width="1280" height="1052"></canvas>
@@ -15,7 +15,7 @@
      与官方 p1 顶面图一致（12 点为直立，顺时针逐渐转倒）。
    --------------------------------------------------------------- */
 var TAU = Math.PI * 2;
-var DIAL_MM = 23.0;             // 拨盘外径（mm）——与 build.py 的 DIAL_R 联动，只改这一处
+var DIAL_MM = 26.0;             // 拨盘外径（mm）——与 build.py 的 DIAL_R 联动，只改这一处
 var K = 1024 / DIAL_MM;
 var U = DIAL_MM / 16;           // 所有 mm 数值按 Ø16 标定，按 U 等比缩放
 var C = 512;
@@ -99,7 +99,6 @@ function dialFace(g) {
   var g = document.getElementById("dialL").getContext("2d");
   g.clearRect(0, 0, 1024, 1024);
   dialFace(g);
-  g.save(); g.translate(C, C); g.rotate(Math.PI); g.translate(-C, -C);
   var ink = "#24272a";
   var nums = ["11", "8", "5.6", "4", "2.8", "2"];
   for (var i = 0; i < nums.length; i++) {
@@ -118,7 +117,6 @@ function dialFace(g) {
   g.strokeStyle = "rgba(255,255,255,0.35)";
   g.lineWidth = 0.06 * K;
   g.beginPath(); g.arc(C, C, 2.62 * U * K, 0, TAU); g.stroke();
-  g.restore();
 })();
 
 /* ---------- 右盘：功率比（外环，暗红）+ ISO（内环） ---------- */
@@ -126,7 +124,6 @@ function dialFace(g) {
   var g = document.getElementById("dialR").getContext("2d");
   g.clearRect(0, 0, 1024, 1024);
   dialFace(g);
-  g.save(); g.translate(C, C); g.rotate(Math.PI); g.translate(-C, -C);
   var ink = "#24272a";
   var red = "#8f352c";
   var pw = ["-1/64", "-1/32", "-1/16", "-1/8", "-1/4", "-1/2", "-FULL"];
@@ -142,7 +139,6 @@ function dialFace(g) {
   g.strokeStyle = "rgba(30,33,34,0.55)";
   g.lineWidth = 0.10 * K;
   g.beginPath(); g.arc(C, C, 2.72 * U * K, 0, TAU); g.stroke();
-  g.restore();
 })();
 
 /* ---------- 顶板：ZENIKO + 细磨砂 ---------- */
@@ -277,7 +273,7 @@ function dialFace(g) {
   T("Input: 5V=0.5A   CAN ICES-003 (B) / NMB-003 (B)", 2.2, 7.8, 1.18);
   // 认证图标行：移到热靴座下方空带（y>27.2mm）
   var iy = 19.5;
-  var iyIcons = 34.2;
+  var iyIcons = 12.6;
   T("CE", 2.6, iyIcons, 2.7, 700);
   T("UK", 7.0, iyIcons - 1.1, 1.15, 700);
   T("CA", 7.0, iyIcons, 1.15, 700);
@@ -300,7 +296,7 @@ function dialFace(g) {
   T("East Road, Xinwei Community,", 28.6, iy + 13.8, 1.02);
   T("Guiyuan Street, Luohu District,", 28.6, iy + 16.0, 1.02);
   T("Shenzhen City.", 28.6, iy + 18.2, 1.02);
-  T("Made in China", 2.6, 38.4, 1.40, 600);
+  T("Made in China", 2.6, 36.6, 1.40, 600);
   // QR（右上）
   var qx = 43.2, qy = 1.0, qs = 6.2, n = 21, cell = qs / n;
   for (var r = 0; r < n; r++) {

@@ -1,0 +1,279 @@
+{
+ "meta": {
+  "servedFrom": "E:\\code\\dshCode\\Lightbox\\dist",
+  "startedAt": "2026-11-26T11:47:51.767Z"
+ },
+ "tokens": {},
+ "scan": {},
+ "cardArt": {},
+ "loader": {},
+ "regression": {
+  "themeSwitch": {
+   "rectsBefore": {
+    ".topbar": [
+     0,
+     0,
+     1430,
+     64
+    ],
+    ".hero__title": [
+     63,
+     183,
+     1303,
+     164
+    ],
+    ".hero__lede": [
+     63,
+     426,
+     444,
+     87
+    ],
+    ".toolbar": [
+     0,
+     604,
+     1430,
+     63
+    ],
+    ".card": [
+     63,
+     699,
+     310,
+     386
+    ],
+    ".sitefoot": [
+     0,
+     4057,
+     1430,
+     146
+    ],
+    "scrollH": 4203
+   },
+   "rectsAfter": {
+    ".topbar": [
+     0,
+     0,
+     1430,
+     64
+    ],
+    ".hero__title": [
+     63,
+     183,
+     1303,
+     164
+    ],
+    ".hero__lede": [
+     63,
+     426,
+     444,
+     87
+    ],
+    ".toolbar": [
+     0,
+     604,
+     1430,
+     63
+    ],
+    ".card": [
+     63,
+     699,
+     310,
+     386
+    ],
+    ".sitefoot": [
+     0,
+     4057,
+     1430,
+     146
+    ],
+    "scrollH": 4203
+   },
+   "layoutShift": 0,
+   "luminanceSeq": [
+    {
+     "at": 1314,
+     "mean": [
+      232,
+      225,
+      209
+     ],
+     "Y": 225.3
+    },
+    {
+     "at": 1720,
+     "mean": [
+      230,
+      222,
+      206
+     ],
+     "Y": 222.5
+    },
+    {
+     "at": 2095,
+     "mean": [
+      230,
+      222,
+      206
+     ],
+     "Y": 222.5
+    },
+    {
+     "at": 2454,
+     "mean": [
+      230,
+      222,
+      206
+     ],
+     "Y": 222.5
+    }
+   ],
+   "transitionDurationApplied": "0.35s, 0.35s, 0.35s, 0.35s, 0.35s, 0.35s, 0.35s",
+   "metaThemeColor": "rgb(233, 224, 208)",
+   "ink1": "rgb(233, 224, 208)"
+  },
+  "accentSwitch": {
+   "rectsBefore": {
+    ".topbar": [
+     0,
+     0,
+     1430,
+     64
+    ],
+    ".hero__title": [
+     63,
+     183,
+     1303,
+     164
+    ],
+    ".hero__lede": [
+     63,
+     426,
+     444,
+     87
+    ],
+    ".toolbar": [
+     0,
+     604,
+     1430,
+     63
+    ],
+    ".card": [
+     63,
+     699,
+     310,
+     386
+    ],
+    ".sitefoot": [
+     0,
+     4057,
+     1430,
+     146
+    ],
+    "scrollH": 4203
+   },
+   "rectsAfter": {
+    ".topbar": [
+     0,
+     0,
+     1430,
+     64
+    ],
+    ".hero__title": [
+     63,
+     183,
+     1303,
+     164
+    ],
+    ".hero__lede": [
+     63,
+     426,
+     444,
+     87
+    ],
+    ".toolbar": [
+     0,
+     604,
+     1430,
+     63
+    ],
+    ".card": [
+     63,
+     699,
+     310,
+     386
+    ],
+    ".sitefoot": [
+     0,
+     4057,
+     1430,
+     146
+    ],
+    "scrollH": 4203
+   },
+   "at16ms": {
+    "accent": "indigo",
+    "switching": false
+   },
+   "layoutShift": 0
+  },
+  "detailLight": {
+   ".stage__loader-art": {
+    "skip": true
+   },
+   ".stage__hint": {
+    "ratio": 3.67,
+    "fg": "126,124,135",
+    "bg": "242,241,247",
+    "box": [
+     154,
+     790,
+     372,
+     818
+    ]
+   },
+   ".spec dd": {
+    "ratio": 6.29,
+    "fg": "89,87,95",
+    "bg": "241,240,244",
+    "box": [
+     1161,
+     331,
+     1252,
+     352
+    ]
+   },
+   ".tag": {
+    "skip": true
+   },
+   "#detailNote": {
+    "ratio": 6.39,
+    "fg": "89,87,96",
+    "bg": "243,242,245",
+    "box": [
+     862,
+     250,
+     1252,
+     301
+    ]
+   }
+  },
+  "detailTokens": {
+   "artLineRoot": "hsl(252 calc(40% * .5) 11% / .95)",
+   "artLineLoader": "hsl(252 calc(40% * .5) 13% / 1)",
+   "artTextLoader": "hsl(252 calc(40% * .5) 15% / .66)",
+   "artLineCard": "hsl(252 calc(40% * .5) 11% / .95)",
+   "cardA": "rgb(253, 253, 253)",
+   "stageChipText": "hsl(252 calc(40% * .4) 16% / .56)",
+   "stageHintColor": "rgba(37, 34, 47, 0.56)"
+  },
+  "editorPage": {
+   "theme": null,
+   "accentAttr": "indigo",
+   "ink1": "#0b0c0f",
+   "paper": "#f3f1ec",
+   "bg": "rgb(7, 7, 10)",
+   "accent": "hsl(252 40% 74%)",
+   "colorScheme": "dark"
+  }
+ },
+ "errors": []
+}

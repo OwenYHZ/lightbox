@@ -12,20 +12,22 @@ TOTAL_H = 36.0
 BODY_H = 23.6
 BASE_H = 4.0
 BASE_INSET = 0.20
-CORNER = 5.6
+CORNER = 7.5                  # 外壳竖棱圆角（用户目测 R7–8）
 FILLET = 0.12                 # 侧面→顶面直角（仅 0.12 破边）
 
-PLATE_W, PLATE_D, PLATE_R = 51.2, 43.2, 4.6   # 四边等宽 ≈1.9mm，圆角放大（p1）
-PLATE_SINK = 0.30             # 顶盖比外壳顶面低 0.30
+PLATE_SINK = 0.0              # 顶盖顶面与外壳顶面齐平（用户纠正：0.3 是拨盘面高出顶面）
+PLATE_MARGIN = 1.2            # 顶盖到外壳的银边宽（四边等宽）
+PLATE_W, PLATE_D = 55.0 - 2 * PLATE_MARGIN, 47.0 - 2 * PLATE_MARGIN
+PLATE_R = CORNER - PLATE_MARGIN   # 与外壳同圆心收敛（贴住外壳圆角）
 PLATE_GAP = 0.17
 
-DIAL_R = 11.5                 # 拨盘 Ø23.0（外缘超顶盖 1.2，仍在银色机身内 0.8）
-DIAL_X = 15.2                 # 中心距 30.4
-DIAL_Y = D / 2 - 12.2         # 盘心 Y = +11.3（盘后缘 22.8 vs 顶盖后缘 21.6）
+DIAL_R = 13.0                 # 拨盘 Ø26.0（外缘 ±29 超机身 1.5，后缘 24.8 超机身 1.3）
+DIAL_X = 16.0                 # 中心距 32.0（两盘净空 6.0，容 4.4 的槽）
+DIAL_Y = 24.8 - DIAL_R        # 盘心 Y = +11.8（盘后缘 24.8）
 DIAL_BACK_D = 9.5             # 盘心距机身后缘（p6 + 实拍 222313：拨盘靠后）
 DIAL_TOP = 24.7               # 盘面高（滚花露出 1.4）
-DIAL_BOT = BODY_H - PLATE_SINK - 0.0
-DIAL_TEETH, DIAL_TOOTH = 172, 0.22   # Ø23 下齿距 0.42
+DIAL_BOT = BODY_H - PLATE_SINK - 0.02   # 低 0.02 避免与外壳顶面共面
+DIAL_TEETH, DIAL_TOOTH = 194, 0.22   # Ø26 下齿距 0.42
 
 WIN_CX, WIN_CZ = -2.2, 14.5
 WIN_W, WIN_H, WIN_R = 26.7, 7.6, 1.6
@@ -34,11 +36,11 @@ WIN_FRAME_D = 1.0
 WIN_DEPTH = 4.6
 SENSOR_X, SENSOR_Z, SENSOR_R = 17.7, 14.6, 2.5
 
-SLOT_W, SLOT_H, SLOT_Z = 6.2, 2.0, 12.2  # 细长条；槽心与盘心同深度
+SLOT_W, SLOT_H, SLOT_Z = 4.4, 1.7, 11.7  # 更短；槽心与盘心(+11.8)同深度
 
 BTN_X, BTN_Z, BTN_R, BTN_OUT = -0.5, 13.8, 3.8, 0.7
 
-SHOE_X, SHOE_Y = -8.0, -3.0
+SHOE_X, SHOE_Y = -10.0, 5.5   # 按 222234 实拍：底面中心左下（左 -10 / 后 +5.5）
 SHOE_MOUNT_W, SHOE_MOUNT_D = 17.0, 16.0
 SHOE_FOOT_W, SHOE_FOOT_D = 19.0, 17.0
 SHOE_BOT = -(TOTAL_H - DIAL_TOP)          # -11.3
@@ -359,8 +361,6 @@ for sx in (DIAL_X, -DIAL_X):
            (sx, DIAL_Y, DIAL_BOT + 0.26), M_CAVITY, 72, axis='Z')
     cyl("Post", 2.55, 0.28, (sx, DIAL_Y, DIAL_TOP - 0.08), M_GEAR, 40, 0.05, 'Z')
 
-# 顶板小凹点（官方顶图同位置的小暗圆）
-_pr = cyl("PlateHole", 1.3, 0.12, (-2.2, (D / 2 - 7.0), BODY_H - PLATE_SINK - 0.04), M_CAVITY, 32, 0.0, 'Z')
 slot = prism("Slot", SLOT_W, SLOT_H, BODY_H - PLATE_SINK - 0.10, BODY_H - PLATE_SINK + 0.02,
               SLOT_H / 2, M_SLOT, 0.0, seg=12)
 slot.location = (0.0, (D / 2 - SLOT_Z) * S, 0.0)

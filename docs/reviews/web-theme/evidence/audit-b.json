@@ -1,0 +1,421 @@
+{
+ "meta": {
+  "servedFrom": "E:\\code\\dshCode\\Lightbox\\dist",
+  "startedAt": "2026-11-26T11:47:01.756Z"
+ },
+ "tokens": {},
+ "scan": {},
+ "cardArt": {},
+ "loader": {
+  "coldStart": {
+   "fadeStartMs": 5456,
+   "hiddenMs": 5825,
+   "samples": [
+    {
+     "at": 120,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 300,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 700,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 830,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 900,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1200,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 2000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 3000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 4200,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 4600,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    }
+   ],
+   "strokeNodes": 106,
+   "styleProbe": {
+    "transition": "opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
+    "pointerEvents": "none",
+    "hidden": true,
+    "svg": true,
+    "lenNodes": 106,
+    "firstDasharray": "96px",
+    "firstDashoffset": "96px",
+    "animName": "stageArtDraw",
+    "animDur": "0.85s",
+    "barAnim": "stageBarSlide"
+   },
+   "hitAtCenter": "CANVAS.is-ready"
+  },
+  "switchReset": {
+   "at140ms": {
+    "loaderOpacity": 1,
+    "loaderHidden": false,
+    "svgReplaced": true,
+    "lenNodes": 52,
+    "dashoffset": "42.6406px",
+    "animName": "stageArtDraw",
+    "text": "正在搭建三维场景…"
+   },
+   "timing": {
+    "fadeStartMs": 0,
+    "hiddenMs": 0,
+    "samples": [
+     {
+      "at": 40,
+      "o": 0,
+      "done": true,
+      "hidden": true
+     },
+     {
+      "at": 120,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 300,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 500,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 700,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 830,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 900,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 1000,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 1200,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 1500,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 2000,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 3000,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 4200,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     },
+     {
+      "at": 4600,
+      "o": 1,
+      "done": false,
+      "hidden": false
+     }
+    ],
+    "strokeNodes": 52
+   }
+  },
+  "warmRebuild": {
+   "fadeStartMs": 0,
+   "hiddenMs": 0,
+   "samples": [
+    {
+     "at": 40,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 120,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 300,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 700,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 830,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 900,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1200,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 2000,
+     "o": 0,
+     "done": true,
+     "hidden": true
+    },
+    {
+     "at": 3000,
+     "o": 0,
+     "done": true,
+     "hidden": true
+    },
+    {
+     "at": 4200,
+     "o": 0,
+     "done": true,
+     "hidden": true
+    },
+    {
+     "at": 4600,
+     "o": 0,
+     "done": true,
+     "hidden": true
+    }
+   ],
+   "strokeNodes": 10
+  },
+  "failsafe": {
+   "fadeStartMs": 4118,
+   "hiddenMs": 4486,
+   "samples": [
+    {
+     "at": 40,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 120,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 300,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 700,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 830,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 900,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1200,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 1500,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 2000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 3000,
+     "o": 1,
+     "done": false,
+     "hidden": false
+    },
+    {
+     "at": 4200,
+     "o": 0.23,
+     "done": true,
+     "hidden": false
+    },
+    {
+     "at": 4600,
+     "o": 0,
+     "done": true,
+     "hidden": true
+    }
+   ],
+   "strokeNodes": 106,
+   "state": {
+    "hidden": true,
+    "opacity": "0",
+    "pointerEvents": "none",
+    "hitAtCenter": "CANVAS.",
+    "fallbackVisible": false,
+    "fallbackText": ""
+   }
+  },
+  "reduced": {
+   "svg": true,
+   "artOpacity": "1",
+   "artAnimation": "none",
+   "lenNodes": 0,
+   "lineDasharray": "none",
+   "lineAnim": "none",
+   "leafDashoffset": "0px",
+   "scanDisplay": "none",
+   "barAnim": "none",
+   "loaderPointerEvents": "none",
+   "loaderOpacity": "0",
+   "artHeight": 312,
+   "afterReady": {
+    "hidden": true,
+    "opacity": "0"
+   }
+  }
+ },
+ "regression": {},
+ "errors": []
+}
