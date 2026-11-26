@@ -149,7 +149,8 @@ let stage = null;
 let stagePromise = null;
 let stageLoaderShownAt = 0;
 let stageLoaderTimer = 0;
-let stageLoaderRaf = 0;
+let stageLoaderHideTimer = 0;
+let stageLoaderFailSafe = 0;
 let stageLoaderCycle = 0;
 const baseTitle = document.title;
 
@@ -615,14 +616,24 @@ function mountStageLoaderArt(item) {
   const cycle = (stageLoaderCycle += 1);
   cancelStageLoaderWatch();
 
-  /* 换器材时"立刻"回到可见状态：直接杀掉过渡，不然会顺着 0.7s 的淡出倒着淡回来 */
+  /* 换器材时"立刻"回到可见状态：直接杀掉过渡，不然会顺着淡出倒着淡回来 */
   if (el.stageLoader) {
+    window.clearTimeout(stageLoaderHideTimer);
+    window.clearTimeout(stageLoaderFailSafe);
+    el.stageLoader.hidden = false;
     el.stageLoader.style.setProperty("transition", "none", "important");
     el.stageLoader.classList.remove("is-done");
     void el.stageLoader.offsetWidth;
     requestAnimationFrame(() => {
       if (el.stageLoader) el.stageLoader.style.removeProperty("transition");
     });
+    /* 兜底：模型加载失败 / 卡住时，最多挡 4s */
+    stageLoaderFailSafe = window.setTimeout(() => {
+      if (cycle !== stageLoaderCycle || !el.stageLoader) return;
+      if (el.stageLoader.classList.contains("is-done")) return;
+      el.stageLoader.classList.add("is-done");
+      scheduleStageLoaderHide();
+    }, 4000);
   }
 
   stageLoaderShownAt = performance.now();
@@ -653,39 +664,42 @@ function mountStageLoaderArt(item) {
   return cycle;
 }
 
-/**
- * 等这一轮的三维场景就绪再收尾。
- * 用「每轮一个 cycle + 自己盯 canvas.is-ready」而不是复用 viewer 的 onReady 回调：
- * 切换器材时上一轮的回调可能晚到，会把新一轮的加载动画立刻掐掉。
- */
-function startStageLoaderWatch(cycle) {
-  const tick = () => {
-    stageLoaderRaf = 0;
-    if (cycle !== stageLoaderCycle || !state.openId) return;
-    if (el.stageFallback && !el.stageFallback.hidden) return;
-    if (!el.stageMount.querySelector("canvas.is-ready")) {
-      stageLoaderRaf = requestAnimationFrame(tick);
-      return;
-    }
-    const wait = prefersReduced
-      ? 0
-      : Math.max(0, STAGE_LOADER_MIN_MS - (performance.now() - stageLoaderShownAt));
-    if (wait <= 0) {
-      if (el.stageLoader) el.stageLoader.classList.add("is-done");
-      return;
-    }
-    stageLoaderTimer = window.setTimeout(() => {
-      if (cycle === stageLoaderCycle && el.stageLoader) el.stageLoader.classList.add("is-done");
-    }, wait);
+/** 场景就绪（viewer 的 onReady）后收尾：动画没演完就等一会儿，演完了立刻淡出交给 canvas */
+function markStageLoaderReady() {
+  if (!el.stageLoader) return;
+  window.clearTimeout(stageLoaderFailSafe);
+  const cycle = stageLoaderCycle;
+  const wait = prefersReduced
+    ? 0
+    : Math.max(0, STAGE_LOADER_MIN_MS - (performance.now() - stageLoaderShownAt));
+  window.clearTimeout(stageLoaderTimer);
+  const finish = () => {
+    if (cycle !== stageLoaderCycle || !el.stageLoader) return;
+    el.stageLoader.classList.add("is-done");
+    scheduleStageLoaderHide();
   };
-  stageLoaderRaf = requestAnimationFrame(tick);
+  if (wait <= 0) {
+    finish();
+    return;
+  }
+  stageLoaderTimer = window.setTimeout(finish, wait);
+}
+
+/** 淡出（0.32s）结束后把浮层真正移出布局：opacity:0 + hidden，双保险 */
+function scheduleStageLoaderHide() {
+  window.clearTimeout(stageLoaderHideTimer);
+  stageLoaderHideTimer = window.setTimeout(() => {
+    if (el.stageLoader) el.stageLoader.hidden = true;
+  }, 360);
 }
 
 function cancelStageLoaderWatch() {
-  if (stageLoaderRaf) cancelAnimationFrame(stageLoaderRaf);
-  stageLoaderRaf = 0;
   window.clearTimeout(stageLoaderTimer);
+  window.clearTimeout(stageLoaderHideTimer);
+  window.clearTimeout(stageLoaderFailSafe);
   stageLoaderTimer = 0;
+  stageLoaderHideTimer = 0;
+  stageLoaderFailSafe = 0;
 }
 
 function fillDetail(item) {
@@ -757,7 +771,10 @@ async function ensureStage() {
   if (!stagePromise) {
     stagePromise = import("./lib/three/viewer.js")
       .then(({ StageViewer }) => {
-        stage = new StageViewer(el.stageMount, { theme: state.theme });
+        stage = new StageViewer(el.stageMount, {
+          theme: state.theme,
+          onReady: () => markStageLoaderReady(),
+        });
         return stage;
       })
       .catch((error) => {
@@ -789,7 +806,7 @@ async function openDetail(item, { push = true } = {}) {
   el.close.focus({ preventScroll: true });
 
   /* 面板开始出现时同时启动封面描边动画，正好覆盖三维场景的构建时间 */
-  const loaderCycle = mountStageLoaderArt(item);
+  mountStageLoaderArt(item);
 
   const viewer = await ensureStage();
   if (viewer && state.openId === item.id) {
@@ -804,7 +821,6 @@ async function openDetail(item, { push = true } = {}) {
     );
     viewer.setAutoRotate(state.autoRotate);
     syncRotateButton();
-    startStageLoaderWatch(loaderCycle);
   }
 
   if (push) pushHash(item.id);
@@ -829,6 +845,7 @@ function closeDetail({ fromRoute = false } = {}) {
   const hide = () => {
     if (!state.openId) {
       el.detail.hidden = true;
+      el.stageLoader.hidden = false;
       el.stageLoader.classList.remove("is-done");
       el.stageMount.querySelectorAll("canvas").forEach((c) => c.classList.remove("is-ready"));
     }

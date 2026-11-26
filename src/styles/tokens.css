@@ -131,7 +131,7 @@
   --st-broken: #e0917f;
 
   /* 封面线稿 */
-  --art-line: hsl(var(--accent-h) var(--paper-s) 95% / 0.8);
+  --art-line: hsl(var(--accent-h) var(--paper-s) 96% / 0.88);
   --art-accent: hsl(var(--accent-h) var(--accent-s) 80%);
   --art-text: hsl(var(--accent-h) var(--paper-s) 93% / 0.52);
   --art-grid: hsl(var(--accent-h) calc(var(--accent-s) * 0.4) 88% / 0.075);
@@ -245,8 +245,8 @@
   --st-broken: #b0482f;
 
   /* 封面线稿：浅色底上要看得清，所以压到 L13 + 0.9 不透明度 */
-  --art-line: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 13% / 0.9);
-  --art-accent: hsl(var(--accent-h) var(--accent-s) 30%);
+  --art-line: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 11% / 0.95);
+  --art-accent: hsl(var(--accent-h) var(--accent-s) 28%);
   --art-text: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 15% / 0.56);
   --art-grid: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 20% / 0.09);
 

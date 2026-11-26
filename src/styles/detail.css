@@ -143,7 +143,7 @@
   letter-spacing: 0.22em;
   color: var(--paper-faint);
   text-transform: uppercase;
-  transition: opacity 0.7s var(--ease), transform 0.9s var(--ease);
+  transition: opacity 0.32s var(--ease), transform 0.9s var(--ease);
 }
 
 .stage__loader.is-done {
@@ -154,6 +154,10 @@
 
 .stage__loader-art {
   position: relative;
+  /* 加载态单独一套更重的线：底下的模型还没出现，这里是唯一的主体 */
+  --art-line: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 13% / 1);
+  --art-text: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 15% / 0.66);
+  --art-grid: hsl(var(--accent-h) calc(var(--accent-s) * 0.5) 20% / 0.12);
   width: min(68%, 400px);
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -287,6 +291,11 @@
     transform: translateX(320%);
     opacity: 0;
   }
+}
+
+[data-theme="dark"] .stage__loader-art {
+  --art-line: hsl(var(--accent-h) var(--paper-s) 96% / 0.95);
+  --art-text: hsl(var(--accent-h) var(--paper-s) 94% / 0.6);
 }
 
 @media (prefers-reduced-motion: reduce) {

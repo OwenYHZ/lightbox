@@ -14,39 +14,40 @@ FRONT_Y, BACK_YEND = -13.5, 14.5
 LENS_FRONT_Y = -16.0
 HW, HH = W / 2, H / 2
 HD = (BACK_YEND - FRONT_Y) / 2
-EDGE_BEVEL = 3.0
-R_GRIP, R_LEFT = 15.5, 7.0
+EDGE_BEVEL = 3.4
+R_GRIP, R_LEFT = 6.5, 2.5
 
-# ---- 正面黑握把缝线（正面看，x 随 z 变化；腰 17.8 @ z=30）
-SEAM = [(0.0, -44.6), (1.0, -37.0), (2.5, -31.2), (5.3, -28.5), (7.8, -29.4),
-        (12.8, -30.7), (17.8, -31.6), (24.0, -32.1), (30.0, -32.2), (34.0, -31.8),
-        (38.0, -31.0), (42.8, -30.3), (47.8, -28.9), (52.8, -27.1), (56.0, -26.3),
-        (58.5, -28.6), (60.2, -35.5), (61.3, -42.6), (62.0, -46.2)]
+# ---- 正面黑握把缝线（analyst §3，Z 从顶边 → Blender z = 63 - Z）
+SEAM_SPEC = [(0.0, 13.0), (1.0, 20.4), (2.0, 23.1), (6, 21.6), (10, 20.4), (14, 19.3),
+             (18, 18.5), (22, 17.7), (26, 17.3), (30, 17.1), (34, 16.9), (38, 16.9),
+             (42, 17.1), (46, 17.5), (50, 18.1), (54, 18.9), (58, 19.9), (60, 20.6),
+             (62, 24.0), (63, 44.8)]
+SEAM = sorted([(63.0 - z, x - 50.0) for z, x in SEAM_SPEC])
 
-# ---- 正面暗面板 / 取景 / 闪光
-STRIP_X0, STRIP_X1 = -19.2, 46.5
-STRIP_Z0, STRIP_Z1 = 39.3, 52.7
-VF_X0, VF_X1, VF_Z0, VF_Z1 = -8.7, 3.5, 39.9, 53.4
-AF_L_X, AF_R_X, AF_Z = -14.2, 14.6, 46.2
-FL_X0, FL_X1, FL_Z0, FL_Z1 = 23.6, 40.8, 41.6, 50.8
+# ---- 正面暗面板（analyst §6: X29.5-96.0 / Z2.0-19.2）
+STRIP_X0, STRIP_X1 = -20.5, 46.0
+STRIP_Z0, STRIP_Z1 = 43.9, 61.0
+VF_CX, VF_CZ, VF_W, VF_H = 0.0, 54.3, 18.3, 11.9
+AF_L_X, AF_L_Z, AF_R_X, AF_R_Z = -13.6, 56.2, 12.8, 55.8
+FL_CX, FL_CZ, FL_W, FL_H = 30.1, 55.2, 20.8, 9.8
 
-# ---- 镜头
-LENS_CX, LENS_CZ = -0.6, 21.3
-LENS_BEZEL_R, LENS_RING_R, LENS_INNER_R = 15.75, 14.9, 10.4
-BARRIER_W, BARRIER_H = 19.4, 13.4
+# ---- 镜头（analyst §4: 轴心 X48.5/Z38.6, 黑圈 Ø30.3, 银环 Ø34.4, 内窗 14x11.3）
+LENS_CX, LENS_CZ = -1.5, 24.4
+LENS_BEZEL_R, LENS_RING_R, LENS_INNER_R = 17.2, 15.15, 8.3
+BARRIER_W, BARRIER_H, BARRIER_R = 14.0, 11.3, 3.0
 
 # ---- 顶面
-SHUT_X, SHUT_Y, SHUT_R = -36.1, 5.0, 6.3
-LCD_X0, LCD_X1 = -11.05, 10.25
-LCD_Y0, LCD_Y1 = 1.4, 11.0
-BTNS = [("OnBtn", -24.7, 8.4, 7.4, 3.4), ("ModeBtn", -27.9, 4.4, 6.0, 3.2),
-        ("PwrBtn", -20.8, 4.4, 6.0, 3.2)]
+SHUT_X, SHUT_Y, SHUT_R = -35.6, -2.1, 6.6
+LCD_X0, LCD_X1 = -11.8, 10.0
+LCD_Y0, LCD_Y1 = -6.3, 6.7
+BTNS = [("OnBtn", -21.7, 4.0, 8.3, 6.1), ("ModeBtn", -24.6, -2.5, 6.3, 4.7),
+        ("PwrBtn", -17.3, -2.5, 6.3, 4.8)]
 
 # ---- 背面
-EYE_X0, EYE_X1, EYE_Z0, EYE_Z1 = -9.4, 3.5, 48.9, 59.1
-LAMP_X, LAMP_Z, LAMP_R = -13.8, 53.6, 1.5
-DIAL_X, DIAL_Z, DIAL_R = -31.9, 45.8, 9.4
-FW_X0, FW_X1, FW_Z0, FW_Z1 = -42.0, -35.3, 14.4, 33.2
+EYE_X0, EYE_X1, EYE_Z0, EYE_Z1 = -12.0, 4.0, 47.0, 60.0
+LAMP_X, LAMP_Z, LAMP_R = -15.0, 54.5, 1.5
+DIAL_X, DIAL_Z, DIAL_R = -28.7, 47.7, 10.25
+FW_X0, FW_X1, FW_Z0, FW_Z1 = -39.6, -34.8, 17.2, 32.8
 
 # ---- 底面
 SER_X0, SER_X1, SER_H = -2.1, 16.0, 4.5
@@ -127,17 +128,17 @@ def textured_opaque(name, image, metallic, roughness):
 
 
 # ============================================================ 材质
-M_CHAMP = mat("BM21_champagne", srgb("#d9d2c4"), 0.70, 0.55, bump="grain_normal.png")
+M_CHAMP = mat("BM21_champagne", srgb("#d7d0c3"), 0.68, 0.55, bump="grain_normal.png")
 M_CHAMP_BRIGHT = mat("BM21_champagne_edge", srgb("#e6e0d3"), 0.70, 0.42, bump="grain_normal.png")
 M_BLACK = mat("BM21_black_matte", srgb("#1b1b1d"), 0.05, 0.66, bump="grain_normal.png")
-M_BLACK_SOFT = mat("BM21_black_soft", srgb("#232327"), 0.0, 0.72, bump="grain_normal.png")
+M_BLACK_SOFT = mat("BM21_black_soft", srgb("#2f3136"), 0.0, 0.78, bump="grain_normal.png")
 M_CHARCOAL = mat("BM21_charcoal", srgb("#2a2a2d"), 0.12, 0.60, bump="grain_normal.png")
-M_RING = mat("BM21_lens_ring", srgb("#121214"), 0.15, 0.25)
+M_RING = mat("BM21_lens_ring", srgb("#383942"), 0.12, 0.35)
 M_RING_MATTE = mat("BM21_lens_ring_matte", srgb("#1d1d20"), 0.10, 0.38)
-M_BARRIER = mat("BM21_barrier", srgb("#2f2f34"), 0.18, 0.26)
+M_BARRIER = mat("BM21_barrier", srgb("#3d3d44"), 0.32, 0.22)
 M_LENSGLASS = mat("BM21_lensglass", srgb("#2b2b30"), 0.0, 0.16, transmission=0.12, ior=1.6)
 M_GLASS = mat("BM21_glass", srgb("#9a9da0"), 0.0, 0.05, transmission=1.0, ior=1.5)
-M_LCD = mat("BM21_lcd", srgb("#8b9188"), 0.0, 0.16, transmission=0.25, ior=1.5)
+M_LCD = mat("BM21_lcd", srgb("#b9c2c6"), 0.0, 0.14, transmission=0.0, ior=1.5)
 M_FLASH = mat("BM21_flash", srgb("#b7b9b2"), 0.0, 0.44, transmission=0.18, ior=1.5)
 M_DARKGREY = mat("BM21_btn_grey", srgb("#3a3a3d"), 0.0, 0.42)
 M_WHITE_PAINT = mat("BM21_white_paint", srgb("#eceae2"), 0.0, 0.5)
@@ -334,6 +335,36 @@ def rounded_tube(name, x0, x1, z0, z1, r_out, wall, y0, y1, material, seg=14, r_
     return o
 
 
+def tube_z(name, x0, x1, y0, y1, r_out, wall, z0, z1, material, seg=14):
+    """圆角矩形管沿 Z（顶面 LCD 框）。profile 在 XY 平面。"""
+    def rr(ax0, ax1, ay0, ay1, r):
+        hw, hh = (ax1 - ax0) / 2, (ay1 - ay0) / 2
+        pts = prof_full(hw, hh, r, r, r, r, seg)
+        return [(x + (ax0 + ax1) / 2, y + (ay0 + ay1) / 2) for x, y in pts]
+    outer = rr(x0, x1, y0, y1, r_out)
+    inner = rr(x0 + wall, x1 - wall, y0 + wall, y1 - wall, max(0.4, r_out - wall))
+    n = min(len(outer), len(inner))
+    bm = bmesh.new()
+    of = [bm.verts.new((p[0] * S, p[1] * S, z0 * S)) for p in outer[:n]]
+    ob = [bm.verts.new((p[0] * S, p[1] * S, z1 * S)) for p in outer[:n]]
+    inf = [bm.verts.new((p[0] * S, p[1] * S, z0 * S)) for p in inner[:n]]
+    ib = [bm.verts.new((p[0] * S, p[1] * S, z1 * S)) for p in inner[:n]]
+    for i in range(n):
+        j = (i + 1) % n
+        bm.faces.new((of[i], of[j], inf[j], inf[i]))
+        bm.faces.new((ob[j], ob[i], ib[i], ib[j]))
+        bm.faces.new((of[j], of[i], ob[i], ob[j]))
+        bm.faces.new((inf[i], inf[j], ib[j], ib[i]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new(name, me); scene.collection.objects.link(o)
+    o.data.materials.append(material)
+    bevel(o, 0.3, 2)
+    box_uv(o)
+    smooth(30)
+    return o
+
+
 def decal_plane(name, axis, cval, a0, a1, b0, b1, material, flip_u=False, flip_v=False, push=0.04):
     if axis in ('Y-', 'Y+'):
         c = cval - push if axis == 'Y-' else cval + push
@@ -460,34 +491,37 @@ grip = prism_y("Grip", _gp, FRONT_Y - 0.16, BACK_YEND + 0.16, M_BLACK_SOFT, 0.5,
 strip = prism_y("FrontStrip", rounded_local(STRIP_X0, STRIP_X1, STRIP_Z0, STRIP_Z1, 3.2),
                 FRONT_Y - 0.32, FRONT_Y + 0.6, M_CHARCOAL, 0.30, 3)
 # 取景窗：框 + 深色玻璃 + 内亮片
-rounded_tube("FinderHousing", VF_X0, VF_X1, VF_Z0, VF_Z1, 1.9, 1.3,
-             FRONT_Y - 2.25, FRONT_Y + 0.4, M_CHARCOAL, 14)
+_vx0, _vx1 = VF_CX - VF_W / 2, VF_CX + VF_W / 2
+_vz0, _vz1 = VF_CZ - VF_H / 2, VF_CZ + VF_H / 2
+rounded_tube("FinderHousing", _vx0, _vx1, _vz0, _vz1, 1.6, 1.0,
+             FRONT_Y - 2.15, FRONT_Y + 0.4, M_CHARCOAL, 14)
 prism_y("FinderWindow",
-        rounded_local(VF_X0 + 1.35, VF_X1 - 1.35, VF_Z0 + 1.35, VF_Z1 - 1.35, 0.7),
-        FRONT_Y - 2.06, FRONT_Y - 1.92, M_GLASS, 0.16, 2)
+        rounded_local(_vx0 + 0.7, _vx1 - 0.7, _vz0 + 0.7, _vz1 - 0.7, 0.8),
+        FRONT_Y - 1.98, FRONT_Y - 1.86, M_LENSGLASS, 0.14, 2)
 prism_y("FinderInner",
-        rounded_local(VF_X0 + 2.1, VF_X1 - 2.1, VF_Z0 + 2.2, VF_Z1 - 2.2, 0.55),
-        FRONT_Y - 1.70, FRONT_Y - 1.56, M_WHITE_PAINT, 0.12, 2)
-rbox("FinderTopStep", (VF_X1 - VF_X0) - 1.8, 0.8, 0.6,
-     ((VF_X0 + VF_X1) / 2, FRONT_Y - 1.15, VF_Z1 - 0.5), 0.28, M_BLACK_SOFT, 3)
+        rounded_local(_vx0 + 1.0, _vx1 - 1.0, _vz0 + 1.0, _vz1 - 1.0, 0.5),
+        FRONT_Y - 1.62, FRONT_Y - 1.50, M_WHITE_PAINT, 0.10, 2)
+rbox("FinderTopStep", VF_W - 2.0, 0.7, 0.5, (VF_CX, FRONT_Y - 1.05, _vz1 - 0.4), 0.24, M_BLACK_SOFT, 3)
 # AF 窗（左：灯；右：测距）
-for nm, cx, rr in (("AfLamp", AF_L_X, 3.0), ("AfSensor", AF_R_X, 3.2)):
-    cyl(nm + "Rim", rr + 0.55, 0.38, (cx, FRONT_Y - 0.50, AF_Z), M_BLACK_SOFT, 64, 0.13, 'Y')
-    cyl(nm + "Lens", rr, 0.46, (cx, FRONT_Y - 0.52, AF_Z), M_LENSGLASS, 64, 0.24, 'Y')
+for nm, cx, cz in (("AfLamp", AF_L_X, AF_L_Z), ("AfSensor", AF_R_X, AF_R_Z)):
+    cyl(nm + "Rim", 3.55, 0.36, (cx, FRONT_Y - 0.48, cz), M_BLACK_SOFT, 64, 0.12, 'Y')
+    cyl(nm + "Lens", 2.95, 0.44, (cx, FRONT_Y - 0.50, cz), M_LENSGLASS, 64, 0.22, 'Y')
 # 闪光窗
-prism_y("FlashFrame", rounded_local(FL_X0, FL_X1, FL_Z0, FL_Z1, 1.3),
-        FRONT_Y - 0.28, FRONT_Y + 0.4, M_BLACK, 0.20, 2)
-prism_y("FlashGlass", rounded_local(FL_X0 + 0.85, FL_X1 - 0.85, FL_Z0 + 0.85, FL_Z1 - 0.85, 0.9),
-        FRONT_Y - 0.52, FRONT_Y - 0.14, M_FLASH, 0.14, 2)
-_NF = 9
+_fx0, _fx1 = FL_CX - FL_W / 2, FL_CX + FL_W / 2
+_fz0, _fz1 = FL_CZ - FL_H / 2, FL_CZ + FL_H / 2
+prism_y("FlashFrame", rounded_local(_fx0, _fx1, _fz0, _fz1, 1.2),
+        FRONT_Y - 0.26, FRONT_Y + 0.4, M_BLACK, 0.18, 2)
+prism_y("FlashGlass", rounded_local(_fx0 + 0.8, _fx1 - 0.8, _fz0 + 0.8, _fz1 - 0.8, 0.8),
+        FRONT_Y - 0.48, FRONT_Y - 0.12, M_FLASH, 0.12, 2)
+_NF = 7
 for i in range(_NF):
-    t = (i + 0.5) / _NF
-    x = (FL_X0 + 0.85) + t * ((FL_X1 - 0.85) - (FL_X0 + 0.85))
-    rbox("FlashRib%d" % i, 0.85, 0.40, (FL_Z1 - FL_Z0) - 1.8, (x, FRONT_Y - 0.58, (FL_Z0 + FL_Z1) / 2),
-         0.22, M_FLASH, 2)
-rbox("StripSlot", 3.0, 0.45, 2.0, (43.2, FRONT_Y - 0.40, 46.0), 0.8, M_BLACK_SOFT, 3)
-for i, (dx, dz) in enumerate(((-17.4, 41.2), (19.6, 41.4), (19.6, 43.2))):
-    cyl("StripDot%d" % i, 0.70, 0.30, (dx, FRONT_Y - 0.40, dz), M_BLACK_SOFT, 24, 0.09, 'Y')
+    _t = (i + 0.5) / _NF
+    x = (_fx0 + 0.8) + _t * ((_fx1 - 0.8) - (_fx0 + 0.8))
+    rbox("FlashRib%d" % i, 1.15, 0.36, (_fz1 - _fz0) - 1.7, (x, FRONT_Y - 0.54, FL_CZ),
+         0.20, M_FLASH, 2)
+rbox("StripSlot", 2.6, 0.4, 1.8, (43.6, FRONT_Y - 0.38, 55.8), 0.7, M_BLACK_SOFT, 3)
+for i, (dx, dz) in enumerate(((-18.3, 45.4), (17.6, 44.9), (17.6, 59.6))):
+    cyl("StripDot%d" % i, 0.6, 0.28, (dx, FRONT_Y - 0.36, dz), M_BLACK_SOFT, 24, 0.08, 'Y')
 
 # ============================================================ 镜头筒（前凸 2.5）
 cone("LensBezel", 16.2, LENS_BEZEL_R, 1.25, (LENS_CX, FRONT_Y - 0.62, LENS_CZ), M_CHAMP_BRIGHT, 128, 'Y')
@@ -499,19 +533,19 @@ ring_decal("LensRingText", LENS_CX, LENS_CZ, LENS_INNER_R + 0.08, LENS_RING_R - 
            LENS_FRONT_Y - 0.03, M_LENS_FACE, 168, 15.0)
 prism_y("LensBarrier",
         rounded_local(LENS_CX - BARRIER_W / 2, LENS_CX + BARRIER_W / 2,
-                      LENS_CZ - BARRIER_H / 2, LENS_CZ + BARRIER_H / 2, 2.3),
-        LENS_FRONT_Y + 0.42, LENS_FRONT_Y + 1.30, M_BARRIER, 1.0, 4)
-slit = rbox("BarrierSlit", 20.0, 0.26, 1.0, (LENS_CX, LENS_FRONT_Y + 0.52, LENS_CZ + 0.1),
+                      LENS_CZ - BARRIER_H / 2, LENS_CZ + BARRIER_H / 2, BARRIER_R),
+        LENS_FRONT_Y + 0.38, LENS_FRONT_Y + 1.20, M_BARRIER, 0.9, 4)
+slit = rbox("BarrierSlit", 15.0, 0.26, 0.95, (LENS_CX, LENS_FRONT_Y + 0.46, LENS_CZ + 0.1),
             0.0, M_BLACK, 2, rot=(0, -math.radians(31), 0))
 
 # ============================================================ 顶面（z=62）
 cyl("ShutterRing", 7.6, 0.55, (SHUT_X, SHUT_Y, H + 0.12), M_CHAMP, 96, 0.25, 'Z')
 cyl("ShutterBtn", SHUT_R, 0.90, (SHUT_X, SHUT_Y, H + 0.48), M_DARKGREY, 96, 0.38, 'Z')
 # LCD：与顶面齐平（框 62.0，玻璃再降 0.15）
-rbox("LcdFrame", LCD_X1 - LCD_X0 + 2.3, LCD_Y1 - LCD_Y0 + 1.6, 0.30,
-     ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H - 0.06), 1.2, M_BLACK, 4)
-rbox("LcdGlass", LCD_X1 - LCD_X0, LCD_Y1 - LCD_Y0, 0.26,
-     ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H - 0.17), 0.8, M_LCD, 4)
+tube_z("LcdFrame", LCD_X0 - 1.0, LCD_X1 + 1.0, LCD_Y0 - 1.0, LCD_Y1 + 1.0, 1.6, 1.1,
+       H - 0.42, H + 0.02, M_BLACK, 14)
+rbox("LcdGlass", LCD_X1 - LCD_X0 + 0.5, LCD_Y1 - LCD_Y0 + 0.4, 0.24,
+     ((LCD_X0 + LCD_X1) / 2, (LCD_Y0 + LCD_Y1) / 2, H - 0.26), 0.8, M_LCD, 4)
 for nm, bx, by, bw, bd in BTNS:
     rbox(nm, bw, bd, 0.90, (bx, by, H + 0.42), 1.4, M_DARKGREY, 4)
 # C:AF 指示（空心环 Ø4.4 + 实心点 Ø2.5）
@@ -520,8 +554,8 @@ bm = bmesh.new()
 _o, _i = [], []
 for k in range(64):
     a = k / 64 * math.tau
-    _o.append(bm.verts.new((((14.7 + math.cos(a) * _ring_o)) * S, 5.0 * S, (H + 0.02 + math.sin(a) * _ring_o * 0) * S)))
-    _i.append(bm.verts.new((((14.7 + math.cos(a) * _ring_i)) * S, 5.0 * S, (H + 0.02 + math.sin(a) * _ring_i * 0) * S)))
+    _o.append(bm.verts.new((((4.0 + math.cos(a) * _ring_o)) * S, -2.1 * S, (H + 0.02) * S)))
+    _i.append(bm.verts.new((((4.0 + math.cos(a) * _ring_i)) * S, -2.1 * S, (H + 0.02) * S)))
 for k in range(64):
     k2 = (k + 1) % 64
     bm.faces.new((_o[k], _o[k2], _i[k2], _i[k]))
@@ -530,7 +564,7 @@ _me = bpy.data.meshes.new("CafRing"); bm.to_mesh(_me); bm.free()
 _caf = bpy.data.objects.new("CafRing", _me); scene.collection.objects.link(_caf)
 _caf.data.materials.append(M_BLACK_SOFT)
 _caf.location = (0, 0, 0)
-cyl("CafDot", 1.25, 0.22, (13.6, 5.0, H + 0.02), M_BLACK_SOFT, 32, 0.06, 'Z')
+cyl("CafDot", 1.25, 0.22, (3.8, 4.4, H + 0.02), M_BLACK_SOFT, 32, 0.06, 'Z')
 
 # ============================================================ 背面
 rbox("EyePiece", EYE_X1 - EYE_X0, 1.55, EYE_Z1 - EYE_Z0,
@@ -567,7 +601,7 @@ rbox("DoorLatch", 1.1, 8.0, 2.8, (49.2, -2.0, 38.0), 0.45, M_BLACK_SOFT, 3)
 decal_plane("FrontPrint", 'Y-', FRONT_Y, 9.0, 48.0, 1.0, 45.0, M_FRONT_LOGO)
 decal_plane("TopPrint", 'Z+', H, 7.0, 47.0, -6.0, 14.0, M_TOP_PRINT, flip_u=True, flip_v=True)
 decal_plane("BackPrint", 'Y+', BACK_YEND, -14.0, 9.5, 2.4, 8.4, M_BACK_PRINT, flip_u=True)
-decal_plane("BottomPrint", 'Z-', 0.0, -34.0, 12.0, -12.0, 12.0, M_BOTTOM_PRINT, flip_v=True)
+decal_plane("BottomPrint", 'Z-', 0.0, -34.0, 24.0, -12.0, 12.0, M_BOTTOM_PRINT, flip_v=True)
 decal_plane("SerialText", 'Z-', -0.18, SER_X0, SER_X1, -SER_H / 2, SER_H / 2, M_SERIAL, flip_v=True)
 decal_plane("SelectSet", 'Z+', H, -25.4, -11.0, -2.4, 0.6, M_SELECTSET, flip_u=True, flip_v=True)
 for _nm, _mt, _cx, _cy, _w, _d in (("OnLbl", M_BTN_ON, -24.7, 8.4, 7.0, 3.1),

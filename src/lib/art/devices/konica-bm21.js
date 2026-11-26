@@ -9,7 +9,7 @@
  *
  * 归一化读数（x 0 = 机身左缘，y 0 = 正面顶棱）：
  *   · 握把缝：上 22.8 mm → 腰 17.6 mm（0.27 H）→ 下 19.5 mm，是 S 形不是直线
- *   · 镜筒 Ø 28 mm，圆心 (0.48 W, 0.63 H)；外圈双环 + 黑筒 + 内盖 + 上下弧形刻字
+ *   · 镜筒 Ø 28 mm，圆心 (0.48 W, 0.66 H)；筒口倒角 + 外圈安装环（双环）+ 内盖 + 上下弧形刻字
  *   · 暗窗板 0.29–0.96 W × 0.03–0.30 H：AF 圆窗、取景窗、AF 受光窗、闪光窗
  *   · 丝印 Konica 基线 0.55 H；big mini 0.69 H；两行小字 0.76 / 0.83 H；6 颗凸点
  *   · 顶部：左上大圆快门钮、ON / MODE / 电源三颗药片键、LCD 窗、右端淡印
@@ -113,8 +113,7 @@ export function glyphKonicaBM21() {
     "V" + (TOP + 18) + "Q" + L + " " + TOP + " 114 " + TOP +
     "H159C165 86 165.5 95 161.7 " + T + "Z";
 
-  /* 卷边阴影带（缝内侧一圈更密的排线）+ 模压凸筋 */
-  const gripShade = seamFwd + "L150.5 " + B + seamTail + "Z";
+  /* 模压凸筋（橡胶上那道模压线，平行于缝） */
   const rib = "M138.6 146.8C131.6 168.2 128.2 192.2 129.1 213.6C129.9 231.6 132.6 245.3 137 254.8";
 
   /* ---------------- 窗板挖洞 ---------------- */
@@ -182,8 +181,8 @@ export function glyphKonicaBM21() {
     pat("a1", 4.6, 0.05, 0.8, 90) + /* 铝：竖向拉丝，极淡 */
     '<clipPath id="' + id + '-clip"><path d="' + body + '"/></clipPath>' +
     '<clipPath id="' + id + '-gclip"><path d="' + grip + '"/></clipPath>' +
-    '<path id="' + id + '-ta" d="' + arc(kx, ky, 26.8, 203, 337, 1) + '"/>' +
-    '<path id="' + id + '-ba" d="' + arc(kx, ky, 34.4, 161, 19, 0) + '"/>' +
+    '<path id="' + id + '-ta" d="' + arc(kx, ky, 27.2, 206, 334, 1) + '"/>' +
+    '<path id="' + id + '-ba" d="' + arc(kx, ky, 34.6, 158, 22, 0) + '"/>' +
     "</defs>" +
 
     /* ================= 机身 + 顶面 ================= */
@@ -224,9 +223,9 @@ export function glyphKonicaBM21() {
     /* ================= 细部 ================= */
     '<g class="line" fill="none" stroke-linejoin="round" stroke-linecap="round">' +
 
-    /* --- 顶面 / 正面分界：暗线 + 亮线 --- */
-    '<path d="M' + L + " " + T + "H" + R + '" stroke-opacity="0.55" stroke-width="1.3"/>' +
-    '<path d="M' + (L + 3) + " " + (T + 2.6) + "H" + (R - 3) + '" stroke-opacity="0.13" stroke-width="1"/>' +
+    /* --- 顶面 / 正面分界：只在橡胶右侧画（橡胶是一整块翻过来的，不该有硬棱） --- */
+    '<path d="M161.7 ' + T + "H" + R + '" stroke-opacity="0.55" stroke-width="1.3"/>' +
+    '<path d="M164 ' + (T + 2.6) + "H" + (R - 3) + '" stroke-opacity="0.13" stroke-width="1"/>' +
 
     /* --- 握把缝：橡胶边（亮）+ 内侧分模线（暗）+ 卷边收口 + 凸筋 --- */
     '<path d="' + seamFwd + '" stroke-opacity="0.8" stroke-width="1.8"/>' +
@@ -257,9 +256,9 @@ export function glyphKonicaBM21() {
     '<path d="' + panelShape + '" transform="translate(0 -1.2)" stroke-opacity="0.1" stroke-width="0.9"/>' +
 
     /* --- AF 圆窗 --- */
-    '<circle cx="' + afWin.x + '" cy="' + afWin.y + '" r="' + afWin.r + '" stroke-opacity="0.62" stroke-width="1.3"/>' +
-    '<circle cx="' + afWin.x + '" cy="' + afWin.y + '" r="' + (afWin.r - 4.2) + '" stroke-opacity="0.32" stroke-width="1"/>' +
-    '<path d="' + arc(afWin.x, afWin.y, afWin.r - 2, 200, 296, 1) + '" stroke-opacity="0.38" stroke-width="1.1"/>' +
+    '<circle cx="' + afWin.x + '" cy="' + afWin.y + '" r="' + afWin.r + '" stroke-opacity="0.64" stroke-width="1.4"/>' +
+    '<circle cx="' + afWin.x + '" cy="' + afWin.y + '" r="' + (afWin.r - 3.4) + '" stroke-opacity="0.2" stroke-width="1"/>' +
+    '<path d="' + arc(afWin.x, afWin.y, afWin.r - 5.6, 196, 288, 1) + '" stroke-opacity="0.34" stroke-width="1.1"/>' +
     '<circle class="text" cx="' + afWin.x + '" cy="' + afWin.y + '" r="' + (afWin.r - 6.8) + '" fill-opacity="0.06"/>' +
 
     /* --- 取景窗：外框 + 金属内框 + 玻璃 --- */
@@ -312,9 +311,9 @@ export function glyphKonicaBM21() {
     "</g>" +
 
     /* ================= 镜圈刻字 ================= */
-    '<text class="text" fill-opacity="0.88" font-family="' + SANS + '" font-size="7" font-weight="500" letter-spacing="0.22">' +
+    '<text class="text" fill-opacity="0.88" font-family="' + SANS + '" font-size="7.2" font-weight="500" letter-spacing="0.08">' +
     '<textPath href="#' + id + '-ta" startOffset="50%" text-anchor="middle">KONICA LENS</textPath></text>' +
-    '<text class="text" fill-opacity="0.8" font-family="' + SANS + '" font-size="5" font-weight="500" letter-spacing="0.06">' +
+    '<text class="text" fill-opacity="0.8" font-family="' + SANS + '" font-size="4.9" font-weight="500" letter-spacing="0.02">' +
     '<textPath href="#' + id + '-ba" startOffset="50%" text-anchor="middle">AUTO FOCUS 30mm F4.5</textPath></text>' +
 
     /* ================= 丝印 ================= */
@@ -345,7 +344,8 @@ export function glyphKonicaBM21() {
 
     /* ================= 外轮廓（最后压一遍） ================= */
     '<path class="line" d="' + body + '" stroke-opacity="0.86" stroke-width="1.7" fill="none"/>' +
-    '<path class="line" d="M107 ' + (B - 3) + "H373" + '" stroke-opacity="0.1" stroke-width="1"/>';
+    '<path class="line" d="M104 ' + (B - 4) + "H376" + '" stroke-opacity="0.12" stroke-width="1"/>' +
+    '<path class="line" d="M108 ' + (B - 1.4) + "H372" + '" stroke-opacity="0.1" stroke-width="2.6"/>';
 
   return '<g transform="translate(0 ' + OY + ')">' + art + "</g>";
 }
