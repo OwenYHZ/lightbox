@@ -382,10 +382,13 @@ def decal_plane(name, axis, cval, a0, a1, b0, b1, material, flip_u=False, flip_v
     if axis in ('Y-', 'Y+'):
         c = cval - push if axis == 'Y-' else cval + push
         pts = [(a0, c, b0), (a1, c, b0), (a1, c, b1), (a0, c, b1)]
+    elif axis in ('X-', 'X+'):
+        c = cval - push if axis == 'X-' else cval + push
+        pts = [(c, a0, b0), (c, a1, b0), (c, a1, b1), (c, a0, b1)]
     else:
         c = cval + push if axis == 'Z+' else cval - push
         pts = [(a0, b0, c), (a1, b0, c), (a1, b1, c), (a0, b1, c)]
-    if axis in ('Y+', 'Z-'):
+    if axis in ('Y+', 'Z-', 'X+'):
         pts = list(reversed(pts))
     bm = bmesh.new()
     vs = [bm.verts.new((p[0] * S, p[1] * S, p[2] * S)) for p in pts]
@@ -400,6 +403,8 @@ def decal_plane(name, axis, cval, a0, a1, b0, b1, material, flip_u=False, flip_v
             co = me.vertices[me.loops[li].vertex_index].co
             if axis in ('Y-', 'Y+'):
                 u = (co.x / S - a0) / (a1 - a0); v = (co.z / S - b0) / (b1 - b0)
+            elif axis in ('X-', 'X+'):
+                u = (co.y / S - a0) / (a1 - a0); v = (co.z / S - b0) / (b1 - b0)
             else:
                 u = (co.x / S - a0) / (a1 - a0); v = (co.y / S - b0) / (b1 - b0)
             if flip_u:
@@ -660,31 +665,24 @@ cyl("BattDotPin", 0.25, 0.10, (43.0, 5.0, -0.02), M_BLACK, 16, 0.0, 'Z')
 for i, sx in enumerate(SCREW_X):
     cyl("Screw%d" % i, 1.35, 0.18, (sx, 0.0, -0.07), M_DARKGREY, 32, 0.05, 'Z')
 
-# ============================================================ −X 端面（实拍 IMG_165552：香槟面 + OPEN 滑钮 + BATT 圆盖）
-_END_X = -50.35
-rbox("EndFacePlate", 0.70, 26.6, 57.4, (-50.05, 3.4, 31.5), 6.0, M_CHAMP, 0.30, 4)
-rbox("OpenSlider", 0.55, 5.0, 6.2, (-50.42, 1.6, 43.6), 1.2, M_BLACK_SOFT, 0.12, 3)
-cyl("EndDot", 0.62, 0.40, (-50.42, -3.6, 30.0), M_BLACK, 20, 0.06, 'X')
-# BATT 圆盖（凸台 + 黑滑扣 + 丝印）
-cyl("BattPuck", 8.6, 1.10, (_END_X, 1.8, 12.6), M_CHAMP_BRIGHT, 96, 0.35, 'X')
-rbox("BattLatch", 0.62, 7.4, 4.2, (-51.05, 1.8, 12.6), 0.9, M_BLACK_SOFT, 0.15, 3)
-rbox("EndSeamH", 0.30, 26.0, 0.30, (-50.42, 3.4, 55.6), 0.10, M_BLACK_SOFT, 0.05, 2)
-rbox("EndSeamV", 0.30, 0.30, 55.0, (-50.42, 10.6, 31.5), 0.10, M_BLACK_SOFT, 0.05, 2)
-decal_plane("BattPrint", 'X-', _END_X - 0.60, 1.8 - 8.0, 1.8 + 0.2, 5.0, 9.4, M_BATT_PRINT, push=0.06)
-decal_plane("OpenPrint", 'X-', -50.44, 4.2, 11.0, 41.0, 46.2, M_OPEN_PRINT, push=0.06)
-
 # ============================================================ +X 端黑色圆顶端盖（analyst v1.1 §1）
 rbox("HingeBar", 0.30, 3.6, 31.0, (-50.20, 1.0, 33.0), 0.10, M_CHARCOAL, 2)
 for _hx in (10.4, 52.6):
     cyl("HingeScrew%d" % int(_hx), 0.90, 0.16, (-50.24, 1.0, _hx), M_CHAMP_BRIGHT, 24, 0.03, 'X')
 
-# ============================================================ 侧面件（+X 端：锁盘/窗/点/导轨）
-cyl("SideDialRing", 6.8, 0.5, (49.9, 1.0, 24.0), M_CHAMP_BRIGHT, 64, 0.12, 'X')
-cyl("SideDialIn", 5.2, 0.45, (49.95, 1.0, 24.0), M_CHARCOAL, 64, 0.1, 'X')
-rbox("SideWin", 0.35, 6.0, 5.0, (49.86, -4.0, 30.0), 0.5, M_BLACK_SOFT, 3)
-cyl("SideDot", 1.0, 0.3, (49.9, -4.0, 22.0), M_BLACK, 24, 0.05, 'X')
-rbox("DoorSeam", 0.5, 0.5, 30.0, (49.68, 6.0, 26.0), 0.2, M_BLACK_SOFT, 2)
-rbox("DoorLatch", 1.1, 8.0, 2.8, (49.2, -2.0, 38.0), 0.45, M_BLACK_SOFT, 3)
+# ============================================================ +X 香槟端面（实拍 IMG_165552）
+# 圆电池门（Ø17 凸台 + 平弦 + 黑滑扣 + BATT 丝印）
+cyl("BattDoorX", 7.5, 0.22, (49.96, -1.5, 9.5), M_CHAMP, 96, 0.06, 'X')
+cyl("BattDoorXIn", 6.35, 0.20, (50.04, -1.5, 9.5), M_CHAMP_BRIGHT, 96, 0.05, 'X')
+rbox("BattLatchX", 0.16, 5.6, 3.0, (50.10, -1.5, 9.5), 0.06, M_BLACK_SOFT, 3)
+decal_plane("BattPrint", 'X+', 50.10, -3.4, 0.6, 1.9, 5.4, M_BATT_PRINT, push=0.03)
+# OPEN 滑钮 + 竖排丝印
+rbox("OpenSliderX", 0.16, 5.0, 4.2, (50.06, -5.0, 38.5), 0.08, M_BLACK_SOFT, 3)
+decal_plane("OpenPrint", 'X+', 50.08, -1.8, 2.2, 35.4, 41.6, M_OPEN_PRINT, push=0.03)
+cyl("EndDotX", 0.58, 0.12, (50.06, -7.0, 23.0), M_BLACK, 24, 0.03, 'X')
+# 分模线（横 z≈58 / 竖 y≈12.4）
+rbox("EndSeamH", 0.14, 25.0, 0.24, (50.06, 3.4, 58.0), 0.05, M_BLACK_SOFT, 2)
+rbox("EndSeamV", 0.14, 0.24, 52.0, (50.06, 12.4, 31.5), 0.05, M_BLACK_SOFT, 2)
 
 # ============================================================ 分模线（正面竖 X96.4 / 横距底 5.0）
 rbox("PartLineV", 0.12, 0.30, 59.0, (46.4, FRONT_Y - 0.05, 31.0), 0.05, M_BLACK_SOFT, 2)

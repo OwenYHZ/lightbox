@@ -37,7 +37,7 @@ WIN_FRAME_D = 1.0
 WIN_DEPTH = 4.6
 SENSOR_X, SENSOR_Z, SENSOR_R = 17.7, 14.6, 2.5
 
-SLOT_W, SLOT_H, SLOT_Z = 4.4, 1.7, 11.7  # 更短；槽心与盘心(+11.8)同深度
+SLOT_W, SLOT_H, SLOT_Z = 4.4, 1.7, 10.2  # 随盘后移 1.5（槽心 y=+13.3）
 
 BTN_X, BTN_Z, BTN_R, BTN_OUT = -0.5, 13.8, 3.8, 0.7
 
@@ -364,6 +364,18 @@ for sx in (DIAL_X, -DIAL_X):
 slot = prism("Slot", SLOT_W, SLOT_H, BODY_H - PLATE_SINK - 0.10, BODY_H - PLATE_SINK + 0.02,
               SLOT_H / 2, M_SLOT, 0.0, seg=12)
 slot.location = (0.0, (D / 2 - SLOT_Z) * S, 0.0)
+
+# 指示标志正后方的小圆点（Ø0.8）
+cyl("IndexDot", 0.40, 0.10, (0.0, D / 2 - SLOT_Z - 1.15, BODY_H - PLATE_SINK + 0.04),
+    M_SLOT, 24, 0.02, 'Z')
+
+# 绿色指示灯（顶面靠前缘；弱自发光）
+M_LED = mat("ZA12_led", (0.494, 0.878, 0.658), 0.0, 0.35)
+_led_bsdf = M_LED.node_tree.nodes["Principled BSDF"]
+if "Emission Color" in _led_bsdf.inputs:
+    _led_bsdf.inputs["Emission Color"].default_value = (0.494, 0.878, 0.658, 1.0)
+    _led_bsdf.inputs["Emission Strength"].default_value = 0.35
+cyl("Led", 1.0, 0.12, (2.0, -(D / 2 - 17.5), BODY_H - PLATE_SINK + 0.02), M_LED, 32, 0.03, 'Z')
 
 # ============================================================ 底面铭牌（沉台 + 2.3mm 银边）
 bp = rbox("BottomCut", BOT_PANEL_W, BOT_PANEL_D, 0.7, (0, 0, -0.15), BOT_PANEL_R, M_CAVITY, 6)

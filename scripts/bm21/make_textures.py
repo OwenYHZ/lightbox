@@ -143,14 +143,23 @@ def serial():
 
 
 def endface_prints():
-    # BATT（含 ▾）与 OPEN◁，深灰丝印、透明底
-    im = canvas(16.0, 6.0, 44); d = ImageDraw.Draw(im)
-    d.text((1.0 * 44, 3.0 * 44), "BATT", font=font(2.4 * 44), fill=(70, 70, 68, 255), anchor="lm")
-    d.polygon([(9.2 * 44, 2.2 * 44), (10.6 * 44, 2.2 * 44), (9.9 * 44, 3.6 * 44)], fill=(70, 70, 68, 255))
+    """端面丝印：竖排（照片里 OPEN▷ / BATT▼ 从下往上读），透明底。"""
+    im = canvas(7.0, 5.0, 44)          # BATT（竖排 7 高 x 5 宽）
+    d = ImageDraw.Draw(im)
+    tmp = canvas(14.0, 3.0, 44)
+    ImageDraw.Draw(tmp).text((0.6 * 44, 1.5 * 44), "BATT", font=font(2.2 * 44),
+                             fill=(72, 72, 70, 255), anchor="lm")
+    ImageDraw.Draw(tmp).polygon([(9.6 * 44, 0.7 * 44), (11.0 * 44, 0.7 * 44), (10.3 * 44, 2.2 * 44)],
+                                fill=(72, 72, 70, 255))
+    im.paste(tmp.rotate(90, expand=True), (0, 0))
     im.save(OUT + "batt_print.png")
-    im = canvas(12.0, 5.0, 44); d = ImageDraw.Draw(im)
-    d.text((0.4 * 44, 2.5 * 44), "OPEN", font=font(2.2 * 44), fill=(70, 70, 68, 255), anchor="lm")
-    d.polygon([(9.4 * 44, 1.4 * 44), (9.4 * 44, 3.6 * 44), (10.8 * 44, 2.5 * 44)], fill=(70, 70, 68, 255))
+    im = canvas(6.2, 5.0, 44)          # OPEN▷
+    tmp = canvas(12.0, 3.4, 44)
+    ImageDraw.Draw(tmp).text((0.5 * 44, 1.7 * 44), "OPEN", font=font(2.0 * 44),
+                             fill=(72, 72, 70, 255), anchor="lm")
+    ImageDraw.Draw(tmp).polygon([(8.6 * 44, 0.9 * 44), (10.6 * 44, 1.7 * 44), (8.6 * 44, 2.5 * 44)],
+                                fill=(72, 72, 70, 255))
+    im.paste(tmp.rotate(90, expand=True), (0, 0))
     im.save(OUT + "open_print.png")
     print("endface prints ok")
 
