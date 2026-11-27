@@ -142,6 +142,19 @@ def serial():
     print("serial", im.size)
 
 
+def endface_prints():
+    # BATT（含 ▾）与 OPEN◁，深灰丝印、透明底
+    im = canvas(16.0, 6.0, 44); d = ImageDraw.Draw(im)
+    d.text((1.0 * 44, 3.0 * 44), "BATT", font=font(2.4 * 44), fill=(70, 70, 68, 255), anchor="lm")
+    d.polygon([(9.2 * 44, 2.2 * 44), (10.6 * 44, 2.2 * 44), (9.9 * 44, 3.6 * 44)], fill=(70, 70, 68, 255))
+    im.save(OUT + "batt_print.png")
+    im = canvas(12.0, 5.0, 44); d = ImageDraw.Draw(im)
+    d.text((0.4 * 44, 2.5 * 44), "OPEN", font=font(2.2 * 44), fill=(70, 70, 68, 255), anchor="lm")
+    d.polygon([(9.4 * 44, 1.4 * 44), (9.4 * 44, 3.6 * 44), (10.8 * 44, 2.5 * 44)], fill=(70, 70, 68, 255))
+    im.save(OUT + "open_print.png")
+    print("endface prints ok")
+
+
 def buttons():
     for name, txt, w, h in (("on", "ON", 7.4, 3.4), ("mode", "MODE", 6.0, 3.2), ("pwr", "I/O", 6.0, 3.2)):
         ppm = 44
@@ -188,5 +201,5 @@ def grain(size=512, strength=0.26):
 
 
 if __name__ == "__main__":
-    front_logo(); lens_face(); top_print(); back_print(); bottom_print(); serial(); buttons(); grain()
+    front_logo(); lens_face(); top_print(); back_print(); bottom_print(); serial(); buttons(); endface_prints(); grain()
     print("textures done")

@@ -86,7 +86,7 @@ def mat(name, color, metallic=0.0, roughness=0.55, transmission=0.0, ior=1.45, b
         tex.interpolation = 'Linear'
         tex.extension = 'REPEAT'
         nm = nt.nodes.new("ShaderNodeNormalMap")
-        nm.inputs["Strength"].default_value = 0.55
+        nm.inputs["Strength"].default_value = 0.20
         nt.links.new(tex.outputs["Color"], nm.inputs["Color"])
         nt.links.new(nm.outputs["Normal"], b.inputs["Normal"])
     return m
@@ -156,6 +156,8 @@ M_BTN_ON = textured_alpha("BM21_btn_on", TEX + "btn_on.png", 0.0, 0.42)
 M_BTN_MODE = textured_alpha("BM21_btn_mode", TEX + "btn_mode.png", 0.0, 0.42)
 M_BTN_PWR = textured_alpha("BM21_btn_pwr", TEX + "btn_pwr.png", 0.0, 0.42)
 M_SELECTSET = textured_alpha("BM21_selectset", TEX + "selectset.png", 0.70, 0.55)
+M_BATT_PRINT = textured_alpha("BM21_batt_print", TEX + "batt_print.png", 0.0, 0.55)
+M_OPEN_PRINT = textured_alpha("BM21_open_print", TEX + "open_print.png", 0.0, 0.55)
 M_LENS_FACE = textured_opaque("BM21_lens_face", TEX + "lens_face.png", 0.12, 0.26)
 
 
@@ -657,6 +659,19 @@ cyl("TripodCounterRing", 3.78, 0.12, (43.0, 1.0, 1.16), M_CHAMP_BRIGHT, 64, 0.03
 cyl("BattDotPin", 0.25, 0.10, (43.0, 5.0, -0.02), M_BLACK, 16, 0.0, 'Z')
 for i, sx in enumerate(SCREW_X):
     cyl("Screw%d" % i, 1.35, 0.18, (sx, 0.0, -0.07), M_DARKGREY, 32, 0.05, 'Z')
+
+# ============================================================ −X 端面（实拍 IMG_165552：香槟面 + OPEN 滑钮 + BATT 圆盖）
+_END_X = -50.35
+rbox("EndFacePlate", 0.70, 26.6, 57.4, (-50.05, 3.4, 31.5), 6.0, M_CHAMP, 0.30, 4)
+rbox("OpenSlider", 0.55, 5.0, 6.2, (-50.42, 1.6, 43.6), 1.2, M_BLACK_SOFT, 0.12, 3)
+cyl("EndDot", 0.62, 0.40, (-50.42, -3.6, 30.0), M_BLACK, 20, 0.06, 'X')
+# BATT 圆盖（凸台 + 黑滑扣 + 丝印）
+cyl("BattPuck", 8.6, 1.10, (_END_X, 1.8, 12.6), M_CHAMP_BRIGHT, 96, 0.35, 'X')
+rbox("BattLatch", 0.62, 7.4, 4.2, (-51.05, 1.8, 12.6), 0.9, M_BLACK_SOFT, 0.15, 3)
+rbox("EndSeamH", 0.30, 26.0, 0.30, (-50.42, 3.4, 55.6), 0.10, M_BLACK_SOFT, 0.05, 2)
+rbox("EndSeamV", 0.30, 0.30, 55.0, (-50.42, 10.6, 31.5), 0.10, M_BLACK_SOFT, 0.05, 2)
+decal_plane("BattPrint", 'X-', _END_X - 0.60, 1.8 - 8.0, 1.8 + 0.2, 5.0, 9.4, M_BATT_PRINT, push=0.06)
+decal_plane("OpenPrint", 'X-', -50.44, 4.2, 11.0, 41.0, 46.2, M_OPEN_PRINT, push=0.06)
 
 # ============================================================ +X 端黑色圆顶端盖（analyst v1.1 §1）
 rbox("HingeBar", 0.30, 3.6, 31.0, (-50.20, 1.0, 33.0), 0.10, M_CHARCOAL, 2)
